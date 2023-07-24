@@ -1,13 +1,13 @@
 import { Injectable, NgZone } from '@angular/core';
 import { User } from '../services/user';
-import * as auth from 'firebase/auth';
+//import * as auth from 'firebase/auth';
+import { GoogleAuthProvider } from "@angular/fire/auth";
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   AngularFirestore,
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 
 @Injectable({
   providedIn: 'root',
@@ -118,17 +118,17 @@ export class AuthService {
   /*}).catch((error) => {
     window.alert(error.message);
   });*/
-
-    this.afAuth.signInWithPopup(new GoogleAuthProvider())
+  this.afAuth
+      .signInWithPopup(new GoogleAuthProvider())
       .then((result) => {
-        console.log(result)
-        /*this.ngZone.run(() => {
+        console.log('You have been successfully logged in!');
+        this.ngZone.run(() => {
           this.router.navigate(['dashboard']);
         })
-        this.SetUserData(result.user);*/
-      }).catch((error) => {
-        window.alert(error)
       })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   /* Setting up user data when sign in with username/password,

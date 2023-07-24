@@ -4,15 +4,12 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-/*import { TabellaComponent } from './componenti/tabella/tabella.component';
-import { MagazzinoComponent } from './componenti/magazzino/magazzino.component';
-import { StatisticheComponent } from './componenti/statistiche/statistiche.component';
-import { LineChartComponent } from './componenti/line-chart/line-chart.component';*/
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -44,6 +41,7 @@ import { environment } from '../environments/environment';
 
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CircularSliderComponent } from './components/dashboard/circular-slider/circular-slider.component';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 
 
 @NgModule({
@@ -66,6 +64,7 @@ import { CircularSliderComponent } from './components/dashboard/circular-slider/
     ForgotPasswordComponent,
     SignInComponent,
     SignUpComponent,
+    VerifyEmailComponent,
     CircularSliderComponent,
   ],
   imports: [
@@ -95,6 +94,7 @@ import { CircularSliderComponent } from './components/dashboard/circular-slider/
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    AngularFirestoreModule,
     AngularFireStorageModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
