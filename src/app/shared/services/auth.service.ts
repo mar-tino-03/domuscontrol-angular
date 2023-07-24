@@ -106,25 +106,15 @@ export class AuthService {
   // Sign in with Google
   GoogleAuth() {
     //this.afAuth.setPersistence('local').then((e) => {
-    /*this.afAuth.signInWithPopup(new auth.GoogleAuthProvider()) // signInWithRedirect signInWithPopup
-    .then( (result: any) => {
-      this.SetUserData(result.user).then(e=>{
-        this.router.navigate(['dashboard']);
-      });
-    })
-    .catch((error) =>
-      window.alert(error.message)
-    );
-  /*}).catch((error) => {
-    window.alert(error.message);
-  });*/
-  this.afAuth
+    this.afAuth
       .signInWithPopup(new GoogleAuthProvider())
       .then((result) => {
-        console.log('You have been successfully logged in!');
-        this.ngZone.run(() => {
-          this.router.navigate(['dashboard']);
-        })
+        this.SetUserData(result.user);
+        this.afAuth.authState.subscribe((user) => {
+          if (user) {
+            this.router.navigate(['dashboard']);
+          }
+        });
       })
       .catch((error) => {
         console.log(error);

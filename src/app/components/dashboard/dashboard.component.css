@@ -88,6 +88,7 @@ mat-toolbar{
   right: 15px;
   border-radius: 18px !important;
   transform: scale(0.75);
+  box-shadow: none !important;
 }
 
 .graph{
