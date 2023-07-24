@@ -1,0 +1,12 @@
+{
+  "rules": {
+    ".read": true,  // 2023-3-12
+    ".write": true,  // 2023-3-12
+    "test":{
+        ".read":  "auth != null",
+        ".write": "auth != null"
+      }
+  }
+}
+
+      

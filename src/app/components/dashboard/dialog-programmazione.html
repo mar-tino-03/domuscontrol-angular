@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Programming</h1>
+<div mat-dialog-content>
+  <p>decidi il prossimo evento</p>
+  <mat-form-field>
+    <mat-label>ora</mat-label>
+    <input matInput type="time" [(ngModel)]="ora" name="ora">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>temperatura</mat-label>
+    <input matInput type="number" step="0.5" [(ngModel)]="temp" name="temp">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close="">No Thanks</button>
+  <button mat-button [mat-dialog-close]="{ora: ora, temp: temp}" cdkFocusInitial>Ok</button>
+</div>

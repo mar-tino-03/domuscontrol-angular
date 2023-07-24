@@ -1,0 +1,125 @@
+<!-- Top navigation -->
+<mat-toolbar>
+  <mat-toolbar-row>
+    <a style="display: flex" class="rounded-circle">
+      <img class="brand-logo" src="/favicon.ico" alt="favivon.io Logo">
+    </a>
+
+    <span class="app-spacer"></span>
+
+    <div *ngIf="authService.userData as user" style="display: flex;" [matMenuTriggerFor]="beforeMenu">
+      <button *ngIf="user.photoURL==null; else img" mat-icon-button color="primary"
+        style="display: flex;">
+        <mat-icon class="rounded-circle img-navbar" style="color: darkslateblue">account_circle</mat-icon>
+      </button>
+
+      <ng-template #img>
+        <button mat-icon-button color="primary" style="display: flex;">
+          <img class="rounded-circle img-navbar" src="{{user.photoURL}}" alt="{{user.displayName}}">
+        </button>
+      </ng-template>
+
+      <mat-menu #beforeMenu="matMenu" xPosition="before">
+        <div class="info-menu">
+
+          <img *ngIf="user.photoURL!=null; else img2" class="rounded-circle" style="height: 52px;" src="{{user.photoURL}}" alt="{{user.displayName}}">
+          <ng-template #img2>
+            <mat-icon class="rounded-circle" style="font-size: 52px; color: darkslateblue; height: 52px;width: 52px;">account_circle</mat-icon>
+          </ng-template>
+
+          <br>
+          <p>{{(user.displayName) ? user.displayName : 'User'}}</p>
+          <p >{{user.email}}</p>
+          <!--<p >User ID: <strong>{{user.uid}}</strong></p>-->
+        </div>
+        <button mat-menu-item>
+          <mat-icon>person</mat-icon>User Profile
+        </button>
+        <button mat-menu-item (click)="authService.SignOut()">
+          <mat-icon>logout</mat-icon>Log out
+        </button>
+      </mat-menu>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+
+<!-- Sidebar navigation -->
+<div class="container-fluid">
+
+  <div class="card">
+    <div class="box-slider">
+      <!--<mat-slider step="0.5" max="30" min="16" discrete>
+        <input matSliderThumb type="range" [(ngModel)]="valueRange" (change)="changeTmp()">
+      </mat-slider>-->
+
+      <app-circular-slider [(valueRange)]="valueRange" (change)="changeTmp()"></app-circular-slider>
+
+      <div class="continer-button">
+        <button mat-icon-button (click)="valueRange = valueRange - 0.5; changeTmp()">
+          <mat-icon>expand_more</mat-icon>
+        </button>
+        <button mat-icon-button (click)="valueRange = valueRange + 0.5; changeTmp()">
+          <mat-icon>expand_less</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="box-radio" #MatChipList>
+      <mat-chip-listbox aria-label="Fish selection">
+        <mat-chip-option (click)="changeChip('auto')"   selected="{{auto}}"  >auto</mat-chip-option>
+        <mat-chip-option (click)="changeChip('manual')" selected="{{manual}}">manual</mat-chip-option>
+        <mat-chip-option (click)="changeChip('off' )"   selected="{{off}}"   >off</mat-chip-option>
+      </mat-chip-listbox>
+
+      <div class="info-container">
+          <p class="small-text gray">modalità</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card programmazione">
+    <table mat-table [dataSource]="dataSource">
+
+      <!-- ora Column -->
+      <ng-container matColumnDef="ora">
+        <th mat-header-cell *matHeaderCellDef> ora </th>
+        <td mat-cell *matCellDef="let element"> {{element.ora}} </td>
+      </ng-container>
+
+      <!-- temp Column -->
+      <ng-container matColumnDef="temp">
+        <th mat-header-cell *matHeaderCellDef> temp </th>
+        <td mat-cell *matCellDef="let element"> {{element.temp}} </td>
+      </ng-container>
+
+      <!-- action Column -->
+      <ng-container matColumnDef="star" stickyEnd>
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon" [matMenuTriggerFor]="beforeDelete">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+
+          <mat-menu #beforeDelete="matMenu" xPosition="before">
+            <button mat-menu-item (click)="this.firebaseService.setProg({ora: time_tino(element.ora), temp: null})">
+              <mat-icon>delete</mat-icon> Elimina
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div style="height: 50px;"></div>
+
+    <button mat-fab color="primary" class="button_add" (click)="openDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div class="card">notification</div>
+  <div class="card graph">graph</div>
+
+</div>
