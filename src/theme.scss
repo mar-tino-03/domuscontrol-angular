@@ -1,0 +1,21 @@
+@import "../node_modules/@angular/material/theming";
+@include mat-core();
+
+$mat-primary: (
+  main: #274c77,
+  lighter: #bec9d6,
+  darker: #17335a,
+  200: #274c77, // For slide toggle,
+  contrast : (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  )
+);
+
+$my-app-primary: mat-palette($mat-primary, main, lighter, darker);
+$my-app-accent:  mat-palette($mat-pink, 500, 900, A100);
+$my-app-warn:    mat-palette($mat-deep-orange);
+$my-app-theme: mat-light-theme($my-app-primary, $my-app-accent, $my-app-warn);
+@include angular-material-theme($my-app-theme);
+

@@ -8,7 +8,7 @@ var onChange: { emit: (arg0: number) => void; };
   selector: 'app-circular-slider',
   template: '<div id="slider"></div>',
   styleUrls: ['./circular-slider.component.css'],
-  encapsulation: ViewEncapsulation.None 
+  encapsulation: ViewEncapsulation.None
 })
 export class CircularSliderComponent implements OnInit{
   @Input() valueRange!: number;
@@ -28,18 +28,18 @@ export class CircularSliderComponent implements OnInit{
       startAngle: 315,
       width: 4,
       handleSize: "+11",
-    
+
       min: "14",
       max: "36",
       step: "0.5",
-    
+
       //handleShape: "dot",
       //mouseScrollAction: true,
       //value: "29",
       editableTooltip: false,
       //sliderType: "min-range",
       lineCap: "round",
-    
+
       /*  event  */
       //beforeCreate: "traceEvent",
       // create: "traceEvent",
@@ -57,12 +57,12 @@ export class CircularSliderComponent implements OnInit{
       tooltipFormat: function (e:any) {
         var val = e.value.toString();
         if (!(e.value * 10 % 10)) { val = val + ".0"; }
-        return `<p style="font-size: 1.55em;">` + "heating" + "</p>" +
-               `<p style="font-size: 2.3em;">` + val + "°</p>" +
-               `<p style="font-size: 1.35em;">` + "1/2 hr to" + "</p>";
+        return `<p style="font-size: 1.55em; margin:0;">` + "heating" + "</p>" +
+               `<p style="font-size: 2.3em;  margin:0;">` + val + "°</p>" +
+               `<p style="font-size: 1.35em; margin:0;">` + "1/2 hr to" + "</p>";
       }
     });
-  }  
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if(changes['valueRange'].currentValue != undefined)
