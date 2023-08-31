@@ -1,12 +1,39 @@
 {
   "rules": {
-    ".read": true,  // 2023-3-12
-    ".write": true,  // 2023-3-12
-    "test":{
-        ".read":  "auth != null",
-        ".write": "auth != null"
+    	"test": {
+        ".read":  true,
+        ".write":  true
+      },
+
+    	"permition": {
+        "line": {
+          ".read" :  "auth != null && root.child('permition/admin').hasChild(auth.uid) && root.child('permition/admin').child(auth.uid).val() == true",
+        	".write":  "auth != null"
+        },
+        "user": {
+        	".read" :  "auth != null && root.child('permition/admin').hasChild(auth.uid) && root.child('permition/admin').child(auth.uid).val() == true",
+        	".write":  "auth != null && root.child('permition/admin').hasChild(auth.uid) && root.child('permition/admin').child(auth.uid).val() == true"
+        },
+        "admin": {
+        	".read" : false,
+          ".write": false
+        }
+      },
+
+      "users": {
+        ".read" : "auth != null && root.child('permition/admin').hasChild(auth.uid) && root.child('permition/admin').child(auth.uid).val() == true",
+      	".write": "auth != null && root.child('permition/admin').hasChild(auth.uid) && root.child('permition/admin').child(auth.uid).val() == true",
+
+
+        "$userId": {
+          ".read" : "$userId == auth.uid ",
+        	".write": "$userId == auth.uid ",
+      	}
+			},
+
+      "termostato":{
+        ".read":  "auth != null && root.child('permition/user').hasChild(auth.uid) && root.child('permition/user').child(auth.uid).val() == true",
+        ".write": "auth != null && root.child('permition/user').hasChild(auth.uid) && root.child('permition/user').child(auth.uid).val() == true"
       }
   }
 }
-
-      

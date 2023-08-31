@@ -58,6 +58,10 @@ mat-toolbar{
   /*z-index: 100;*/
 }
 
+.info-container{
+  padding-top: 10px;
+}
+
 .mat-mdc-chip {
   border-radius: 10px;
 }

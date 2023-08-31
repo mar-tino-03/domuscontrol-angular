@@ -31,7 +31,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSliderModule } from '@angular/material/slider';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
@@ -42,7 +42,6 @@ import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CircularSliderComponent } from './components/dashboard/circular-slider/circular-slider.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-
 
 @NgModule({
   declarations: [
@@ -90,6 +89,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     MatTableModule,
     MatChipsModule,
     MatSliderModule,
+    MatSnackBarModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
@@ -100,7 +100,7 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable
       // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000'
+      registrationStrategy: 'registerWhenStable:30000',
     }),
   ],
   providers: [],

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation, SimpleChanges } from '@angular/core';
 declare var $:any;
 
 var onValue: { emit: (arg0: number) => void; };
@@ -12,6 +12,7 @@ var onChange: { emit: (arg0: number) => void; };
 })
 export class CircularSliderComponent implements OnInit{
   @Input() valueRange!: number;
+  @Input() disabled!: boolean;
   @Output() valueRangeChange = new EventEmitter();
   @Output() change = new EventEmitter();
 
@@ -45,7 +46,7 @@ export class CircularSliderComponent implements OnInit{
       // create: "traceEvent",
       // start: "traceEvent",
       // stop: "traceEvent",
-      //drag: "traceEvent",
+      // drag: "traceEvent",
 
       update: function () {
         onValue.emit(Number($("#slider").data("roundSlider").getValue()));
@@ -65,8 +66,17 @@ export class CircularSliderComponent implements OnInit{
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes['valueRange'].currentValue != undefined)
+    if(changes['valueRange']!=undefined && changes['valueRange'].currentValue != undefined)
       $("#slider").data("roundSlider").setValue(changes['valueRange'].currentValue);
+
+    if(changes['disabled']!=undefined && changes['disabled'].currentValue != undefined){
+      setTimeout( () => {
+        if(changes['disabled'].currentValue == true)
+          $("#slider").roundSlider("disable");
+        else
+          $("#slider").roundSlider("enable");
+      }, 10 );
+    }
   }
 }
 
