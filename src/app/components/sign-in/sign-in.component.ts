@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component,  } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -8,12 +7,6 @@ import { AuthService } from '../../shared/services/auth.service';
   styleUrls: ['./sign-in.component.css'],
 })
 
-export class SignInComponent implements OnInit {
+export class SignInComponent {
   constructor(public authService: AuthService) {}
-
-  ngOnInit() {}
-
-  onSubmit(form: NgForm){
-
-  }
 }

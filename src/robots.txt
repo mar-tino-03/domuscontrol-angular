@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+User-agent: *
+Disallow: /assets/
+
+Sitemap: https://domuscontrol-36d0e.web.app/sitemap.xml

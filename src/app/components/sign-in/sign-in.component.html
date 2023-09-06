@@ -1,71 +1,48 @@
-<div class="displayTable">
-  <div class="displayTableCell">
-    <div class="authBlock">
-      <h3>Sign In</h3>
+<div class="main-form">
 
-      <!--<form #homeform="ngForm" (ngSubmit)="authService.SignIn(userEmail.value, userPassword.value)">
-        <mat-form-field appearance="fill">
-          <mat-label>nome</mat-label>
-          <input matInput type="text" name="nome" required ngModel>
-        </mat-form-field>
+    <h3>Sign In</h3>
 
-        <mat-form-field appearance="fill">
-          <mat-label>email</mat-label>
-          <input matInput type="email" name="email" required ngModel>
-        </mat-form-field>
+    <form #homeform="ngForm" class="form"
+      (ngSubmit)="authService.SignIn(userEmail.value, userPassword.value)">
 
-        <button type="submit" color="primary" >invia</button>
-      </form>-->
-      <form #homeform="ngForm"
-        (ngSubmit)="authService.SignIn(userEmail.value, userPassword.value)"
-      >
+      <mat-form-field class="white" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input type="email" name="email" matInput required #userEmail placeholder="Ex. pat@example.com">
+      </mat-form-field>
 
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Email</mat-label>
-          <input type="email" name="email" matInput required #userEmail placeholder="Ex. pat@example.com">
-        </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Password</mat-label>
+        <input type="password" name="password" matInput required #userPassword>
+      </mat-form-field>
 
-        <mat-form-field class="example-full-width" appearance="fill">
-          <mat-label>Password</mat-label>
-          <input type="password" name="password" matInput required #userPassword>
-        </mat-form-field>
+      <!-- Calling SignIn Api from AuthService -->
 
-        <!-- Calling SignIn Api from AuthService -->
+      <button mat-raised-button type="submit" color="primary">Login</button>
+    </form>
 
-        <button mat-raised-button type="submit" color="primary">invia</button>
-
-      </form>
-
-      <div class="formGroup">
-        <span class="or"><span class="orInner">Or</span></span>
-      </div>
-
-      <!-- Continue with Google -->
-      <div class="formGroup">
-        <button
-          type="button"
-          class="btn googleBtn"
-          (click)="authService.GoogleAuth()"
-        >
-          <i class="fab fa-google-plus-g"></i>
-          Continue with Google
-        </button>
-      </div>
-
-      <div class="forgotPassword">
-        <span routerLink="/forgot-password">Forgot Password?</span>
-      </div>
+    <div class="formGroup">
+      <span routerLink="/forgot-password" class="forgotPassword">Forgot Password?</span>
     </div>
 
-    <div class="redirectToLogin">
-      <span
-        >Don't have an account?<span
-          class="redirect"
-          routerLink="/register-user"
-        >
-          Sign Up</span
-        ></span
-      >
+    <div class="formGroup">
+      <span class="or"><span class="orInner">Or</span></span>
     </div>
+
+    <!-- Continue with Google -->
+    <div class="formGroup">
+      <button
+        type="button"
+        class=" googleBtn"
+        (click)="authService.GoogleAuth()"
+        mat-stroked-button
+      >
+        <span class="googleIcon" alt="google-icon"></span>
+        <span>Continue with Google</span>
+      </button>
+    </div>
+
+  <div class="redirectToLogin">
+    <span>Don't have an account? <span class="redirect" routerLink="/register">Sign Up</span></span>
   </div>
 </div>
+

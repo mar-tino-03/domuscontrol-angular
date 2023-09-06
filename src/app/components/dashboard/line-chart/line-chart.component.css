@@ -1,0 +1,10 @@
+.container-button-chart{
+  display: flex;
+  justify-content: center;
+}
+
+.button_chart{
+  background-color: white;
+  margin: 3px 6px;
+  border-radius: 8px;
+}

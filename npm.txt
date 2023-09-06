@@ -7,3 +7,8 @@ npm install @angular/service-worker
 "maximumError": "5mb"
 
 "scripts": ["./node_modules/jquery/dist/jquery.min.js", "https://cdnjs.cloudflare.com/ajax/libs/roundSlider/1.6.1/roundslider.min.js"],
+
+npm install chart.js
+npm i chartjs-adapter-date-fns
+
+npm i angular-animations --save

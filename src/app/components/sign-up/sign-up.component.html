@@ -1,59 +1,43 @@
-<div class="displayTable">
-  <div class="displayTableCell">
-    <div class="authBlock">
-      <h3>Sign Up</h3>
+<div class="main-form">
 
-      <div class="formGroup">
-        <input
-          type="email"
-          class="formControl"
-          placeholder="Email Address"
-          #userEmail
-          required
-        />
-      </div>
+  <h3>Sign Up</h3>
 
-      <div class="formGroup">
-        <input
-          type="password"
-          class="formControl"
-          placeholder="Password"
-          #userPwd
-          required
-        />
-      </div>
+  <form #homeform="ngForm" class="form"
+    (ngSubmit)="authService.SignUp(userEmail.value, userPassword.value)">
 
-      <div class="formGroup">
-        <input
-          type="button"
-          class="btn btnPrimary"
-          value="Sign Up"
-          (click)="authService.SignUp(userEmail.value, userPwd.value)"
-        />
-      </div>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Email</mat-label>
+      <input type="email" name="email" matInput required #userEmail placeholder="Ex. pat@example.com">
+    </mat-form-field>
 
-      <div class="formGroup">
-        <span class="or"><span class="orInner">Or</span></span>
-      </div>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Password</mat-label>
+      <input type="password" name="password" matInput required #userPassword>
+    </mat-form-field>
 
-      <!-- Continue with Google -->
-      <div class="formGroup">
-        <button
-          type="button"
-          class="btn googleBtn"
-          (click)="authService.GoogleAuth()"
-        >
-          <i class="fab fa-google-plus-g"></i>
-          Continue with Google
-        </button>
-      </div>
-    </div>
+    <!-- Calling SignIn Api from AuthService -->
 
-    <div class="redirectToLogin">
-      <span
-        >Already have an account?
-        <span class="redirect" routerLink="/sign-in">Log In</span></span
-      >
-    </div>
+    <button mat-raised-button type="submit" color="primary">Create new account</button>
+  </form>
+
+  <div class="formGroup">
+    <span class="or"><span class="orInner">Or</span></span>
   </div>
+
+  <!-- Continue with Google -->
+  <div class="formGroup">
+    <button
+      type="button"
+      class=" googleBtn"
+      (click)="authService.GoogleAuth()"
+      mat-stroked-button
+    >
+      <span class="googleIcon" alt="google-icon"></span>
+      <span>Continue with Google</span>
+    </button>
+  </div>
+
+<div class="redirectToLogin">
+  <span>Already have an account? <span class="redirect" routerLink="/login">Sign In</span></span>
+</div>
 </div>

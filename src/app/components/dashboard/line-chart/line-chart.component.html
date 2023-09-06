@@ -1,0 +1,16 @@
+<div class="chart-container">
+  <canvas id="{{code}}">{{ chart }}</canvas>
+</div>
+
+<div class="container-button-chart">
+  <button mat-stroked-button color="primary" [disabled]="disabled" class="button_chart" (click)="increase()"
+    matTooltip="Zoom Out"
+    matTooltipPosition="below"
+    matTooltipShowDelay="0"
+    matTooltipHideDelay="0">Increase</button>
+  <button mat-stroked-button color="primary" [disabled]="disabled" class="button_chart" (click)="decrease()"
+    matTooltip="Zoom In"
+    matTooltipPosition="below"
+    matTooltipShowDelay="0"
+    matTooltipHideDelay="0">Decrease</button>
+</div>

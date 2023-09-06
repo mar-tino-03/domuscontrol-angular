@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LineChartComponent } from './components/dashboard/line-chart/line-chart.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -32,6 +33,9 @@ import { MatTableModule } from '@angular/material/table';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatTooltipModule} from '@angular/material/tooltip';
+
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
@@ -42,6 +46,7 @@ import { environment } from '../environments/environment';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { CircularSliderComponent } from './components/dashboard/circular-slider/circular-slider.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -60,11 +65,13 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     DialogPwaComponent,*/
 
     DashboardComponent,
+    LineChartComponent,
     ForgotPasswordComponent,
     SignInComponent,
     SignUpComponent,
     VerifyEmailComponent,
     CircularSliderComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,6 +97,8 @@ import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
     MatChipsModule,
     MatSliderModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
+    MatTooltipModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,

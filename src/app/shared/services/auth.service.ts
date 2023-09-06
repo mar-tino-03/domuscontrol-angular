@@ -37,23 +37,23 @@ export class AuthService {
 
   // Sign in with email/password
   SignIn(email: string, password: string) {
-    this.afAuth.setPersistence('local').then((e) => {
+    //this.afAuth.setPersistence('local').then((e) => {
       this.afAuth
         .signInWithEmailAndPassword(email, password)
         .then((result) => {
           this.SetUserData(result.user);
           this.afAuth.authState.subscribe((user) => {
             if (user) {
-              this.router.navigate(['dashboard']);
+              this.router.navigate(['']);
             }
           });
         })
         .catch((error) => {
           window.alert(error.message);
         });
-    }).catch((error) => {
+    /*}).catch((error) => {
       window.alert(error.message);
-    });
+    });*/
   }
 
   // Sign up with email/password
@@ -112,7 +112,7 @@ export class AuthService {
         this.SetUserData(result.user);
         this.afAuth.authState.subscribe((user) => {
           if (user) {
-            this.router.navigate(['dashboard']);
+            this.router.navigate(['']);
           }
         });
       })
@@ -144,7 +144,7 @@ export class AuthService {
   SignOut() {
     return this.afAuth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['sign-in']);
+      this.router.navigate(['login']);
     });
   }
 }

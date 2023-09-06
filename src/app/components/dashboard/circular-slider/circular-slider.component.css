@@ -8,6 +8,12 @@
 .rs-handle-dot { background-color: green; }
 .rs-handle-dot:after { background-color: coral; }
 
-.rs-tooltip{user-select: none;}
+.rs-tooltip{
+  user-select: none;
+  font-weight: 700;
+  text-align: left;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  color: var(--bg-blue-dark);
+}
 
-.rs-control{height: 158px !important; z-index: 0;}
+.rs-control{height: 160px !important; z-index: 0;}

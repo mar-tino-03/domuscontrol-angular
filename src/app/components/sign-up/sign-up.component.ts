@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component,  } from '@angular/core';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -7,8 +7,6 @@ import { AuthService } from '../../shared/services/auth.service';
   styleUrls: ['./sign-up.component.css'],
 })
 
-export class SignUpComponent implements OnInit {
+export class SignUpComponent {
   constructor(public authService: AuthService) {}
-
-  ngOnInit() {}
 }

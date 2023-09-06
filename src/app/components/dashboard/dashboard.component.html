@@ -5,9 +5,29 @@
       <img class="brand-logo" src="/favicon.ico" alt="favivon.io Logo">
     </a>
 
+    <div class="spinner-container">
+      <mat-spinner *ngIf="spinner" [@fadeInOnEnter] strokeWidth="13"
+        matTooltip="Await"
+        matTooltipPosition="below"></mat-spinner>
+      <mat-icon *ngIf="!spinner" color="primary"
+        aria-label="cloud_done" [@fadeInOnEnter]
+        matTooltip="All data is update"
+        matTooltipPosition="below"
+      >cloud_done</mat-icon>
+    </div>
+
     <span class="app-spacer"></span>
 
-    <div *ngIf="authService.userData as user" style="display: flex;" [matMenuTriggerFor]="beforeMenu">
+    <div *ngIf="authService.userData as user" style="display: flex;"
+
+        [matMenuTriggerFor]="beforeMenu"
+
+        matTooltip="{{user.displayName ? user.displayName : 'User'}}, {{user.email}}"
+        matTooltipClass="tooltip-menu"
+        matTooltipPosition="below"
+        matTooltipShowDelay="300"
+        matTooltipHideDelay="0">
+
       <button *ngIf="user.photoURL==null; else img" mat-icon-button color="primary"
         style="display: flex;">
         <mat-icon class="rounded-circle img-navbar" style="color: var(--text-dark)">account_circle</mat-icon>
@@ -22,20 +42,19 @@
       <mat-menu #beforeMenu="matMenu" xPosition="before">
         <div class="info-menu">
 
-          <img *ngIf="user.photoURL!=null; else img2" class="rounded-circle" style="height: 52px;" src="{{user.photoURL}}" alt="{{user.displayName}}">
+          <img *ngIf="user.photoURL!=null; else img2" class="rounded-circle" style="height: 62px;" src="{{user.photoURL}}" alt="{{user.displayName}}">
           <ng-template #img2>
-            <mat-icon class="rounded-circle" style="font-size: 52px; color: var(--text-dark); height: 52px;width: 52px;">account_circle</mat-icon>
+            <mat-icon class="rounded-circle" style="font-size: 62px; color: var(--text-dark); height: 62px;width: 62px;">account_circle</mat-icon>
           </ng-template>
 
-          <br>
-          <p>{{(user.displayName) ? user.displayName : 'User'}}</p>
+          <p>{{user.displayName ? user.displayName : 'User'}}</p>
           <p>{{user.email}}</p>
           <!--<p >User ID: <strong>{{user.uid}}</strong></p>-->
         </div>
         <button mat-menu-item>
           <mat-icon>person</mat-icon>User Profile
         </button>
-        <button mat-menu-item (click)="SignOut()">
+        <button mat-menu-item (click)="SignOut()" aria-label="logout">
           <mat-icon>logout</mat-icon>Log out
         </button>
       </mat-menu>
@@ -56,10 +75,10 @@
       <app-circular-slider [(valueRange)]="valueRange" (change)="changeTmp()" [disabled]="disabled"></app-circular-slider>
 
       <div class="continer-button">
-        <button mat-icon-button (click)="valueRange = valueRange - 0.5; changeTmp()" [disabled]="disabled">
+        <button mat-icon-button (click)="valueRange = valueRange - 0.5; changeTmp()" [disabled]="disabled" aria-label="up">
           <mat-icon>expand_more</mat-icon>
         </button>
-        <button mat-icon-button (click)="valueRange = valueRange + 0.5; changeTmp()" [disabled]="disabled">
+        <button mat-icon-button (click)="valueRange = valueRange + 0.5; changeTmp()" [disabled]="disabled" aria-label="down">
           <mat-icon>expand_less</mat-icon>
         </button>
       </div>
@@ -67,9 +86,9 @@
 
     <div class="box-radio" #MatChipList>
       <mat-chip-listbox aria-label="Fish selection">
-        <mat-chip-option (click)="changeChip('auto')"   selected="{{auto}}"  [disabled]="disabled">auto</mat-chip-option>
-        <mat-chip-option (click)="changeChip('manual')" selected="{{manual}}"[disabled]="disabled">manual</mat-chip-option>
-        <mat-chip-option (click)="changeChip('off' )"   selected="{{off}}"   [disabled]="disabled">off</mat-chip-option>
+        <mat-chip-option (click)="changeChip('auto')"   [selected]="auto"  [disabled]="disabled">auto</mat-chip-option>
+        <mat-chip-option (click)="changeChip('manual')" [selected]="manual"[disabled]="disabled">manual</mat-chip-option>
+        <mat-chip-option (click)="changeChip('off')"    [selected]="off"   [disabled]="disabled">off</mat-chip-option>
       </mat-chip-listbox>
 
       <div class="info-container">
@@ -97,6 +116,14 @@
       <ng-container matColumnDef="star" stickyEnd>
         <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
         <td mat-cell *matCellDef="let element">
+          <!--<button mat-icon-button aria-label="delete" color="primary"
+            (click)="this.firebaseService.setProg({ora: time_tino(element.ora), temp: null})"
+            [disabled]="disabled"
+            matTooltip="Delete"
+            matTooltipPosition="left">
+            <mat-icon>delete</mat-icon>
+          </button>-->
+
           <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
                   [matMenuTriggerFor]="beforeDelete" [disabled]="disabled">
             <mat-icon>more_vert</mat-icon>
@@ -114,13 +141,22 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
 
-    <div style="height: 50px;"></div>
+    <div style="height: 64px;"></div>
 
-    <button mat-fab color="primary" class="button_add" (click)="openDialog()" [disabled]="disabled">
+    <button mat-fab color="primary" class="button_add" (click)="openDialog()" [disabled]="disabled" aria-label="add">
       <mat-icon>add</mat-icon>
     </button>
   </div>
   <div class="card">notification</div>
-  <div class="card graph">graph</div>
+
+  <div class="card graph">
+    <h4 style="margin: 0">Indoor</h4>
+    <app-line-chart code="Chart" [dati]="datiChart" labelX="x" [disabled]="disabled"
+       labelY1="rele" color1="#4dc9f6"
+       labelY2="tmp"  color2="#f67019"
+       labelY3="des"  color3="#f53794"
+       labelY4="hum"  color4="#ffce56"></app-line-chart>
+
+  </div>
 
 </div>

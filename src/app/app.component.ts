@@ -2,19 +2,19 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 //import { AppUpdateService } from './service/pwa.service';
 
-interface Course {
+/*interface Course {
   data: string;
   tmp: number;
   hum: number;
-}
+}*/
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
-  sideMode!: any;
+export class AppComponent /*implements OnInit*/ {
+  /*sideMode!: any;
   width: number | undefined;
 
   sidenavlist = [
@@ -41,5 +41,5 @@ export class AppComponent implements OnInit {
         this.sideMode = 'over';
       }
     });
-  }
+  }*/
 }

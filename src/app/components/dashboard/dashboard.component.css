@@ -7,6 +7,7 @@
 
 mat-toolbar-row{
   background: var(--bg-card);
+  /*padding: 0 8px;*/
 }
 
 mat-toolbar{
@@ -14,6 +15,27 @@ mat-toolbar{
   position: fixed;
   top: 0;
   z-index: 100;
+}
+
+.spinner-container{
+  width: 36px;
+  height: 48px;
+  padding: 14px 6px 10px;
+}
+
+.spinner-container mat-spinner{
+  width: 22px !important;
+  height: 22px !important;
+}
+
+::ng-deep .tooltip-menu{
+  font-size: 12px !important;
+  max-width: unset !important;
+  text-align: left !important;
+}
+
+::ng-deep .tooltip-menu div{
+  text-align: left !important;
 }
 
 .container-fluid{
@@ -52,10 +74,6 @@ mat-toolbar{
     width: 100%;
     max-width: 330px;
   }
-}
-
-.continer-button{
-  /*z-index: 100;*/
 }
 
 .info-container{
@@ -116,6 +134,7 @@ mat-toolbar{
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 3px auto;
 }
 
 table{

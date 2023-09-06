@@ -84,12 +84,6 @@ label {
   font-weight: 600;
 }
 
-.formGroup {
-  margin-bottom: 20px;
-  float: left;
-  width: 100%;
-}
-
 .formControl {
   width: 100%;
   display: block;
@@ -150,33 +144,6 @@ input:-moz-placeholder {
   background: #4dd5fe;
 }
 
-.or {
-  text-align: center;
-  display: block;
-  color: #a0a0a0;
-  background: white;
-  position: relative;
-  margin: 5px 0 0px;
-}
-
-.orInner {
-  background: white;
-  display: inline-block;
-  z-index: 4;
-  position: relative;
-  padding: 0 12px;
-}
-
-.or:before {
-  position: absolute;
-  content: "";
-  left: 0;
-  top: 11px;
-  width: 100%;
-  height: 1px;
-  background: #e2e2e2;
-}
-
 .halfWidth {
   width: 48.5%;
 }
@@ -187,37 +154,6 @@ input:-moz-placeholder {
 
 .right {
   float: right;
-}
-
-.forgotPassword {
-  text-align: center;
-  margin: -12px 0 15px 0;
-  float: left;
-  width: 100%;
-}
-
-.forgotPassword span {
-  color: #4dd5fe;
-  font-size: 14px;
-  font-weight: 400;
-  cursor: pointer;
-  display: inline-block;
-  padding-top: 20px;
-}
-
-.redirectToLogin {
-  padding: 15px 0 0;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 400;
-  display: block;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.redirectToLogin .redirect {
-  cursor: pointer;
-  color: #ffffff;
-  text-decoration: underline;
 }
 
 /* * Sidebar */

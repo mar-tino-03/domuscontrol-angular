@@ -1,9 +1,6 @@
 :host {
   display: flex;
 }
-.lable {
-  color: hotpink;
-}
 .action{
   font-size: 14px;
   font-family: Roboto;

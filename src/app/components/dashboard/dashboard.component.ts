@@ -9,8 +9,10 @@ import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import {MatSnackBar, MatSnackBarRef, MatSnackBarModule, MAT_SNACK_BAR_DATA} from '@angular/material/snack-bar';
-import { Subject, takeUntil } from 'rxjs';
+import {MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA} from '@angular/material/snack-bar';
+import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
 
 export interface progg {ora: number, temp: number}
 const ELEMENT_DATA: progg[] = [];
@@ -20,6 +22,9 @@ const ELEMENT_DATA: progg[] = [];
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
+  animations: [
+    fadeInOnEnterAnimation(),
+  ],
 })
 export class DashboardComponent implements OnInit {
   valueRange!: number;
@@ -27,27 +32,34 @@ export class DashboardComponent implements OnInit {
   displayedColumns: string[] = ['ora', 'temp','star'];
   dataSource = [...ELEMENT_DATA];
   @ViewChild(MatTable) table!: MatTable<progg>;
+  datiChart : any;
+  spinner=true;
   disabled=false;
 
   constructor(
     public authService: AuthService,
     public firebaseService: FirebaseService,
     public dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
   ) {}
 
   ngOnInit(){
+    if (!navigator.onLine)
+      this.offlineEvent({type: "offline"});
+
     this.firebaseService.onChange().subscribe(
       (termostato: any) => {
-        this.valueRange = termostato.temp;
-        setChip(this, termostato.mod);
-        setProg(this, termostato.programmazione);
-        console.log(termostato);
+        this.valueRange = termostato.settings.temp;
+        setChip(this, termostato.settings.mod);
+        setProg(this, termostato.settings.programmazione);
+        setSpinner(this, termostato.settings.timestamp, termostato.datalog);
+        this.datiChart = setDatalog(this, termostato.datalog);
+
         this.disabled = false;
         this._snackBar.dismiss();
       },
       error => {
-        console.log(error)
+        //console.log("no permition")
         this.disabled = true;
         this._snackBar.openFromComponent(snackPermition, {/*duration: this.durationInSeconds * 1000,*/});
       }
@@ -55,11 +67,12 @@ export class DashboardComponent implements OnInit {
 
     this.firebaseService.checkLine().subscribe(
       (line: any) => {
+        console.log("you are admin")
         if(line != undefined)
           this._snackBar.openFromComponent(snackAccept, { data: line });
       },
       error => {
-        console.log("no admin")
+        //console.log("no admin")
       }
     )
   }
@@ -74,7 +87,7 @@ export class DashboardComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAnimationsExampleDialog, {
-      width: '250px',
+      width: '270px',
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -117,8 +130,8 @@ export class DashboardComponent implements OnInit {
 
 @Component({
   selector: 'dialog-animations-example-dialog',
-  styleUrls: ['dialog-programmazione.css'],
-  templateUrl: 'dialog-programmazione.html',
+  styleUrls: ['dialog/dialog-programmazione.css'],
+  templateUrl: 'dialog/dialog-programmazione.html',
   standalone: true,
   imports: [
     MatFormFieldModule,
@@ -145,7 +158,6 @@ export class DialogAnimationsExampleDialog {
   imports: [MatButtonModule, MatSnackBarModule],
 })
 export class snackOffline {
-  snackBarRef = inject(MatSnackBarRef);
   reload(){
     window.location.reload()
   }
@@ -161,15 +173,14 @@ export class snackOffline {
   imports: [MatButtonModule, MatSnackBarModule],
 })
 export class snackPermition {
-  snackBarRef = inject(MatSnackBarRef);
   constructor(
     public authService: AuthService,
     public firebaseService: FirebaseService,
     private _snackBar: MatSnackBar
   ) {}
   request(){
-    this.firebaseService.reqPermition(this.authService.userLoggedIn.uid, this.authService.userLoggedIn.displayName);
-    this.snackBarRef.dismiss();
+    this.firebaseService.reqPermition(this.authService.userLoggedIn);
+    this._snackBar.dismiss();
     this._snackBar.openFromComponent(snackLine, { });
   }
 }
@@ -184,9 +195,21 @@ export class snackPermition {
   imports: [MatButtonModule, MatSnackBarModule],
 })
 export class snackLine {
-  snackBarRef = inject(MatSnackBarRef);
-  reload(){
-    window.location.reload()
+  constructor(
+    public firebaseService: FirebaseService,
+  ) {}
+  ngOnInit(){
+    this.firebaseService.delateValueChanges();
+    setInterval((e:any)=>{
+      this.firebaseService.onChange().subscribe(
+        (termostato: any) => {
+          window.location.reload();
+        },
+        error => {
+          console.log("error");
+        }
+      );
+    }, 2000)
   }
 }
 
@@ -200,12 +223,14 @@ export class snackLine {
   imports: [MatButtonModule, MatSnackBarModule],
 })
 export class snackAccept {
-
   constructor(
     @Inject(MAT_SNACK_BAR_DATA) public data: any,
     public firebaseService: FirebaseService,
     private _snackBar: MatSnackBar,
   ) {}
+  name(){
+    return this.data.name != undefined ? this.data.name : this.data.email;
+  }
   accept(){
     this.firebaseService.accPermition(this.data.id);
     this._snackBar.dismiss();
@@ -223,6 +248,8 @@ function setChip(t: any, mod: string) {
     case 'off':
       t.auto = false; t.manual = false; t.off = true;
     break;
+    default:
+      t.auto = false; t.manual = false; t.off = false;
   }
 }
 
@@ -238,6 +265,29 @@ function setProg(t: any, prog: any) {
     }
     t.table.renderRows();
   }
+}
+
+var k: any[];
+function setSpinner(t: any, time: number, data: any) {
+  k = Object.keys(data);
+  if(time < data[k[k.length-1]].timestamp)
+    t.spinner = false;
+  else
+    t.spinner = true;
+}
+
+function setDatalog(t: any, data: any) {
+
+  k = Object.keys(data);
+  return k.map((elem: any)=>{
+    return {
+      x: data[elem].timestamp,
+      tmp:  data[elem].tmp,
+      hum:  data[elem].hum,
+      des:  data[elem].des==-100 ? null : data[elem].des,
+      rele: data[elem].rele,
+    };
+  })
 }
 
 function time_tino(ora: any): number{

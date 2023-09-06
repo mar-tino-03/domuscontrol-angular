@@ -7,8 +7,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
   providedIn: 'root',
 })
 export class FirebaseService {
-  tmp;
-  mod;
+  set;
   prog;
   data;
   line;
@@ -16,21 +15,27 @@ export class FirebaseService {
   static reqPermition: any;
   private unsubscribe = new Subject<void>();
 
-  constructor(public db: AngularFireDatabase){
-    this.tmp  = db.object('termostato/temp');
-    this.mod  = db.object('termostato/mod');
-    this.prog =           'termostato/programmazione/';
-    this.data = db.object('termostato');
+  constructor(
+    public db: AngularFireDatabase){
+    this.set  = db.object('termostato/value/settings/');
+    this.prog =           'termostato/value/settings/programmazione/';
+    this.data = db.object('termostato/value');
     this.line = db.object('permition/line');
     this.user = db.object('permition/user');
   }
 
-  setTmp(num: number){
-    this.tmp.set(num);
+  setTmp(temp: number){
+    this.set.update({
+      "temp": temp,
+      "timestamp": new Date().getTime()
+    })
   }
 
   setMod(mod: string){
-    this.mod.set(mod);
+    this.set.update({
+      "mod": mod,
+      "timestamp": new Date().getTime()
+    })
   }
 
   setProg(prog: {ora:any, temp:any}){
@@ -43,8 +48,22 @@ export class FirebaseService {
     );
   }
 
-  reqPermition(id:string, name: string){
-    this.line.set({id: id, name: name});
+  reqPermition(user:any){
+    var us;
+    us = {
+      id: user.uid,
+      email: user.email
+    }
+
+    if(user.displayName != undefined){
+      us = {
+        id: user.uid,
+        email: user.email,
+        name: user.displayName
+      }
+    }
+
+    this.line.set(us);
   }
 
   checkLine(): Observable<unknown>{
