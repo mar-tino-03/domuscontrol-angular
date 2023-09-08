@@ -5,6 +5,11 @@
   align-items: center;
 }
 
+mat-progress-bar{
+  z-index: 100;
+  position: absolute;
+}
+
 mat-toolbar-row{
   background: var(--bg-card);
   /*padding: 0 8px;*/
@@ -28,13 +33,13 @@ mat-toolbar{
   height: 22px !important;
 }
 
-::ng-deep .tooltip-menu{
+::ng-deep .tooltip{
   font-size: 12px !important;
   max-width: unset !important;
   text-align: left !important;
 }
 
-::ng-deep .tooltip-menu div{
+::ng-deep .tooltip div{
   text-align: left !important;
 }
 

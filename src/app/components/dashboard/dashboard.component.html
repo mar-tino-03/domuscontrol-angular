@@ -1,17 +1,21 @@
 <!-- Top navigation -->
 <mat-toolbar>
+  <mat-progress-bar *ngIf="spinner==0" mode="indeterminate"></mat-progress-bar>
+
   <mat-toolbar-row>
     <a style="display: flex" class="rounded-circle">
       <img class="brand-logo" src="/favicon.ico" alt="favivon.io Logo">
     </a>
 
     <div class="spinner-container">
-      <mat-spinner *ngIf="spinner" [@fadeInOnEnter] strokeWidth="13"
+      <mat-spinner *ngIf="spinner==1" [@fadeInOnEnter] strokeWidth="13"
         matTooltip="Await"
+        matTooltipClass="tooltip"
         matTooltipPosition="below"></mat-spinner>
-      <mat-icon *ngIf="!spinner" color="primary"
+      <mat-icon *ngIf="spinner==2" color="primary"
         aria-label="cloud_done" [@fadeInOnEnter]
         matTooltip="All data is update"
+        matTooltipClass="tooltip"
         matTooltipPosition="below"
       >cloud_done</mat-icon>
     </div>
@@ -23,9 +27,9 @@
         [matMenuTriggerFor]="beforeMenu"
 
         matTooltip="{{user.displayName ? user.displayName : 'User'}}, {{user.email}}"
-        matTooltipClass="tooltip-menu"
+        matTooltipClass="tooltip"
         matTooltipPosition="below"
-        matTooltipShowDelay="300"
+        matTooltipShowDelay="600"
         matTooltipHideDelay="0">
 
       <button *ngIf="user.photoURL==null; else img" mat-icon-button color="primary"
@@ -59,6 +63,7 @@
         </button>
       </mat-menu>
     </div>
+
   </mat-toolbar-row>
 </mat-toolbar>
 
@@ -72,24 +77,37 @@
         <input matSliderThumb type="range" [(ngModel)]="valueRange" (change)="changeTmp()">
       </mat-slider>-->
 
-      <app-circular-slider [(valueRange)]="valueRange" (change)="changeTmp()" [disabled]="disabled"></app-circular-slider>
+      <app-circular-slider [(valueRange)]="valueRange" (change)="changeTmp()" [disabled]="disabledGuage"></app-circular-slider>
 
       <div class="continer-button">
-        <button mat-icon-button (click)="valueRange = valueRange - 0.5; changeTmp()" [disabled]="disabled" aria-label="up">
+        <button mat-icon-button (click)="valueRange = valueRange - 0.5; changeTmp()" [disabled]="disabledGuage" aria-label="up">
           <mat-icon>expand_more</mat-icon>
         </button>
-        <button mat-icon-button (click)="valueRange = valueRange + 0.5; changeTmp()" [disabled]="disabled" aria-label="down">
+        <button mat-icon-button (click)="valueRange = valueRange + 0.5; changeTmp()" [disabled]="disabledGuage" aria-label="down">
           <mat-icon>expand_less</mat-icon>
         </button>
       </div>
     </div>
 
-    <div class="box-radio" #MatChipList>
-      <mat-chip-listbox aria-label="Fish selection">
-        <mat-chip-option (click)="changeChip('auto')"   [selected]="auto"  [disabled]="disabled">auto</mat-chip-option>
-        <mat-chip-option (click)="changeChip('manual')" [selected]="manual"[disabled]="disabled">manual</mat-chip-option>
-        <mat-chip-option (click)="changeChip('off')"    [selected]="off"   [disabled]="disabled">off</mat-chip-option>
-      </mat-chip-listbox>
+    <div class="box-radio">
+      <!--<form [formGroup]="formGroup">
+
+        <mat-form-field>-->
+          <mat-chip-listbox aria-label="Fish selection" [value]="mod" #chip
+            (change)="changeChip($event)" [disabled]="disabled">
+            <mat-chip-option>auto</mat-chip-option>
+            <mat-chip-option>manual</mat-chip-option>
+            <mat-chip-option>off</mat-chip-option>
+          </mat-chip-listbox>
+        <!--</mat-form-field>
+
+      </form>-->
+
+      <!--<mat-button-toggle-group name="fontStyle" aria-label="button toggle group">
+        <mat-button-toggle value="auto">Auto</mat-button-toggle>
+        <mat-button-toggle value="manual">Manual</mat-button-toggle>
+        <mat-button-toggle value="off">Off</mat-button-toggle>
+      </mat-button-toggle-group>-->
 
       <div class="info-container">
           <span class="small-text gray">modalità</span>
@@ -101,14 +119,14 @@
     <table mat-table [dataSource]="dataSource">
 
       <!-- ora Column -->
-      <ng-container matColumnDef="ora">
-        <th mat-header-cell *matHeaderCellDef> ora </th>
+      <ng-container matColumnDef="Time">
+        <th mat-header-cell *matHeaderCellDef> Time </th>
         <td mat-cell *matCellDef="let element"> {{element.ora}} </td>
       </ng-container>
 
       <!-- temp Column -->
-      <ng-container matColumnDef="temp">
-        <th mat-header-cell *matHeaderCellDef> temp </th>
+      <ng-container matColumnDef="Temp">
+        <th mat-header-cell *matHeaderCellDef> Temp </th>
         <td mat-cell *matCellDef="let element"> {{element.temp}} </td>
       </ng-container>
 
@@ -143,11 +161,16 @@
 
     <div style="height: 64px;"></div>
 
-    <button mat-fab color="primary" class="button_add" (click)="openDialog()" [disabled]="disabled" aria-label="add">
+    <button mat-fab color="primary" class="button_add" (click)="openDialog()" [disabled]="disabled" aria-label="add"
+      matTooltip="Add event"
+      matTooltipClass="tooltip"
+      matTooltipPosition="below">
       <mat-icon>add</mat-icon>
     </button>
   </div>
-  <div class="card">notification</div>
+  <div class="card">
+    <h4 style="margin: 0">Notification</h4>
+  </div>
 
   <div class="card graph">
     <h4 style="margin: 0">Indoor</h4>
@@ -156,7 +179,6 @@
        labelY2="tmp"  color2="#f67019"
        labelY3="des"  color3="#f53794"
        labelY4="hum"  color4="#ffce56"></app-line-chart>
-
   </div>
 
 </div>

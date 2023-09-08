@@ -430,6 +430,8 @@ label {
 
 /*   TINO   */
 
+html{ height: 100%; }
+
 body{
   --text-white: #fff;
   --text-gray: #bbb;
@@ -444,6 +446,7 @@ body{
   --height-banner: 42px;
   --height-img: 32px;
 
+  font-family: Roboto, "Helvetica Neue", sans-serif;
   font-weight: 400;
   font-size: 90%;
   min-height: 100vh;
@@ -486,8 +489,12 @@ h1,h2,h3,h4,h5,h6 {
   flex: 1 1 auto;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* scrollbar */
+
+::-webkit-scrollbar {
+  display: none;
+}
 
 *,
 *:before,

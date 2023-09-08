@@ -22,7 +22,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormsModule , ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -34,7 +34,10 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatTabsModule } from '@angular/material/tabs';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 
 import { AngularFireModule } from '@angular/fire/compat';
@@ -87,6 +90,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatSelectModule,
     MatFormFieldModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDividerModule,
     MatIconModule,
     MatToolbarModule,
@@ -99,6 +103,9 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
+    MatButtonToggleModule,
+    MatTabsModule,
+    MatProgressBarModule,
 
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,

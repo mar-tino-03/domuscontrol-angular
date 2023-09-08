@@ -24,6 +24,7 @@
               "src/favicon.ico",
               "src/assets",
               "src/robots.txt",
+              "src/.htaccess",
               "src/sitemap.xml",
               "src/manifest.webmanifest"
             ],

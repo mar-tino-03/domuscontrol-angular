@@ -24,7 +24,6 @@ Chart.register(
   Tooltip,
 );
 
-var FIRST = true;
 
 @Component({
   selector: 'app-line-chart',
@@ -46,6 +45,7 @@ export class LineChartComponent implements OnChanges {
   @Input() labelY4!: string;
 
   public chart: any;
+  FIRST = true;
 
   /*FunctionLegend(){
     //this.chart.data.datasets[0].hidden = false;
@@ -55,6 +55,7 @@ export class LineChartComponent implements OnChanges {
     this.chart = new Chart(this.code, {
       type: 'line',
       options: {
+        maintainAspectRatio: false,
         scales: {
           x: {
             type: 'time',
@@ -155,15 +156,20 @@ export class LineChartComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['dati'].currentValue != undefined) {
-      if(FIRST){
+    if (changes['dati'] != undefined && changes['dati'].currentValue != undefined) {
+      if(this.FIRST){
         this.createChart();
-        FIRST=false;
+        this.chart.data.datasets.forEach((datasets: any) => {
+          datasets.data = this.dati;
+        });
+        this.chart.options.scales.x.min = this.dati[this.dati.length-1].x - 3600000;
+        this.FIRST=false;
       }
-      this.chart.data.datasets.forEach((datasets: any) => {
-        datasets.data = this.dati;
-      });
-      this.chart.options.scales.x.min = this.dati[this.dati.length-1].x - 3600000;
+      else{
+        this.chart.data.datasets.forEach((datasets: any) => {
+          datasets.data = this.dati;
+        });
+      }
       this.chart.update();
     }
   }

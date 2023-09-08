@@ -18,7 +18,7 @@ export class FirebaseService {
   constructor(
     public db: AngularFireDatabase){
     this.set  = db.object('termostato/value/settings/');
-    this.prog =           'termostato/value/settings/programmazione/';
+    this.prog = db.object('termostato/value/settings/programmazione/');
     this.data = db.object('termostato/value');
     this.line = db.object('permition/line');
     this.user = db.object('permition/user');
@@ -27,19 +27,43 @@ export class FirebaseService {
   setTmp(temp: number){
     this.set.update({
       "temp": temp,
-      "timestamp": new Date().getTime()
+      "timestamp": {".sv" : "timestamp"}
     })
   }
 
-  setMod(mod: string){
+  setMod(mod: string): any{
     this.set.update({
       "mod": mod,
-      "timestamp": new Date().getTime()
+      "timestamp": {".sv" : "timestamp"}
+    }).then(()=>{
+      return mod;
     })
   }
 
   setProg(prog: {ora:any, temp:any}){
-    this.db.object(this.prog + prog.ora).set({temp: prog.temp});
+
+    var lable;
+    if(prog.temp != null)
+      lable = `
+        {
+          "${prog.ora}": {
+              "tmp": ${prog.temp},
+              "timestamp": {".sv" : "timestamp"}
+            }
+        }
+      `;
+    else
+      lable = `
+        {
+          "${prog.ora}": {
+            "tmp": null,
+            "timestamp": null
+            }
+        }
+      `;
+
+    this.prog.update(JSON.parse(lable))
+    this.set.update({"timestamp": {".sv" : "timestamp"}});
   }
 
   onChange(): Observable<unknown>{
