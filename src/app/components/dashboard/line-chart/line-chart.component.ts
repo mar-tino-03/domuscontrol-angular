@@ -37,6 +37,7 @@ export class LineChartComponent implements OnChanges {
   @Input() disabled!: boolean;
   @Input() color1!: string;
   @Input() labelY1!: string;
+  @Input() typeAxisY1: any
   @Input() color2!: string;
   @Input() labelY2!: string;
   @Input() color3!: string;
@@ -67,8 +68,8 @@ export class LineChartComponent implements OnChanges {
               stack: 'demo',
               stackWeight: 2,
           },
-          y2: {
-              type: 'category',
+          yBool: {
+              type: this.typeAxisY1,
               labels: ['ON', 'OFF'],
               offset: true,
               position: 'left',
@@ -101,7 +102,7 @@ export class LineChartComponent implements OnChanges {
               xAxisKey: this.labelX,
               yAxisKey: this.labelY1,
             },
-            yAxisID: 'y2',
+            yAxisID: "yBool",
           },
           {
             label: this.labelY2,

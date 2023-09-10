@@ -50,7 +50,7 @@ mat-toolbar{
   grid-template-columns: 32% 32% 36%;
   max-width: 1040px;
 }
-@media (max-width: 800px){
+@media (max-width: 890px){
   .container-fluid{
     grid-template-columns: 50% 50%;
     max-width: 700px;
@@ -94,7 +94,7 @@ mat-toolbar{
   grid-row-start: 1;
   grid-row-end: 3;
 }
-@media (max-width: 800px){
+@media (max-width: 890px){
   .programmazione{
     grid-column-start: 2;
     grid-row-start: 1;
@@ -142,8 +142,12 @@ mat-toolbar{
   margin: 3px auto;
 }
 
-table{
+mat-accordion mat-expansion-panel-header, table{
   background: var(--bg-card);
+}
+
+mat-accordion mat-expansion-panel{
+  box-shadow: none;
 }
 
 .mat-column-star {

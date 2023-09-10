@@ -10,7 +10,7 @@ export class FirebaseService {
   set;
   prog;
   data;
-  line;
+  queue;
   user;
   static reqPermition: any;
   private unsubscribe = new Subject<void>();
@@ -20,7 +20,7 @@ export class FirebaseService {
     this.set  = db.object('termostato/value/settings/');
     this.prog = db.object('termostato/value/settings/programmazione/');
     this.data = db.object('termostato/value');
-    this.line = db.object('permition/line');
+    this.queue = db.object('permition/queue');
     this.user = db.object('permition/user');
   }
 
@@ -87,16 +87,16 @@ export class FirebaseService {
       }
     }
 
-    this.line.set(us);
+    this.queue.set(us);
   }
 
-  checkLine(): Observable<unknown>{
-    return this.line.valueChanges();
+  checkQueue(): Observable<unknown>{
+    return this.queue.valueChanges();
   }
 
   accPermition(id:string){
     this.db.object('permition/user/'+id).set(true).then((e:any)=>{
-      this.line.set(null);
+      this.queue.set(null);
     })
   }
 

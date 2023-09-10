@@ -6,7 +6,7 @@
       },
 
     	"permition": {
-        "line": {
+        "queue": {
           ".read" :  "auth != null && root.child('permition/admin').hasChild(auth.uid) && root.child('permition/admin').child(auth.uid).val() == true",
         	".write":  "auth != null"
         },

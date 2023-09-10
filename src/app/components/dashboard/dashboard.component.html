@@ -169,13 +169,76 @@
     </button>
   </div>
   <div class="card">
-    <h4 style="margin: 0">Notification</h4>
+    <h4 style="margin: 0">Outdoor</h4>
+
+    <mat-accordion class="example-headers-align">
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Temp:
+          </mat-panel-title>
+          <mat-panel-description>
+            {{OutChart != undefined ? OutChart[OutChart.length - 1].tmp : ""}}°C
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          Heii!
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Hum:
+          </mat-panel-title>
+          <mat-panel-description>
+            {{OutChart != undefined ? OutChart[OutChart.length - 1].hum : ""}}%
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          Heii!
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Pres:
+          </mat-panel-title>
+          <mat-panel-description>
+            {{OutChart != undefined ? OutChart[OutChart.length - 1].pres : ""}}hPa
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <ng-template matExpansionPanelContent>
+          Heii!
+        </ng-template>
+      </mat-expansion-panel>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Batt:
+          </mat-panel-title>
+          <mat-panel-description>
+            {{OutChart != undefined ? OutChart[OutChart.length - 1].bat : ""}}V
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        Heii!
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <button mat-stroked-button style="width: 100%;" (click)="setOutdoor(86400 * 5)"
+      matTooltip="Reload"
+      matTooltipClass="tooltip"
+      matTooltipPosition="below">
+        Last Date:
+        <span style="color: var(--mat-expansion-header-description-color);">
+          {{(OutChart != undefined ? lastDate : "")}}
+        </span>
+    </button>
   </div>
 
   <div class="card graph">
     <h4 style="margin: 0">Indoor</h4>
-    <app-line-chart code="Chart" [dati]="datiChart" labelX="x" [disabled]="disabled"
-       labelY1="rele" color1="#4dc9f6"
+    <app-line-chart code="Chart" [dati]="InChart" labelX="x" [disabled]="disabled"
+       labelY1="rele" color1="#4dc9f6" typeAxisY1="category"
        labelY2="tmp"  color2="#f67019"
        labelY3="des"  color3="#f53794"
        labelY4="hum"  color4="#ffce56"></app-line-chart>

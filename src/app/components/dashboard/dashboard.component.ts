@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
 import { MatChipListboxChange } from '@angular/material/chips';
+import { TinotinoService } from 'src/app/shared/services/tinotino.service';
 
 
 export interface progg {ora: number, temp: number}
@@ -34,7 +35,9 @@ export class DashboardComponent implements OnInit {
   displayedColumns: string[] = ['Time', 'Temp','star'];
   dataSource = [...ELEMENT_DATA];
   @ViewChild(MatTable) table!: MatTable<progg>;
-  datiChart : any;
+  InChart : any;
+  OutChart: any;
+  lastDate!: any;
   spinner = 0;
   disabled=true;
   disabledGuage=true;
@@ -43,6 +46,7 @@ export class DashboardComponent implements OnInit {
     private meta: Meta,
     public authService: AuthService,
     public firebaseService: FirebaseService,
+    public tinotinoService: TinotinoService,
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,
   ) {}
@@ -68,17 +72,18 @@ export class DashboardComponent implements OnInit {
         setMod(this, termostato.settings.mod);
         setProg(this, termostato.settings.programmazione);
         setSpinner(this, termostato.settings.timestamp, termostato.datalog);
-        this.datiChart = setDatalog(this, termostato.datalog);
+        this.InChart = setDatalog(this, termostato.datalog);
       },
       error => {
         //console.log("no permition")
         this.disabled = true;
         this.disabledGuage = true;
+        setSpinner(this, 0, null);
         this._snackBar.openFromComponent(snackPermition, {/*duration: this.durationInSeconds * 1000,*/});
       }
     );
 
-    this.firebaseService.checkLine().subscribe(
+    this.firebaseService.checkQueue().subscribe(
       (line: any) => {
         console.log("you are admin")
         if(line != undefined)
@@ -87,7 +92,9 @@ export class DashboardComponent implements OnInit {
       error => {
         //console.log("no admin")
       }
-    )
+    );
+
+    setOutdoor(this, 86400 * 5);
   }
 
   changeTmp(){
@@ -140,7 +147,8 @@ export class DashboardComponent implements OnInit {
   }
 
 
-  time_tino(e:any){ return time_tino(e); }
+  time_tino(e:any){ return time_tino(e) }
+  setOutdoor(n:number){ setOutdoor(this, n) }
 }
 
 /*  Dialog  */
@@ -195,20 +203,20 @@ export class snackPermition {
   request(){
     this.firebaseService.reqPermition(this.authService.userLoggedIn);
     this._snackBar.dismiss();
-    this._snackBar.openFromComponent(snackLine, { });
+    this._snackBar.openFromComponent(snackQueue, { });
   }
 }
 
 /*  LINEEE  */
 
 @Component({
-  selector: 'snack-line',
-  templateUrl: 'snack/snack-line.html',
+  selector: 'snack-queue',
+  templateUrl: 'snack/snack-queue.html',
   standalone: true,
   styleUrls:  ['snack/snack.css'],
   imports: [MatButtonModule, MatSnackBarModule],
 })
-export class snackLine {
+export class snackQueue {
   constructor(
     public firebaseService: FirebaseService,
   ) {}
@@ -291,11 +299,15 @@ function setProg(t: any, prog: any) {
 
 
 function setSpinner(t: any, time: number, data: any) {
-  k = Object.keys(data);
-  if(time < data[k[k.length-1]].timestamp)
-    t.spinner = 2;
-  else
-    t.spinner = 1;
+  try {
+    k = Object.keys(data);
+    if(time < data[k[k.length-1]].timestamp)
+      t.spinner = 2;
+    else
+      t.spinner = 1;
+  } catch (error) {
+      t.spinner = 4;
+  }
 }
 
 function setDatalog(t: any, data: any) {
@@ -310,6 +322,20 @@ function setDatalog(t: any, data: any) {
       rele: data[elem].rele,
     };
   })
+}
+
+function setOutdoor(t:any, length: number) {
+  t.tinotinoService.getDati(length).subscribe((dati: any) => {
+    t.OutChart = Object.keys(dati).map((dato: any) => {
+      dati[dato].data = new Date(dati[dato].data).getTime();
+      dati[dato].tmp = parseFloat(dati[dato].tmp);
+      dati[dato].hum = parseFloat(dati[dato].hum);
+      dati[dato].pres= parseFloat(dati[dato].pres);
+      dati[dato].bat = parseFloat(dati[dato].bat);
+      return dati[dato];
+    });
+    t.lastDate = new Date(t.OutChart[t.OutChart.length - 1].data).toLocaleString();
+  });
 }
 
 function time_tino(ora: any): number{
