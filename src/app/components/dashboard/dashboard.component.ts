@@ -11,13 +11,42 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-import { fadeInOnEnterAnimation, fadeOutOnLeaveAnimation } from 'angular-animations';
-import { MatChipListboxChange } from '@angular/material/chips';
 import { TinotinoService } from 'src/app/shared/services/tinotino.service';
+import { animate, animation, style, transition, trigger } from '@angular/animations';
 
 
 export interface progg {ora: number, temp: number}
 const ELEMENT_DATA: progg[] = [];
+
+const fadeInWidth = trigger('fadeInWidth',[
+  transition(':enter', [
+    style({
+      width: 0
+    }),
+    animate( '150ms linear',  style({
+      width: '18px'
+    }))
+  ]),
+  transition(':leave', [
+    style({
+      width: '18px'
+    }),
+    animate( '150ms linear',  style({
+      width: 0
+    }))
+  ])
+]);
+
+const fadeInOpacity = trigger('fadeInOpacity',[
+  transition(':enter', [
+    style({
+      opacity: 0
+    }),
+    animate( '50ms linear',  style({
+      opacity: 1
+    }))
+  ])
+]);
 
 
 @Component({
@@ -25,7 +54,9 @@ const ELEMENT_DATA: progg[] = [];
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   animations: [
-    fadeInOnEnterAnimation(),
+    fadeInWidth,
+    fadeInOpacity,
+    //fadeInOnEnterAnimation(),
   ],
 })
 export class DashboardComponent implements OnInit {
@@ -101,10 +132,10 @@ export class DashboardComponent implements OnInit {
     this.firebaseService.setTmp(this.valueRange);
   }
 
-  changeChip(changes: MatChipListboxChange){
-    console.log(changes);
-    if(changes.value && changes.value != this.oldmod)
-      this.oldmod = this.firebaseService.setMod(changes.value);
+  changeChip(select: string){
+    console.log(select);
+    if(select && select != this.oldmod)
+      this.oldmod = this.firebaseService.setMod(select);
   }
 
   openDialog(): void {
@@ -319,7 +350,7 @@ function setDatalog(t: any, data: any) {
       tmp:  data[elem].tmp,
       hum:  data[elem].hum,
       des:  data[elem].des==-100 ? null : data[elem].des,
-      rele: data[elem].rele,
+      rele: data[elem].rele ? 'ON' : 'OFF',
     };
   })
 }

@@ -8,12 +8,12 @@
     </a>
 
     <div class="spinner-container">
-      <mat-spinner *ngIf="spinner==1" [@fadeInOnEnter] strokeWidth="13"
+      <mat-spinner *ngIf="spinner==1" @fadeInOpacity strokeWidth="13"
         matTooltip="Await"
         matTooltipClass="tooltip"
         matTooltipPosition="below"></mat-spinner>
       <mat-icon *ngIf="spinner==2" color="primary"
-        aria-label="cloud_done" [@fadeInOnEnter]
+        aria-label="cloud_done" @fadeInOpacity
         matTooltip="All data is update"
         matTooltipClass="tooltip"
         matTooltipPosition="below"
@@ -90,24 +90,22 @@
     </div>
 
     <div class="box-radio">
-      <!--<form [formGroup]="formGroup">
 
-        <mat-form-field>-->
-          <mat-chip-listbox aria-label="Fish selection" [value]="mod" #chip
-            (change)="changeChip($event)" [disabled]="disabled">
-            <mat-chip-option>auto</mat-chip-option>
-            <mat-chip-option>manual</mat-chip-option>
-            <mat-chip-option>off</mat-chip-option>
-          </mat-chip-listbox>
-        <!--</mat-form-field>
+      <!--<mat-chip-listbox aria-label="Fish selection">
+        <mat-chip-option>One fish</mat-chip-option>
+        <mat-chip-option>Two fish</mat-chip-option>
+        <mat-chip-option color="accent" selected>Accent fish</mat-chip-option>
+        <mat-chip-option color="warn">Warn fish</mat-chip-option>
+      </mat-chip-listbox>-->
 
-      </form>-->
-
-      <!--<mat-button-toggle-group name="fontStyle" aria-label="button toggle group">
-        <mat-button-toggle value="auto">Auto</mat-button-toggle>
-        <mat-button-toggle value="manual">Manual</mat-button-toggle>
-        <mat-button-toggle value="off">Off</mat-button-toggle>
-      </mat-button-toggle-group>-->
+      <form>
+        <button class="button_chip" mat-flat-button (click)="changeChip('auto')"  [color]="mod=='auto' ? 'primary' : ''">
+          <mat-icon *ngIf="mod=='auto'" @fadeInWidth>checked</mat-icon>Auto</button>
+        <button class="button_chip" mat-flat-button (click)="changeChip('manual')"[color]="mod=='manual' ? 'primary' : ''">
+          <mat-icon *ngIf="mod=='manual'" @fadeInWidth>checked</mat-icon>Manual</button>
+        <button class="button_chip" mat-flat-button (click)="changeChip('off')"   [color]="mod=='off' ? 'primary' : ''">
+          <mat-icon *ngIf="mod=='off'" @fadeInWidth>checked</mat-icon>Off</button>
+      </form>
 
       <div class="info-container">
           <span class="small-text gray">modalità</span>
@@ -224,7 +222,7 @@
       </mat-expansion-panel>
     </mat-accordion>
 
-    <button mat-stroked-button style="width: 100%;" (click)="setOutdoor(86400 * 5)"
+    <button mat-stroked-button (click)="setOutdoor(86400 * 5)" class="button_reload" [disabled]="disabled"
       matTooltip="Reload"
       matTooltipClass="tooltip"
       matTooltipPosition="below">

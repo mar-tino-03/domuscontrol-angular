@@ -13,13 +13,13 @@ const routes: Routes = [
 
   /*{ path: '', redirectTo: 'dashboard', pathMatch:'full' },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },*/
-  { path: '', component: DashboardComponent, canActivate: [AuthGuard] },
+  { path: '', component: DashboardComponent, canActivate: [AuthGuard], title: 'Domuscontrol'},
 
-  { path: 'login', component: SignInComponent },
-  { path: 'register', component: SignUpComponent },
-  { path: 'verify-email-address', component: VerifyEmailComponent },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: '404', component: PageNotFoundComponent },
+  { path: 'login', component: SignInComponent, title: 'Login | Domuscontrol'},
+  { path: 'register', component: SignUpComponent, title: 'Register | Domuscontrol'},
+  { path: 'verify-email-address', component: VerifyEmailComponent, title: 'Login | Domuscontrol' },
+  { path: 'forgot-password', component: ForgotPasswordComponent, title: 'Login | Domuscontrol' },
+  { path: '404', component: PageNotFoundComponent, title: '404 | Domuscontrol' },
 
   { path: '**', redirectTo: '404' },
 ];

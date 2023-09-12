@@ -89,6 +89,16 @@ mat-toolbar{
   border-radius: 10px;
 }
 
+.button_chip{
+  margin: 2px 4px;
+  height: 32px;
+  min-width: 0;
+  padding: 0px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: background-color 0.4s 0s
+}
+
 .programmazione{
   grid-column-start: 3;
   grid-row-start: 1;
@@ -116,6 +126,13 @@ mat-toolbar{
   border-radius: 18px !important;
   transform: scale(0.75);
   box-shadow: none !important;
+}
+
+.button_reload{
+  /*background-color: white;*/
+  width: 100%;
+  margin: 6px 0px;
+  border-radius: 8px;
 }
 
 .graph{

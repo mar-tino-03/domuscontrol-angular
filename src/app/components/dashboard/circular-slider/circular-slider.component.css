@@ -1,12 +1,12 @@
 /*** tino tino theming - colors ***/
 .rs-seperator { border-color: transparent; /*border: 1px solid #AAAAAA;*/ }
 .rs-border { border-color: transparent; /*border: 1px solid #AAAAAA;*/ }
-.rs-path-color { background-color: #F2E3DF ; padding: 0px ;}
-.rs-range-color { background-color: var(--bg-red-ligth) ; }
-.rs-bg-color { background-color: #F8F8FB ; }
-.rs-handle { background-color: var(--bg-red-ligth) ; }
-.rs-handle-dot { background-color: green; }
-.rs-handle-dot:after { background-color: coral; }
+.rs-path-color { background-color: #F2E3DF; padding: 0px}
+.rs-range-color { background-color: var(--bg-red-ligth) }
+.rs-bg-color { background-color: var(--bg-card) }
+.rs-handle { background-color: var(--bg-red-ligth) }
+.rs-handle-dot { background-color: green }
+.rs-handle-dot:after { background-color: coral }
 
 .rs-tooltip{
   user-select: none;
