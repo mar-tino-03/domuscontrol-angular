@@ -1,0 +1,28 @@
+.container{
+  position: relative;
+  height: 35vh;
+  min-width: 800px;
+}
+
+
+.chart-container{
+  position: relative;
+  height: 35vh;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@media (max-width: 890px){
+  .chart-container,
+  .container{
+    height: 40vh;
+  }
+}
+@media screen and (max-width: 599px) {
+  .chart-container,
+  .container{
+    height: 350px;
+  }
+}
+
+

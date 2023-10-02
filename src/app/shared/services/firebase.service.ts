@@ -19,7 +19,7 @@ export class FirebaseService {
     public db: AngularFireDatabase){
     this.set  = db.object('termostato/value/settings/');
     this.prog = db.object('termostato/value/settings/programmazione/');
-    this.data = db.object('termostato/value');
+    this.data = db.object('termostato/');
     this.queue = db.object('permition/queue');
     this.user = db.object('permition/user');
   }
@@ -28,6 +28,8 @@ export class FirebaseService {
     this.set.update({
       "temp": temp,
       "timestamp": {".sv" : "timestamp"}
+    }).then(()=>{
+      return temp;
     })
   }
 
@@ -42,8 +44,8 @@ export class FirebaseService {
 
   setProg(prog: {ora:any, temp:any}){
 
-    var lable;
-    if(prog.temp != null)
+    var lable!: any;
+    if(prog!=null && prog.ora!=null && prog.temp != null)
       lable = `
         {
           "${prog.ora}": {
@@ -52,7 +54,7 @@ export class FirebaseService {
             }
         }
       `;
-    else
+    else if(prog!=null && prog.ora!=null)
       lable = `
         {
           "${prog.ora}": {

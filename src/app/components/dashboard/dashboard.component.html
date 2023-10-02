@@ -8,16 +8,17 @@
     </a>
 
     <div class="spinner-container">
-      <mat-spinner *ngIf="spinner==1" @fadeInOpacity strokeWidth="13"
+      <mat-spinner *ngIf="spinner==1"  strokeWidth="9"
         matTooltip="Await"
         matTooltipClass="tooltip"
         matTooltipPosition="below"></mat-spinner>
+
       <mat-icon *ngIf="spinner==2" color="primary"
-        aria-label="cloud_done" @fadeInOpacity
+        aria-label="task_alt"
         matTooltip="All data is update"
         matTooltipClass="tooltip"
         matTooltipPosition="below"
-      >cloud_done</mat-icon>
+      >task_alt</mat-icon>
     </div>
 
     <span class="app-spacer"></span>
@@ -99,16 +100,30 @@
       </mat-chip-listbox>-->
 
       <form>
-        <button class="button_chip" mat-flat-button (click)="changeChip('auto')"  [color]="mod=='auto' ? 'primary' : ''">
+        <button class="button_chip" mat-flat-button
+          (click)="changeChip('auto')"
+          [color]="mod=='auto' ? 'primary' : ''"
+          [disabled]="disabled">
           <mat-icon *ngIf="mod=='auto'" @fadeInWidth>checked</mat-icon>Auto</button>
-        <button class="button_chip" mat-flat-button (click)="changeChip('manual')"[color]="mod=='manual' ? 'primary' : ''">
+        <button class="button_chip" mat-flat-button
+          (click)="changeChip('manual')"
+          [color]="mod=='manual' ? 'primary' : ''"
+          [disabled]="disabled">
           <mat-icon *ngIf="mod=='manual'" @fadeInWidth>checked</mat-icon>Manual</button>
-        <button class="button_chip" mat-flat-button (click)="changeChip('off')"   [color]="mod=='off' ? 'primary' : ''">
+        <button class="button_chip" mat-flat-button
+          (click)="changeChip('off')"
+          [color]="mod=='off' ? 'primary' : ''"
+          [disabled]="disabled">
           <mat-icon *ngIf="mod=='off'" @fadeInWidth>checked</mat-icon>Off</button>
       </form>
 
       <div class="info-container">
-          <span class="small-text gray">modalità</span>
+        <p style="margin: 0">
+          Temperature in door:
+          <span style="color: var(--mat-expansion-header-description-color)">
+            {{InChart != undefined ? InChart[InChart.length - 1].tmp : ""}}°C
+          </span>
+        </p>
       </div>
     </div>
   </div>
@@ -166,6 +181,7 @@
       <mat-icon>add</mat-icon>
     </button>
   </div>
+
   <div class="card">
     <h4 style="margin: 0">Outdoor</h4>
 
@@ -180,7 +196,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-          Heii!
+          <a href="https://tinotino.altervista.org/">link al grafico</a>
         </ng-template>
       </mat-expansion-panel>
       <mat-expansion-panel>
@@ -193,7 +209,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-          Heii!
+          <a href="https://tinotino.altervista.org/">link al grafico</a>
         </ng-template>
       </mat-expansion-panel>
       <mat-expansion-panel>
@@ -206,7 +222,7 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
         <ng-template matExpansionPanelContent>
-          Heii!
+          <a href="https://tinotino.altervista.org/">link al grafico</a>
         </ng-template>
       </mat-expansion-panel>
       <mat-expansion-panel>
@@ -218,11 +234,11 @@
             {{OutChart != undefined ? OutChart[OutChart.length - 1].bat : ""}}V
           </mat-panel-description>
         </mat-expansion-panel-header>
-        Heii!
+        <a href="https://tinotino.altervista.org/">link al grafico</a>
       </mat-expansion-panel>
     </mat-accordion>
 
-    <button mat-stroked-button (click)="setOutdoor(86400 * 5)" class="button_reload" [disabled]="disabled"
+    <button mat-stroked-button (click)="setOutdoor(86400)" class="button_reload" [disabled]="disabled"
       matTooltip="Reload"
       matTooltipClass="tooltip"
       matTooltipPosition="below">
@@ -240,6 +256,13 @@
        labelY2="tmp"  color2="#f67019"
        labelY3="des"  color3="#f53794"
        labelY4="hum"  color4="#ffce56"></app-line-chart>
+  </div>
+
+  <div class="card graph--big" >
+    <h4 style="margin: 0">Historical</h4>
+    <app-column-chart code="historicalChart" [dati]="historicalChart" labelX="x"
+       labelY1="2022-2023" color1="#4dc9f6"
+       labelY2="2023-2024" color2="#f67019"></app-column-chart>
   </div>
 
 </div>

@@ -36,17 +36,17 @@ const fadeInWidth = trigger('fadeInWidth',[
     }))
   ])
 ]);
-
+/*
 const fadeInOpacity = trigger('fadeInOpacity',[
-  transition(':enter', [
+  transition(':color', [
     style({
       opacity: 0
     }),
-    animate( '50ms linear',  style({
+    animate( '0.6s linear',  style({
       opacity: 1
     }))
   ])
-]);
+]);*/
 
 
 @Component({
@@ -55,7 +55,7 @@ const fadeInOpacity = trigger('fadeInOpacity',[
   styleUrls: ['./dashboard.component.css'],
   animations: [
     fadeInWidth,
-    fadeInOpacity,
+    //fadeInOpacity,
     //fadeInOnEnterAnimation(),
   ],
 })
@@ -66,12 +66,15 @@ export class DashboardComponent implements OnInit {
   displayedColumns: string[] = ['Time', 'Temp','star'];
   dataSource = [...ELEMENT_DATA];
   @ViewChild(MatTable) table!: MatTable<progg>;
+  dialogRef: any;
   InChart : any;
   OutChart: any;
+  historicalChart: any;
   lastDate!: any;
   spinner = 0;
   disabled=true;
   disabledGuage=true;
+
 
   constructor(
     private meta: Meta,
@@ -83,9 +86,6 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(){
-    if (!navigator.onLine)
-      this.offlineEvent({type: "offline"});
-
     this.meta.removeTag('name=description');
     this.meta.removeTag('name=keywords');
     this.meta.addTags([
@@ -93,24 +93,29 @@ export class DashboardComponent implements OnInit {
       { name: 'keywords', content: 'domuscontrol, dashboard' }
     ]);
 
+    if (!navigator.onLine)
+      this.offlineEvent({type: "offline"});
+
     this.firebaseService.onChange().subscribe(
       (termostato: any) => {
         this.disabled = false;
         this.disabledGuage = false;
         this._snackBar.dismiss();
+        var set = termostato.value.settings;
 
-        setTemp(this, termostato.settings.temp, termostato.settings.mod, termostato.datalog);
-        setMod(this, termostato.settings.mod);
-        setProg(this, termostato.settings.programmazione);
-        setSpinner(this, termostato.settings.timestamp, termostato.datalog);
-        this.InChart = setDatalog(this, termostato.datalog);
+        setTemp(this, set.temp, set.mod, termostato.value.datalog);
+        setMod(this, set.mod);
+        setProg(this, set.programmazione);
+        setSpinner(this, set.timestamp, termostato.value.datalog);
+        this.InChart = setDatalog(termostato.value.datalog);
+        this.historicalChart = setHistorical(termostato.historical)
       },
       error => {
         //console.log("no permition")
         this.disabled = true;
         this.disabledGuage = true;
         setSpinner(this, 0, null);
-        this._snackBar.openFromComponent(snackPermition, {/*duration: this.durationInSeconds * 1000,*/});
+        this._snackBar.openFromComponent(snackPermition);
       }
     );
 
@@ -125,7 +130,7 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    setOutdoor(this, 86400 * 5);
+    setOutdoor(this, 86400);
   }
 
   changeTmp(){
@@ -133,17 +138,16 @@ export class DashboardComponent implements OnInit {
   }
 
   changeChip(select: string){
-    console.log(select);
     if(select && select != this.oldmod)
       this.oldmod = this.firebaseService.setMod(select);
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(DialogAnimationsExampleDialog, {
+    this.dialogRef = this.dialog.open(DialogAnimationsExampleDialog, {
       width: '270px',
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.dialogRef.afterClosed().subscribe((result: any) => {
       if(result != null && result.ora != null && result.temp != null){
         result.ora = time_tino(result.ora);
         this.firebaseService.setProg(result);
@@ -167,9 +171,11 @@ export class DashboardComponent implements OnInit {
       console.log("ora offline");
       this.disabled = true;
       this.disabledGuage = true;
-      this._snackBar.openFromComponent(snackOffline, {/*duration: this.durationInSeconds * 1000,*/});
+      this.dialogRef.close();
+      this._snackBar.openFromComponent(snackOffline);
     }
   }
+  @HostListener("window:", )
 
   SignOut(){
     this.firebaseService.delateValueChanges();
@@ -182,7 +188,7 @@ export class DashboardComponent implements OnInit {
   setOutdoor(n:number){ setOutdoor(this, n) }
 }
 
-/*  Dialog  */
+/*  DIALOG  */
 
 @Component({
   selector: 'dialog-animations-example-dialog',
@@ -200,7 +206,8 @@ export class DashboardComponent implements OnInit {
   ],
 })
 export class DialogAnimationsExampleDialog {
-  constructor(public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>) {}
+  constructor(
+    public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>) {}
   ora!: number; temp!: number;
 }
 
@@ -341,7 +348,7 @@ function setSpinner(t: any, time: number, data: any) {
   }
 }
 
-function setDatalog(t: any, data: any) {
+function setDatalog(data: any) {
 
   k = Object.keys(data);
   return k.map((elem: any)=>{
@@ -353,6 +360,24 @@ function setDatalog(t: any, data: any) {
       rele: data[elem].rele ? 'ON' : 'OFF',
     };
   })
+}
+
+function setHistorical(data: any){
+
+  var date = Object.keys(data);
+
+  for (let i = 0; i < date.length; i++) {
+    var k = Object.keys(data[date[i]]);
+    var h: Date;
+    data[date[i]] = k.map((elem: any)=>{
+      h = new Date(Number(elem))
+      return JSON.parse(`{
+        "x": ${h.getMonth() > 6 ? h.setFullYear(1970) : h.setFullYear(1971)},
+        "${date[i]}": ${data[date[i]][elem][date[i]] / 864000}
+      }`)
+    });
+  }
+  return data;
 }
 
 function setOutdoor(t:any, length: number) {

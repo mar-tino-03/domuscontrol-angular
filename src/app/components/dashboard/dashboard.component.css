@@ -29,8 +29,10 @@ mat-toolbar{
 }
 
 .spinner-container mat-spinner{
-  width: 22px !important;
-  height: 22px !important;
+  margin-top: 1px;
+  margin-left: 2px;
+  width: 21px !important;
+  height: 21px !important;
 }
 
 ::ng-deep .tooltip{
@@ -82,7 +84,7 @@ mat-toolbar{
 }
 
 .info-container{
-  padding-top: 10px;
+  padding-top: 12px;
 }
 
 .mat-mdc-chip {
@@ -96,7 +98,6 @@ mat-toolbar{
   padding: 0px 12px;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.12);
-  transition: background-color 0.4s 0s
 }
 
 .programmazione{
@@ -146,6 +147,23 @@ mat-toolbar{
   }
 }
 
+.graph--big{
+  grid-column-start: 1;
+  grid-column-end: 4
+}
+@media (max-width: 890px){
+  .graph--big{
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+}
+@media (max-width: 599px){
+  .graph--big{
+    grid-column-start: 1;
+    grid-column-end: 1;
+  }
+}
+
 .box-slider{
   display: flex;
   flex-direction: column;
@@ -167,6 +185,10 @@ mat-accordion mat-expansion-panel{
   box-shadow: none;
 }
 
+.mat-expansion-panel{
+  background: var(--bg-card);
+}
+
 .mat-column-star {
   width: 32px;
   text-align: center;
@@ -176,3 +198,5 @@ mat-accordion mat-expansion-panel{
 .cursor-pointer{
   cursor: pointer;
 }
+
+

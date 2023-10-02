@@ -10,7 +10,6 @@ import {
   TimeScale,
   Legend,
   Tooltip,
-  CategoryScale,
 } from 'chart.js'
 
 Chart.register(
@@ -19,7 +18,6 @@ Chart.register(
   PointElement,
   LinearScale,
   TimeScale,
-  CategoryScale,
   Legend,
   Tooltip,
 );
@@ -56,11 +54,14 @@ export class LineChartComponent implements OnChanges {
     this.chart = new Chart(this.code, {
       type: 'line',
       options: {
+        normalized: true,
         maintainAspectRatio: false,
         scales: {
           x: {
             type: 'time',
-            //parsing: false
+            ticks: {
+              maxRotation: 0,
+            }
           },
           y: {
               type: 'linear',
@@ -77,16 +78,29 @@ export class LineChartComponent implements OnChanges {
               stackWeight: 1,
           }
         },
+        parsing: false,
         interaction: {
+          mode: 'nearest',
+          axis: 'x',
+          //mode: 'index',
           intersect: false,
-          mode: 'index',
         },
         plugins: {
           tooltip:{
             position: 'nearest',
+            callbacks: {
+              label: function(tooltipItems: any) {
+                  if(tooltipItems.dataset.label == "rele")
+                    return tooltipItems.formattedValue;
+                  if(tooltipItems.dataset.label == "hum")
+                    return tooltipItems.formattedValue + ' %';
+                  return tooltipItems.formattedValue + ' °C';
+              }
+            }
           },
         },
       },
+
       data: {
         datasets: [
           {
@@ -185,7 +199,12 @@ export class LineChartComponent implements OnChanges {
   increase(){
     let datalog = this.chart.data.datasets[0].data;
     var i = (datalog[datalog.length-1].x - this.chart.options.scales.x.min)/4;
-    this.chart.options.scales.x.min = this.chart.options.scales.x.min - i;
-    this.chart.update();
+    if(this.chart.data.datasets[0].data[0].x < this.chart.options.scales.x.min - i){
+      this.chart.options.scales.x.min = this.chart.options.scales.x.min - i;
+      this.chart.update();
+    }else{
+      this.chart.options.scales.x.min = this.chart.data.datasets[0].data[0].x;
+      this.chart.update();
+    }
   }
 }

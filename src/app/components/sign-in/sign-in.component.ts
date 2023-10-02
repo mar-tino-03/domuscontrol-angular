@@ -9,6 +9,8 @@ import { AuthService } from '../../shared/services/auth.service';
 })
 
 export class SignInComponent implements OnInit{
+  hide=true;
+
   constructor(
     private meta: Meta,
     public authService: AuthService

@@ -2,22 +2,24 @@
 
   <h3>Sign Up</h3>
 
-  <form #homeform="ngForm" class="form"
-    (ngSubmit)="authService.SignUp(userEmail.value, userPassword.value)">
+  <form #homeform="ngForm" class="form" (ngSubmit)="authService.SignIn(userEmail.value, userPassword.value)">
 
-    <mat-form-field class="example-full-width" appearance="fill">
+    <mat-form-field appearance="outline" hideRequiredMarker=true>
       <mat-label>Email</mat-label>
       <input type="email" name="email" matInput required #userEmail placeholder="Ex. pat@example.com">
     </mat-form-field>
 
-    <mat-form-field class="example-full-width" appearance="fill">
+    <mat-form-field appearance="outline" hideRequiredMarker=true>
       <mat-label>Password</mat-label>
-      <input type="password" name="password" matInput required #userPassword>
+      <input name="password" matInput required #userPassword [type]="hide ? 'password' : 'text'">
+      <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
     </mat-form-field>
 
     <!-- Calling SignIn Api from AuthService -->
 
-    <button mat-raised-button type="submit" color="primary">Create new account</button>
+    <button mat-raised-button type="submit" color="primary">Login</button>
   </form>
 
   <div class="formGroup">

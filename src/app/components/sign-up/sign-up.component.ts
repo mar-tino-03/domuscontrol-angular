@@ -9,6 +9,8 @@ import { Meta } from '@angular/platform-browser';
 })
 
 export class SignUpComponent {
+  hide=true;
+
   constructor(
     private meta: Meta,
     public authService: AuthService

@@ -17,8 +17,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatGridListModule } from '@angular/material/grid-list';
+//import { MatSidenavModule } from '@angular/material/sidenav';
+//import { MatGridListModule } from '@angular/material/grid-list';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,8 +30,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatSliderModule } from '@angular/material/slider';
+//import { MatChipsModule } from '@angular/material/chips';
+//import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -50,6 +50,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { CircularSliderComponent } from './components/dashboard/circular-slider/circular-slider.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ColumnChartComponent } from './components/dashboard/column-chart/column-chart.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     VerifyEmailComponent,
     CircularSliderComponent,
     PageNotFoundComponent,
+    ColumnChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,8 +86,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatSlideToggleModule,
     MatCardModule,
     MatButtonModule,
-    MatSidenavModule,
-    MatGridListModule,
+    //MatSidenavModule,
+    //MatGridListModule,
     MatInputModule,
     MatSelectModule,
     MatFormFieldModule,
@@ -98,8 +100,8 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MatDialogModule,
     MatMenuModule,
     MatTableModule,
-    MatChipsModule,
-    MatSliderModule,
+    //MatChipsModule,
+    //MatSliderModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatTooltipModule,
