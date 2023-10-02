@@ -16,6 +16,7 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js'
+import { query } from '@angular/animations';
 
 Chart.register(
   BarController,
@@ -129,7 +130,7 @@ export class ColumnChartComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    $(".chart-container").animate({scrollLeft: 250}, 400);
+    $(".chart-container").animate({scrollLeft: ( $(".container").width() - $(".chart-container").width() ) / 2}, 400);
   }
 
   ngOnChanges(changes: SimpleChanges) {

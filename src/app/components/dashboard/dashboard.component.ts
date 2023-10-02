@@ -3,7 +3,7 @@ import { Meta } from '@angular/platform-browser';
 import { AuthService } from '../../shared/services/auth.service';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { MatTable } from '@angular/material/table';
-import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -63,9 +63,12 @@ export class DashboardComponent implements OnInit {
   valueRange!: number;
   mod!: string;
   oldmod!: string;
-  displayedColumns: string[] = ['Time', 'Temp','star'];
+  prog: any;
+
+  /*displayedColumns: string[] = ['Time', 'Temp','star'];
   dataSource = [...ELEMENT_DATA];
-  @ViewChild(MatTable) table!: MatTable<progg>;
+  @ViewChild(MatTable) table!: MatTable<progg>;*/
+
   dialogRef: any;
   InChart : any;
   OutChart: any;
@@ -142,9 +145,10 @@ export class DashboardComponent implements OnInit {
       this.oldmod = this.firebaseService.setMod(select);
   }
 
-  openDialog(): void {
+  openDialog(data: any){
     this.dialogRef = this.dialog.open(DialogAnimationsExampleDialog, {
       width: '270px',
+      data: data
     });
 
     this.dialogRef.afterClosed().subscribe((result: any) => {
@@ -185,6 +189,7 @@ export class DashboardComponent implements OnInit {
 
 
   time_tino(e:any){ return time_tino(e) }
+  tino_time(e:any){ return tino_time(e) }
   setOutdoor(n:number){ setOutdoor(this, n) }
 }
 
@@ -206,9 +211,16 @@ export class DashboardComponent implements OnInit {
   ],
 })
 export class DialogAnimationsExampleDialog {
+  ora!: string; temp!: number;
+
   constructor(
-    public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>) {}
-  ora!: number; temp!: number;
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<DialogAnimationsExampleDialog>) {
+      if(data != null && data.ora != null)
+        this.ora = tino_time(data.ora)
+      if(data != null && data.temp != null)
+        this.temp = data.temp
+    }
 }
 
 /*  OFFLINE  */
@@ -323,7 +335,13 @@ function setMod(t: any, mod: string) {
 
 function setProg(t: any, prog: any) {
 
-  if(prog != null){
+  t.prog = Object.keys(prog).map((ora:any)=>{
+    return{
+      ora: tino_time(Number(ora)),
+      temp: prog[ora].tmp
+    }
+  })
+  /*if(prog != null){
     t.dataSource = [...ELEMENT_DATA];
     for (let ora in prog) {
       t.dataSource.push({
@@ -332,7 +350,7 @@ function setProg(t: any, prog: any) {
       });
     }
     t.table.renderRows();
-  }
+  }*/
 }
 
 

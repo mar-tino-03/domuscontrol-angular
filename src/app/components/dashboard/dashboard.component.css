@@ -185,6 +185,15 @@ mat-accordion mat-expansion-panel{
   box-shadow: none;
 }
 
+.panel{
+  border-top: 1px rgb(224, 224, 224) solid;
+}
+
+mat-expansion-panel-header{
+  padding: 0px 16px;
+  height: 52px;
+}
+
 .mat-expansion-panel{
   background: var(--bg-card);
 }
