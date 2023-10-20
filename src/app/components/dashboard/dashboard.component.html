@@ -119,7 +119,7 @@
 
       <div class="info-container">
         <p style="margin: 0">
-          Temperature in door:
+          Temperature Indoor:
           <span style="color: var(--mat-expansion-header-description-color)">
             {{InChart != undefined ? InChart[InChart.length - 1].tmp : ""}}°C
           </span>
@@ -215,6 +215,32 @@
   </div>
 
   <div class="card">
+    <mat-accordion>
+      <mat-expansion-panel disabled="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4 style="margin: 0px; color: var(--mat-expansion-header-text-color) !important;">Misure</h4>
+          </mat-panel-title>
+          <mat-panel-description>
+            <h4 style="margin: 0px; color: var(--mat-expansion-header-text-color) !important;">Value</h4>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel *ngFor="let e of outDoor" class="panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{e.type}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{e.value}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+  <!--<div class="card">
     <h4 style="margin: 0">Outdoor</h4>
 
     <mat-accordion>
@@ -279,7 +305,37 @@
           {{(OutChart != undefined ? lastDate : "")}}
         </span>
     </button>
+  </div>-->
+
+  <div class="card">
+    <mat-accordion>
+      <mat-expansion-panel disabled="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h4 style="margin: 0px; color: var(--mat-expansion-header-text-color) !important;">Error</h4>
+          </mat-panel-title>
+          <mat-panel-description>
+            <h4 style="margin: 0px; color: var(--mat-expansion-header-text-color) !important;">Time</h4>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+      </mat-expansion-panel>
+      <mat-expansion-panel *ngFor="let e of InError" class="panel">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{e.type}}
+          </mat-panel-title>
+          <mat-panel-description>
+            {{e.data_short}}
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        {{e.data_long}}
+        <br><br>
+        {{e.msg}}
+      </mat-expansion-panel>
+    </mat-accordion>
   </div>
+
+
 
   <div class="card graph">
     <h4 style="margin: 0">Indoor</h4>

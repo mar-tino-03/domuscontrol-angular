@@ -1,0 +1,36 @@
+[debug] [2023-10-20T15:51:49.054Z] ----------------------------------------------------------------------
+[debug] [2023-10-20T15:51:49.057Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Admin\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2023-10-20T15:51:49.058Z] CLI Version:   12.4.4
+[debug] [2023-10-20T15:51:49.058Z] Platform:      win32
+[debug] [2023-10-20T15:51:49.059Z] Node Version:  v18.13.0
+[debug] [2023-10-20T15:51:49.060Z] Time:          Fri Oct 20 2023 17:51:49 GMT+0200 (Ora legale dell’Europa centrale)
+[debug] [2023-10-20T15:51:49.060Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-10-20T15:51:49.064Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2023-10-20T15:51:49.266Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-10-20T15:51:49.267Z] > authorizing via signed-in user (martinoandrea.grassi@gmail.com)
+[debug] [2023-10-20T15:51:49.267Z] [iam] checking project domuscontrol-36d0e for permissions ["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]
+[debug] [2023-10-20T15:51:49.268Z] > refreshing access token with scopes: []
+[debug] [2023-10-20T15:51:49.269Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-10-20T15:51:49.269Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-10-20T15:51:49.430Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-10-20T15:51:49.430Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-10-20T15:51:49.443Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/domuscontrol-36d0e:testIamPermissions [none]
+[debug] [2023-10-20T15:51:49.444Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/domuscontrol-36d0e:testIamPermissions x-goog-quota-user=projects/domuscontrol-36d0e
+[debug] [2023-10-20T15:51:49.444Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/domuscontrol-36d0e:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]}
+[debug] [2023-10-20T15:51:49.594Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2023-10-20T15:51:49.594Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2023-10-20T15:51:50.244Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/domuscontrol-36d0e:testIamPermissions 200
+[debug] [2023-10-20T15:51:50.244Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/domuscontrol-36d0e:testIamPermissions {"permissions":["datastore.indexes.create","datastore.indexes.delete","datastore.indexes.list","datastore.indexes.update","firebase.projects.get","firebasedatabase.instances.update","firebasehosting.sites.update"]}
+[debug] [2023-10-20T15:51:50.245Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/domuscontrol-36d0e [none]
+[debug] [2023-10-20T15:51:50.552Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/domuscontrol-36d0e 200
+[debug] [2023-10-20T15:51:50.552Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/domuscontrol-36d0e {"projectId":"domuscontrol-36d0e","projectNumber":"1020964634807","displayName":"Domuscontrol","name":"projects/domuscontrol-36d0e","resources":{"hostingSite":"domuscontrol-36d0e","realtimeDatabaseInstance":"domuscontrol-36d0e-default-rtdb","storageBucket":"domuscontrol-36d0e.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_1655190d-ba8a-42c5-ad8a-f4b8a862eaad"}
+[debug] [2023-10-20T15:51:50.552Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/domuscontrol-36d0e [none]
+[debug] [2023-10-20T15:51:50.819Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/domuscontrol-36d0e 200
+[debug] [2023-10-20T15:51:50.820Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/domuscontrol-36d0e {"projectId":"domuscontrol-36d0e","projectNumber":"1020964634807","displayName":"Domuscontrol","name":"projects/domuscontrol-36d0e","resources":{"hostingSite":"domuscontrol-36d0e","realtimeDatabaseInstance":"domuscontrol-36d0e-default-rtdb","storageBucket":"domuscontrol-36d0e.appspot.com","locationId":"us-central"},"state":"ACTIVE","etag":"1_1655190d-ba8a-42c5-ad8a-f4b8a862eaad"}
+[info] 
+[info] === Deploying to 'domuscontrol-36d0e'...
+[info] 
+[info] i  deploying database, firestore, hosting 
+[info] i  database: checking rules syntax... 
+[debug] [2023-10-20T15:51:50.943Z] >>> [apiv2][query] GET https://firebasedatabase.googleapis.com/v1beta/projects/domuscontrol-36d0e/locations/-/instances/domuscontrol-36d0e-default-rtdb [none]

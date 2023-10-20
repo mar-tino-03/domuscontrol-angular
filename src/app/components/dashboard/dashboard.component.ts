@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { TinotinoService } from 'src/app/shared/services/tinotino.service';
 import { animate, animation, style, transition, trigger } from '@angular/animations';
+import { openMeteoService } from 'src/app/shared/services/open_meteo.service';
 
 
 export interface progg {ora: number, temp: number}
@@ -71,9 +72,9 @@ export class DashboardComponent implements OnInit {
 
   dialogRef: any;
   InChart : any;
-  OutChart: any;
+  InError: any;
   historicalChart: any;
-  lastDate!: any;
+  outDoor: any
   spinner = 0;
   disabled=true;
   disabledGuage=true;
@@ -83,7 +84,7 @@ export class DashboardComponent implements OnInit {
     private meta: Meta,
     public authService: AuthService,
     public firebaseService: FirebaseService,
-    public tinotinoService: TinotinoService,
+    public openMeteoService: openMeteoService,
     public dialog: MatDialog,
     private _snackBar: MatSnackBar,
   ) {}
@@ -111,6 +112,7 @@ export class DashboardComponent implements OnInit {
         setProg(this, set.programmazione);
         setSpinner(this, set.timestamp, termostato.value.datalog);
         this.InChart = setDatalog(termostato.value.datalog);
+        this.InError = setError(termostato.value.datalog);
         this.historicalChart = setHistorical(termostato.historical)
       },
       error => {
@@ -133,7 +135,9 @@ export class DashboardComponent implements OnInit {
       }
     );
 
-    setOutdoor(this, 86400);
+    this.openMeteoService.getDatiDay().subscribe((data:any)=>{
+      this.outDoor = setOutdoor(data);
+    });
   }
 
   changeTmp(){
@@ -175,7 +179,9 @@ export class DashboardComponent implements OnInit {
       console.log("ora offline");
       this.disabled = true;
       this.disabledGuage = true;
-      this.dialogRef.close();
+      try{
+        this.dialogRef.close();
+      }catch (error) {}
       this._snackBar.openFromComponent(snackOffline);
     }
   }
@@ -190,7 +196,6 @@ export class DashboardComponent implements OnInit {
 
   time_tino(e:any){ return time_tino(e) }
   tino_time(e:any){ return tino_time(e) }
-  setOutdoor(n:number){ setOutdoor(this, n) }
 }
 
 /*  DIALOG  */
@@ -380,6 +385,31 @@ function setDatalog(data: any) {
   })
 }
 
+function setError(data: any) {
+
+  k = Object.keys(data);
+  var array=[];
+  var i=k.length-1;
+  var count=0;
+  var type;
+  while(i >= 0){
+    if(data[k[i]].msg != null){
+      type = data[k[i]].msg != "External System" ? "Error" : "Reset";
+      array.push({
+        msg: data[k[i]].msg,
+        type: type,
+        data_long: new Date(data[k[i]].timestamp).toLocaleString(),
+        data_short: new Date(data[k[i]].timestamp).toLocaleDateString(),
+      });
+      count++;
+    }
+    if(count>=4)
+      return array;
+    i--;
+  }
+  return array;
+}
+
 function setHistorical(data: any){
 
   var date = Object.keys(data);
@@ -398,18 +428,28 @@ function setHistorical(data: any){
   return data;
 }
 
-function setOutdoor(t:any, length: number) {
-  t.tinotinoService.getDati(length).subscribe((dati: any) => {
-    t.OutChart = Object.keys(dati).map((dato: any) => {
-      dati[dato].data = new Date(dati[dato].data).getTime();
-      dati[dato].tmp = parseFloat(dati[dato].tmp);
-      dati[dato].hum = parseFloat(dati[dato].hum);
-      dati[dato].pres= parseFloat(dati[dato].pres);
-      dati[dato].bat = parseFloat(dati[dato].bat);
-      return dati[dato];
-    });
-    t.lastDate = new Date(t.OutChart[t.OutChart.length - 1].data).toLocaleString();
-  });
+function setOutdoor(data: any) {
+
+  var i = new Date().getHours();
+  var dati=[];
+  dati.push({
+    type: "temp",
+    value: data.hourly.temperature_2m[i] + data.hourly_units.temperature_2m
+  })
+  dati.push({
+    type: "hum",
+    value: data.hourly.relativehumidity_2m[i] + data.hourly_units.relativehumidity_2m
+  })
+  dati.push({
+    type: "pres",
+    value: data.hourly.surface_pressure[i] + data.hourly_units.surface_pressure
+  })
+  dati.push({
+    type: "wind",
+    value: data.hourly.windspeed_10m[i] + data.hourly_units.windspeed_10m
+  })
+  console.log(dati)
+  return dati;
 }
 
 function time_tino(ora: any): number{
