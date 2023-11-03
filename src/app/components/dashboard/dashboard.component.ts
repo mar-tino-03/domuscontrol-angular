@@ -2,7 +2,6 @@ import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/cor
 import { Meta } from '@angular/platform-browser';
 import { AuthService } from '../../shared/services/auth.service';
 import { FirebaseService } from '../../shared/services/firebase.service';
-import { MatTable } from '@angular/material/table';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,7 +10,6 @@ import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-import { TinotinoService } from 'src/app/shared/services/tinotino.service';
 import { animate, animation, style, transition, trigger } from '@angular/animations';
 import { openMeteoService } from 'src/app/shared/services/open_meteo.service';
 
@@ -65,16 +63,12 @@ export class DashboardComponent implements OnInit {
   mod!: string;
   oldmod!: string;
   prog: any;
-
-  /*displayedColumns: string[] = ['Time', 'Temp','star'];
-  dataSource = [...ELEMENT_DATA];
-  @ViewChild(MatTable) table!: MatTable<progg>;*/
-
-  dialogRef: any;
   InChart : any;
   InError: any;
   historicalChart: any;
   outDoor: any
+
+  dialogRef: any;
   spinner = 0;
   disabled=true;
   disabledGuage=true;
@@ -100,44 +94,43 @@ export class DashboardComponent implements OnInit {
     if (!navigator.onLine)
       this.offlineEvent({type: "offline"});
 
-    this.firebaseService.onChange().subscribe(
-      (termostato: any) => {
+    this.firebaseService.onChange().subscribe({
+      next: (termostato: any) => {
         this.disabled = false;
         this.disabledGuage = false;
         this._snackBar.dismiss();
         var set = termostato.value.settings;
-
-        setTemp(this, set.temp, set.mod, termostato.value.datalog);
-        setMod(this, set.mod);
-        setProg(this, set.programmazione);
-        setSpinner(this, set.timestamp, termostato.value.datalog);
-        this.InChart = setDatalog(termostato.value.datalog);
-        this.InError = setError(termostato.value.datalog);
-        this.historicalChart = setHistorical(termostato.historical)
+        if(set!=null){
+          setTemp(this, set.temp, set.mod, termostato.value.datalog);
+          setMod(this, set.mod);
+          setProg(this, set.programmazione);
+          setSpinner(this, set.timestamp, termostato.value.datalog);
+          this.InChart = setDatalog(termostato.value.datalog);
+          this.InError = setError(termostato.value.datalog);
+          this.historicalChart = setHistorical(termostato.historical)
+          //console.log(this.InError)
+        }
       },
-      error => {
-        //console.log("no permition")
+      error: (e) => {
         this.disabled = true;
         this.disabledGuage = true;
         setSpinner(this, 0, null);
         this._snackBar.openFromComponent(snackPermition);
       }
-    );
+    });
 
-    this.firebaseService.checkQueue().subscribe(
-      (line: any) => {
+    this.firebaseService.checkQueue().subscribe({
+      next: (line: any) => {
         console.log("you are admin")
         if(line != undefined)
           this._snackBar.openFromComponent(snackAccept, { data: line });
       },
-      error => {
+      error: () => {
         //console.log("no admin")
       }
-    );
-
-    this.openMeteoService.getDatiDay().subscribe((data:any)=>{
-      this.outDoor = setOutdoor(data);
     });
+
+    this.getOutDoorData();
   }
 
   changeTmp(){
@@ -185,7 +178,17 @@ export class DashboardComponent implements OnInit {
       this._snackBar.openFromComponent(snackOffline);
     }
   }
-  @HostListener("window:", )
+
+  getOutDoorData(){
+    this.openMeteoService.getDatiDay().subscribe({
+      next: (data:any)=>{
+        this.outDoor = setOutdoor(data);
+      },
+      error: () => {
+        setTimeout(this.getOutDoorData, 5000);
+      }
+    });
+  }
 
   SignOut(){
     this.firebaseService.delateValueChanges();
@@ -407,6 +410,8 @@ function setError(data: any) {
       return array;
     i--;
   }
+  if(array.length == 0)
+    return null;
   return array;
 }
 
@@ -430,7 +435,9 @@ function setHistorical(data: any){
 
 function setOutdoor(data: any) {
 
-  var i = new Date().getHours();
+  var date = new Date();
+  var i = date.getHours();
+  if(date.getMinutes() > 30) i++;
   var dati=[];
   dati.push({
     type: "temp",
@@ -448,7 +455,6 @@ function setOutdoor(data: any) {
     type: "wind",
     value: data.hourly.windspeed_10m[i] + data.hourly_units.windspeed_10m
   })
-  console.log(dati)
   return dati;
 }
 

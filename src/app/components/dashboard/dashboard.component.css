@@ -92,7 +92,7 @@ mat-toolbar{
 }
 
 .button_chip{
-  margin: 4px 4px;
+  margin: 2px 4px 4px;
   height: 36px;
   min-width: 0;
   padding: 0px 13px;
@@ -178,7 +178,7 @@ mat-toolbar{
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 3px auto;
+  /*margin: 3px auto;*/
 }
 
 mat-accordion mat-expansion-panel-header, table{

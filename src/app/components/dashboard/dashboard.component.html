@@ -310,19 +310,30 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
       </mat-expansion-panel>
-      <mat-expansion-panel *ngFor="let e of InError" class="panel">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{e.type}}
-          </mat-panel-title>
-          <mat-panel-description>
-            {{e.data_short}}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        {{e.data_long}}
-        <br><br>
-        {{e.msg}}
-      </mat-expansion-panel>
+      <div *ngIf="InError!=null; then Error else NotError"></div>
+      <ng-template #Error>
+        <mat-expansion-panel *ngFor="let e of InError" class="panel">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{e.type}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{e.data_short}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          {{e.data_long}}
+          <br><br>
+          {{e.msg}}
+        </mat-expansion-panel>
+      </ng-template>
+      <ng-template #NotError>
+        <div style="
+          margin: auto;
+          color: var(--mat-expansion-header-description-color);
+          padding: 0 0 0 16px;">
+          There are no errors :)
+        </div>
+      </ng-template>
     </mat-accordion>
   </div>
 
