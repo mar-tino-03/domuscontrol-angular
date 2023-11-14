@@ -3,6 +3,7 @@ declare var $:any;
 
 var onValue: { emit: (arg0: number) => void; };
 var onChange: { emit: (arg0: number) => void; };
+var prev=0;
 
 @Component({
   selector: 'app-circular-slider',
@@ -13,6 +14,7 @@ var onChange: { emit: (arg0: number) => void; };
 export class CircularSliderComponent implements OnInit{
   @Input() valueRange!: number;
   @Input() disabled!: boolean;
+  @Input() prev!: number;
   @Output() valueRangeChange = new EventEmitter();
   @Output() change = new EventEmitter();
 
@@ -60,7 +62,7 @@ export class CircularSliderComponent implements OnInit{
         if (!(e.value * 10 % 10)) { val = val + ".0"; }
         return `<p style="font-size: 1.55em; margin:0;">` + "heating" + "</p>" +
                `<p style="font-size: 2.3em;  margin:0;">` + val + "°</p>" +
-               `<p style="font-size: 1.35em; margin:0;">` + "1/2 hr to" + "</p>";
+               `<p style="font-size: 1.35em; margin:0;">` + prev + " min to" + "</p>";
       }
     });
   }
@@ -75,6 +77,14 @@ export class CircularSliderComponent implements OnInit{
           $("#slider").roundSlider("disable");
         else
           $("#slider").roundSlider("enable");
+      }, 10 );
+    }
+
+    if(changes['prev'] != undefined && changes['prev'].currentValue != undefined){
+      setTimeout( () => {
+        prev = changes['prev'].currentValue;
+        $("#slider").data("roundSlider").setValue($("#slider").data("roundSlider").getValue()+0.5);
+        $("#slider").data("roundSlider").setValue($("#slider").data("roundSlider").getValue()-0.5);
       }, 10 );
     }
   }

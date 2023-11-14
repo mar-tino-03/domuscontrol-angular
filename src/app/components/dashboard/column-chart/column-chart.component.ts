@@ -1,10 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Chart, ChartDataset } from 'chart.js';
-//import 'ng2-charts';
 import 'chartjs-adapter-date-fns';
-//import 'luxon';
-//import 'chartjs-adapter-luxon';
-//import 'chartjs-adapter-moment';
 declare var $:any;
 
 import {
@@ -16,7 +12,6 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js'
-import { query } from '@angular/animations';
 
 Chart.register(
   BarController,
@@ -28,6 +23,10 @@ Chart.register(
   Tooltip,
 );
 
+var mounthBold: any[] = [];
+var FIRST = true;
+var i: number, date: String[];
+
 @Component({
   selector: 'app-column-chart',
   templateUrl: './column-chart.component.html',
@@ -38,13 +37,9 @@ export class ColumnChartComponent implements OnInit{
   @Input() code!: string;
   @Input() labelX!: string;
   @Input() disabled!: boolean;
-  @Input() color1!: string;
-  @Input() labelY1!: string;
-  @Input() color2!: string;
-  @Input() labelY2!: string;
+  @Input() color!: String[];
 
   public chart: any;
-  FIRST = true;
 
   createChart() {
     this.chart = new Chart(this.code, {
@@ -63,11 +58,14 @@ export class ColumnChartComponent implements OnInit{
               }
             },
             ticks: {
-              autoSkip: true,
-              //source: 'auto',
+              //autoSkip: true,
+              source: 'auto',
               maxRotation: 0,
               font: function(context: any) {
-                if (context.tick && Number(context.tick.label.split(' ')[0]) <= 7) {
+                if(context && context.index == 0)
+                  mounthBold = [];
+                if(context && !mounthBold.includes(context.tick.label.split(' ')[1])/*&& Number(context.tick.label.split(' ')[0]) <= 7*/) {
+                  mounthBold.push(context.tick.label.split(' ')[1]);
                   return {
                     weight: 'bold',
                   };
@@ -92,7 +90,10 @@ export class ColumnChartComponent implements OnInit{
           tooltip:{
             position: 'nearest',
             callbacks: {
-              label: function(tooltipItems: any) {
+              title(tooltipItems: any) {
+                return tooltipItems[0].label.split(",")[0];
+              },
+              label(tooltipItems) {
                 return tooltipItems.formattedValue + ' %';
               }
             }
@@ -101,60 +102,60 @@ export class ColumnChartComponent implements OnInit{
       },
 
       data: {
-        datasets: [
-          {
-            label: this.labelY1,
-            data: [],
-            borderColor: this.color1,
-            backgroundColor: this.color1,
-
-            parsing: {
-              xAxisKey: this.labelX,
-              yAxisKey: this.labelY1,
-            },
-          },
-          {
-            label: this.labelY2,
-            data: [],
-            borderColor: this.color2,
-            backgroundColor: this.color2,
-
-            parsing: {
-              xAxisKey: this.labelX,
-              yAxisKey: this.labelY2,
-            },
-          },
-        ],
+        datasets: [],
       },
     });
   }
 
   ngOnInit(): void {
-    $(".chart-container").animate({scrollLeft: ( $(".container").width() - $(".chart-container").width() ) / 2}, 400);
+    $(".chart-container").animate({scrollLeft: ( $(".container").width() - $(".chart-container").width() ) / 2}, 0);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['dati'] != undefined && changes['dati'].currentValue != undefined) {
-      if(this.FIRST){
+      if(FIRST){
         this.createChart();
-        var i=0;
-        var date = Object.keys(this.dati);
-
-        this.chart.data.datasets.forEach((datasets: any) => {
-          datasets.data = this.dati[date[i]];
-          i++
-        });
-        this.FIRST=false;
-      }
-      else{
-        var i=0;
-        var date = Object.keys(this.dati);
-        this.chart.data.datasets.forEach((datasets: any) => {
-          datasets.data = this.dati[date[i]];
-          i++
-        });
+        addData(this);
+        FIRST=false;
+      }else{
+        aggData(this);
       }
       this.chart.update();
     }
   }
+}
+
+function addData(t: any) {
+  i=0;
+  date = Object.keys(t.dati);
+
+  //console.log(date);
+
+  date.forEach((d: any) => {
+    t.chart.data.datasets.push({
+      label: d,
+      data:  t.dati[String(date[i])],
+      borderColor: t.color[i],
+      backgroundColor: t.color[i],
+
+      parsing: {
+        xAxisKey: t.labelX,
+        yAxisKey: d,
+      }
+    })
+    i++;
+  });
+}
+
+function aggData(t: any) {
+  i=0;
+  date = Object.keys(t.dati);
+
+  date.forEach((l: any) => {
+    t.chart.data.datasets.forEach((d:any)=>{
+      if(d.label == l)
+        d.data = t.dati[l];
+    })
+    i++;
+  });
 }

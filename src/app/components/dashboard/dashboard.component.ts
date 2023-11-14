@@ -13,10 +13,6 @@ import { MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA } from '@angular/mat
 import { animate, animation, style, transition, trigger } from '@angular/animations';
 import { openMeteoService } from 'src/app/shared/services/open_meteo.service';
 
-
-export interface progg {ora: number, temp: number}
-const ELEMENT_DATA: progg[] = [];
-
 const fadeInWidth = trigger('fadeInWidth',[
   transition(':enter', [
     style({
@@ -59,14 +55,19 @@ const fadeInOpacity = trigger('fadeInOpacity',[
   ],
 })
 export class DashboardComponent implements OnInit {
+  colorDefault = [ "#4dc9f6", "#f67019", "#f53794", "#ffce56", "#9966ff", "#4bc0c0" ];
+
   valueRange!: number;
   mod!: string;
   oldmod!: string;
+  prev = 0;
   prog: any;
   InChart : any;
   InError: any;
   historicalChart: any;
-  outDoor: any
+  outDoor: any;
+
+  openMeteo: any;
 
   dialogRef: any;
   spinner = 0;
@@ -94,6 +95,17 @@ export class DashboardComponent implements OnInit {
     if (!navigator.onLine)
       this.offlineEvent({type: "offline"});
 
+    this.openMeteoService.getDatiDay()
+    .subscribe({
+      next: (data:any)=>{
+        this.openMeteo = data;
+      },
+      error: () => {
+        console.log("Api-meteo not work");
+      }
+    });
+
+
     this.firebaseService.onChange().subscribe({
       next: (termostato: any) => {
         this.disabled = false;
@@ -104,11 +116,12 @@ export class DashboardComponent implements OnInit {
           setTemp(this, set.temp, set.mod, termostato.value.datalog);
           setMod(this, set.mod);
           setProg(this, set.programmazione);
+          this.prev = calcPrev(this, set.previsione, termostato.value.datalog);
           setSpinner(this, set.timestamp, termostato.value.datalog);
-          this.InChart = setDatalog(termostato.value.datalog);
+          this.InChart = setDatalog(this,termostato.value.datalog);
           this.InError = setError(termostato.value.datalog);
-          this.historicalChart = setHistorical(termostato.historical)
-          //console.log(this.InError)
+          this.historicalChart = setHistorical(termostato.historical);
+          this.outDoor = getOpenMeteo(this.openMeteo, new Date());
         }
       },
       error: (e) => {
@@ -129,8 +142,6 @@ export class DashboardComponent implements OnInit {
         //console.log("no admin")
       }
     });
-
-    this.getOutDoorData();
   }
 
   changeTmp(){
@@ -177,17 +188,6 @@ export class DashboardComponent implements OnInit {
       }catch (error) {}
       this._snackBar.openFromComponent(snackOffline);
     }
-  }
-
-  getOutDoorData(){
-    this.openMeteoService.getDatiDay().subscribe({
-      next: (data:any)=>{
-        this.outDoor = setOutdoor(data);
-      },
-      error: () => {
-        setTimeout(this.getOutDoorData, 5000);
-      }
-    });
   }
 
   SignOut(){
@@ -349,16 +349,6 @@ function setProg(t: any, prog: any) {
       temp: prog[ora].tmp
     }
   })
-  /*if(prog != null){
-    t.dataSource = [...ELEMENT_DATA];
-    for (let ora in prog) {
-      t.dataSource.push({
-        ora: tino_time(Number(ora)),
-        temp: prog[ora].tmp
-      });
-    }
-    t.table.renderRows();
-  }*/
 }
 
 
@@ -374,16 +364,20 @@ function setSpinner(t: any, time: number, data: any) {
   }
 }
 
-function setDatalog(data: any) {
+function setDatalog(t: any, data: any) {
 
   k = Object.keys(data);
+  var tempOut;
   return k.map((elem: any)=>{
+    tempOut = getOpenMeteo(t.openMeteo, new Date(data[elem].timestamp));
     return {
       x: data[elem].timestamp,
+      rele: data[elem].rele ? "ON" : "OFF",
       tmp:  data[elem].tmp,
-      hum:  data[elem].hum,
       des:  data[elem].des==-100 ? null : data[elem].des,
-      rele: data[elem].rele ? 'ON' : 'OFF',
+      hum:  data[elem].hum,
+      tmpOut: tempOut!=null && tempOut[0]!=null ? tempOut[0].value : null,
+
     };
   })
 }
@@ -433,30 +427,54 @@ function setHistorical(data: any){
   return data;
 }
 
-function setOutdoor(data: any) {
+function getOpenMeteo(data: any, time: Date) : any {
 
-  var date = new Date();
-  var i = date.getHours();
-  if(date.getMinutes() > 30) i++;
   var dati=[];
+  if(data==null || data.hourly==null)
+    return null;
+
+  var i=0, j=null, k: any;
+  for(i=0; i<data.hourly.time.length; i++){
+    k = new Date(data.hourly.time[i]);
+    if(time.getTime() - 1800000 < k.getTime() && k.getTime() < time.getTime() + 1800000){
+      j = i;
+      break;
+    }
+  }
+  if(j == null)
+    return null;
+
   dati.push({
     type: "temp",
-    value: data.hourly.temperature_2m[i] + data.hourly_units.temperature_2m
+    valuePath: data.hourly.temperature_2m[i] + data.hourly_units.temperature_2m,
+    value: data.hourly.temperature_2m[i],
+    date: new Date(data.hourly.time[i]).toLocaleString(),
   })
   dati.push({
     type: "hum",
-    value: data.hourly.relativehumidity_2m[i] + data.hourly_units.relativehumidity_2m
+    valuePath: data.hourly.relativehumidity_2m[i] + data.hourly_units.relativehumidity_2m,
+    value: data.hourly.relativehumidity_2m[i]
   })
   dati.push({
     type: "pres",
-    value: data.hourly.surface_pressure[i] + data.hourly_units.surface_pressure
+    valuePath: data.hourly.surface_pressure[i] + data.hourly_units.surface_pressure,
+    value: data.hourly.surface_pressure[i]
   })
   dati.push({
     type: "wind",
-    value: data.hourly.windspeed_10m[i] + data.hourly_units.windspeed_10m
+    valuePath: data.hourly.windspeed_10m[i] + data.hourly_units.windspeed_10m,
+    value: data.hourly.windspeed_10m[i],
   })
   return dati;
 }
+
+function calcPrev(t: any, param: any, data:any): number{
+  var k = Object.keys(data);
+  if(data[k[k.length-1]].rele == 0)
+    return 0;
+  return Number((((data[k[k.length-1]].tmp-getOpenMeteo(t.openMeteo, new Date())[0].value)*param.m + param.q) * (data[k[k.length-1]].des - data[k[k.length-1]].tmp)).toFixed(0))
+}
+
 
 function time_tino(ora: any): number{
   if(ora == null) return -1;

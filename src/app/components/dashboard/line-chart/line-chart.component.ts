@@ -22,6 +22,10 @@ Chart.register(
   Tooltip,
 );
 
+var mounthBold: any[] = [];
+var FIRST = true;
+var i: number, j: number, date: String[];
+var yAxisID: string, hidden:boolean, stepped:boolean;
 
 @Component({
   selector: 'app-line-chart',
@@ -33,18 +37,9 @@ export class LineChartComponent implements OnChanges {
   @Input() code!: string;
   @Input() labelX!: string;
   @Input() disabled!: boolean;
-  @Input() color1!: string;
-  @Input() labelY1!: string;
-  @Input() typeAxisY1: any
-  @Input() color2!: string;
-  @Input() labelY2!: string;
-  @Input() color3!: string;
-  @Input() labelY3!: string;
-  @Input() color4!: string;
-  @Input() labelY4!: string;
+  @Input() color!: string[];
 
   public chart: any;
-  FIRST = true;
 
   /*FunctionLegend(){
     //this.chart.data.datasets[0].hidden = false;
@@ -66,15 +61,15 @@ export class LineChartComponent implements OnChanges {
           y: {
               type: 'linear',
               position: 'left',
-              stack: 'demo',
+              stack: 'first',
               stackWeight: 2,
           },
           yBool: {
-              type: this.typeAxisY1,
+              type: "category",
               labels: ['ON', 'OFF'],
               offset: true,
               position: 'left',
-              stack: 'demo',
+              stack: 'first',
               stackWeight: 1,
           }
         },
@@ -103,7 +98,7 @@ export class LineChartComponent implements OnChanges {
 
       data: {
         datasets: [
-          {
+          /*{
             label: this.labelY1,
             data: [],
             fill: false,
@@ -161,6 +156,21 @@ export class LineChartComponent implements OnChanges {
             },
             hidden: true,
           },
+          {
+            label: this.labelY5,
+            data: [],
+            fill: false,
+            borderColor: this.color5,
+            backgroundColor: this.color5,
+            cubicInterpolationMode: 'monotone',
+
+            //pointRadius: 0,
+            parsing: {
+              xAxisKey: this.labelX,
+              yAxisKey: this.labelY5,
+            },
+            hidden: true,
+          },*/
         ],
       },
     });
@@ -172,22 +182,20 @@ export class LineChartComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['dati'] != undefined && changes['dati'].currentValue != undefined) {
-      if(this.FIRST){
+      if(FIRST){
         this.createChart();
-        this.chart.data.datasets.forEach((datasets: any) => {
-          datasets.data = this.dati;
-        });
+        addData(this);
         this.chart.options.scales.x.min = this.dati[this.dati.length-1].x - 3600000;
-        this.FIRST=false;
+        FIRST=false;
       }
       else{
-        this.chart.data.datasets.forEach((datasets: any) => {
-          datasets.data = this.dati;
-        });
+        aggData(this);
       }
       this.chart.update();
     }
   }
+
+
 
   decrease(){
     let datalog = this.chart.data.datasets[0].data;
@@ -207,4 +215,73 @@ export class LineChartComponent implements OnChanges {
       this.chart.update();
     }
   }
+}
+
+
+function addData(t: any) {
+  i=0, j=0;
+  var legend = Object.keys(t.dati[0]);
+  var datiSpecifici: any;
+
+  //console.log(legend);
+
+  legend.forEach((l: any) => {
+    if(l != t.labelX){
+      datiSpecifici=[];
+      for(j=0; j<t.dati.length; j++){
+        datiSpecifici.push(JSON.parse(`{
+          "x" : ${t.dati[j][t.labelX]},
+          "${l}" : ${typeof(t.dati[j][l])=="string" ? '"'+t.dati[j][l]+'"' : t.dati[j][l]}
+        }`));
+      }
+
+      if(l=="rele") yAxisID = "yBool";
+      else          yAxisID = "y";
+      if(l=="hum" || l=="tmpOut") hidden = true ;
+      else                        hidden = false;
+      if(l!="hum" && l!="tmpOut") stepped = true;
+      else                        stepped = false;
+
+      t.chart.data.datasets.push({
+        label: l,
+        data:  datiSpecifici,
+        borderColor: t.color[i],
+        backgroundColor: t.color[i],
+        yAxisID: yAxisID,
+        hidden: hidden,
+        stepped: stepped,
+        cubicInterpolationMode: !stepped ? 'monotone': '',
+
+        parsing: {
+          xAxisKey: t.labelX,
+          yAxisKey: l,
+        }
+      })
+      i++;
+    }
+  });
+}
+
+function aggData(t: any) {
+  i=0, j=0;
+  var legend = Object.keys(t.dati[0]);
+  var datiSpecifici: any;
+
+  legend.forEach((l: any) => {
+    if(l != t.labelX){
+      datiSpecifici=[];
+      for(j=0; j<t.dati.length; j++){
+        datiSpecifici.push(JSON.parse(`{
+          "x" : ${t.dati[j][t.labelX]},
+          "${l}" : ${typeof(t.dati[j][l])=="string" ? '"'+t.dati[j][l]+'"' : t.dati[j][l]}
+        }`));
+      }
+
+      t.chart.data.datasets.forEach((d:any)=>{
+        if(d.label == l)
+          d.data = datiSpecifici;
+      })
+      i++;
+    }
+  });
 }

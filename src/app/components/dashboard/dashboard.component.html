@@ -3,9 +3,12 @@
   <mat-progress-bar *ngIf="spinner==0" mode="indeterminate"></mat-progress-bar>
 
   <mat-toolbar-row>
-    <a style="display: flex" class="rounded-circle">
-      <img class="brand-logo" src="/favicon.ico" alt="favivon.io Logo">
-    </a>
+    <div style="display: flex" class="rounded-circle">
+      <img class="brand-logo" src="/favicon.ico" alt="favivon.io Logo"
+        matTooltip="Tino's App"
+        matTooltipClass="tooltip"
+        matTooltipPosition="below">
+    </div>
 
     <div class="spinner-container">
       <mat-spinner *ngIf="spinner==1"  strokeWidth="9"
@@ -14,7 +17,6 @@
         matTooltipPosition="below"></mat-spinner>
 
       <mat-icon *ngIf="spinner==2" color="primary"
-        aria-label="task_alt"
         matTooltip="All data is update"
         matTooltipClass="tooltip"
         matTooltipPosition="below"
@@ -74,11 +76,8 @@
 
   <div class="card">
     <div class="box-slider">
-      <!--<mat-slider step="0.5" max="30" min="16" discrete>
-        <input matSliderThumb type="range" [(ngModel)]="valueRange" (change)="changeTmp()">
-      </mat-slider>-->
 
-      <app-circular-slider [(valueRange)]="valueRange" (change)="changeTmp()" [disabled]="disabledGuage"></app-circular-slider>
+      <app-circular-slider [(valueRange)]="valueRange" (change)="changeTmp()" [disabled]="disabledGuage" [prev]="prev"></app-circular-slider>
 
       <div class="continer-button">
         <button mat-icon-button (click)="valueRange = valueRange - 0.5; changeTmp()" [disabled]="disabledGuage" aria-label="up">
@@ -91,14 +90,6 @@
     </div>
 
     <div class="box-radio">
-
-      <!--<mat-chip-listbox aria-label="Fish selection">
-        <mat-chip-option>One fish</mat-chip-option>
-        <mat-chip-option>Two fish</mat-chip-option>
-        <mat-chip-option color="accent" selected>Accent fish</mat-chip-option>
-        <mat-chip-option color="warn">Warn fish</mat-chip-option>
-      </mat-chip-listbox>-->
-
       <form>
         <button class="button_chip" mat-flat-button
           (click)="changeChip('auto')"
@@ -124,47 +115,17 @@
             {{InChart != undefined ? InChart[InChart.length - 1].tmp : ""}}°C
           </span>
         </p>
+        <!--<p *ngIf="prev != 0" style="margin: 0">
+          Time Prevision:
+          <span style="color: var(--mat-expansion-header-description-color)">
+            {{prev != undefined ? prev : ""}} min
+          </span>
+        </p>-->
       </div>
     </div>
   </div>
 
   <div class="card programmazione">
-    <!--<table mat-table [dataSource]="dataSource">
-
-      <!-- ora Column
-      <ng-container matColumnDef="Time">
-        <th mat-header-cell *matHeaderCellDef> Time </th>
-        <td mat-cell *matCellDef="let element"> {{element.ora}} </td>
-      </ng-container>
-
-      <!-- temp Column
-      <ng-container matColumnDef="Temp">
-        <th mat-header-cell *matHeaderCellDef> Temp </th>
-        <td mat-cell *matCellDef="let element"> {{element.temp}} </td>
-      </ng-container>
-
-      <!-- action Column
-      <ng-container matColumnDef="star" stickyEnd>
-        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-        <td mat-cell *matCellDef="let element">
-
-          <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
-                  [matMenuTriggerFor]="beforeDelete" [disabled]="disabled">
-            <mat-icon>more_vert</mat-icon>
-          </button>
-
-          <mat-menu #beforeDelete="matMenu" xPosition="before">
-            <button mat-menu-item (click)="this.firebaseService.setProg({ora: time_tino(element.ora), temp: null})">
-              <mat-icon>delete</mat-icon> Elimina
-            </button>
-          </mat-menu>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>-->
-
     <mat-accordion>
       <mat-expansion-panel disabled="true">
         <mat-expansion-panel-header>
@@ -217,86 +178,37 @@
   <div class="card">
     <h4 style="margin: 0">Outdoor</h4>
     <mat-accordion>
-      <mat-expansion-panel *ngFor="let e of outDoor" class="">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{e.type}}
-          </mat-panel-title>
-          <mat-panel-description>
-            {{e.value}}
-          </mat-panel-description>
-        </mat-expansion-panel-header>
+      <div *ngIf="outDoor!=null; then NotErrorOut else ErrorOut"></div>
+      <ng-template #NotErrorOut>
+        <mat-expansion-panel *ngFor="let e of outDoor" class="" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{e.type}}
+            </mat-panel-title>
+            <mat-panel-description>
+              {{e.valuePath}}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
 
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
-
-  <!--<div class="card">
-    <h4 style="margin: 0">Outdoor</h4>
-
-    <mat-accordion>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Temp:
-          </mat-panel-title>
-          <mat-panel-description>
-            {{OutChart != undefined ? OutChart[OutChart.length - 1].tmp : ""}}°C
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <ng-template matExpansionPanelContent>
-          <a href="https://tinotino.altervista.org/">link al grafico</a>
-        </ng-template>
-      </mat-expansion-panel>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Hum:
-          </mat-panel-title>
-          <mat-panel-description>
-            {{OutChart != undefined ? OutChart[OutChart.length - 1].hum : ""}}%
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <ng-template matExpansionPanelContent>
-          <a href="https://tinotino.altervista.org/">link al grafico</a>
-        </ng-template>
-      </mat-expansion-panel>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Pres:
-          </mat-panel-title>
-          <mat-panel-description>
-            {{OutChart != undefined ? OutChart[OutChart.length - 1].pres : ""}}hPa
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <ng-template matExpansionPanelContent>
-          <a href="https://tinotino.altervista.org/">link al grafico</a>
-        </ng-template>
-      </mat-expansion-panel>
-      <mat-expansion-panel>
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Batt:
-          </mat-panel-title>
-          <mat-panel-description>
-            {{OutChart != undefined ? OutChart[OutChart.length - 1].bat : ""}}V
-          </mat-panel-description>
-        </mat-expansion-panel-header>
-        <a href="https://tinotino.altervista.org/">link al grafico</a>
-      </mat-expansion-panel>
-    </mat-accordion>
-
-    <button mat-stroked-button (click)="setOutdoor(86400)" class="button_reload" [disabled]="disabled"
-      matTooltip="Reload"
-      matTooltipClass="tooltip"
-      matTooltipPosition="below">
+        </mat-expansion-panel>
+      </ng-template>
+      <button mat-stroked-button style="margin: auto 5%; width: 90%;" (click)="ngOnInit()">
         Last Date:
         <span style="color: var(--mat-expansion-header-description-color);">
-          {{(OutChart != undefined ? lastDate : "")}}
+          {{outDoor!=null ? outDoor[0].date : ""}}
         </span>
-    </button>
-  </div>-->
+      </button>
+      <ng-template #ErrorOut>
+        <div *ngIf="spinner!=0" style="
+          margin: auto;
+          color: var(--mat-expansion-header-description-color);
+          padding: 16px;">
+          Meteo not works :)
+        </div>
+      </ng-template>
+    </mat-accordion>
+
+  </div>
 
   <div class="card">
     <mat-accordion>
@@ -310,8 +222,8 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
       </mat-expansion-panel>
-      <div *ngIf="InError!=null; then Error else NotError"></div>
-      <ng-template #Error>
+      <div *ngIf="InError!=null; then NotError else Error"></div>
+      <ng-template #NotError>
         <mat-expansion-panel *ngFor="let e of InError" class="panel">
           <mat-expansion-panel-header>
             <mat-panel-title>
@@ -326,8 +238,8 @@
           {{e.msg}}
         </mat-expansion-panel>
       </ng-template>
-      <ng-template #NotError>
-        <div style="
+      <ng-template #Error>
+        <div *ngIf="spinner!=0" style="
           margin: auto;
           color: var(--mat-expansion-header-description-color);
           padding: 0 0 0 16px;">
@@ -337,22 +249,22 @@
     </mat-accordion>
   </div>
 
-
-
   <div class="card graph">
     <h4 style="margin: 0">Indoor</h4>
-    <app-line-chart code="Chart" [dati]="InChart" labelX="x"
-       labelY1="rele" color1="#4dc9f6" typeAxisY1="category"
-       labelY2="tmp"  color2="#f67019"
-       labelY3="des"  color3="#f53794"
-       labelY4="hum"  color4="#ffce56"></app-line-chart>
+    <app-line-chart
+        code="Chart"
+        [dati]="InChart"
+        labelX="x"
+        [color]="colorDefault"></app-line-chart>
   </div>
 
   <div class="card graph--big" >
     <h4 style="margin: 0">Historical</h4>
-    <app-column-chart code="historicalChart" [dati]="historicalChart" labelX="x"
-       labelY1="2022-2023" color1="#4dc9f6"
-       labelY2="2023-2024" color2="#f67019"></app-column-chart>
+    <app-column-chart
+        code="historicalChart"
+        [dati]="historicalChart"
+        labelX="x"
+        [color]="colorDefault"></app-column-chart>
   </div>
 
 </div>

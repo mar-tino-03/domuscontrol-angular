@@ -2,7 +2,7 @@
 
   <h3>Sign Up</h3>
 
-  <form #homeform="ngForm" class="form" (ngSubmit)="authService.SignIn(userEmail.value, userPassword.value)">
+  <form #homeform="ngForm" class="form">
 
     <mat-form-field appearance="outline" hideRequiredMarker=true>
       <mat-label>Email</mat-label>
@@ -12,14 +12,14 @@
     <mat-form-field appearance="outline" hideRequiredMarker=true>
       <mat-label>Password</mat-label>
       <input name="password" matInput required #userPassword [type]="hide ? 'password' : 'text'">
-      <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <button mat-icon-button type='button' color="primary" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
       </button>
     </mat-form-field>
 
     <!-- Calling SignIn Api from AuthService -->
 
-    <button mat-raised-button type="submit" color="primary">Login</button>
+    <button mat-raised-button color="primary" type='button' (click)="authService.SignUp(userEmail.value, userPassword.value)">Register</button>
   </form>
 
   <div class="formGroup">
@@ -30,7 +30,7 @@
   <div class="formGroup">
     <button
       type="button"
-      class=" googleBtn"
+      class="googleBtn"
       (click)="authService.GoogleAuth()"
       mat-stroked-button
     >
@@ -39,7 +39,7 @@
     </button>
   </div>
 
-<div class="redirectToLogin">
-  <span>Already have an account? <span class="redirect" routerLink="/login">Sign In</span></span>
-</div>
+  <div class="redirectToLogin">
+    <span>Already have an account? <span class="redirect" routerLink="/login">Sign In</span></span>
+  </div>
 </div>

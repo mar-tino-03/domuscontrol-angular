@@ -140,19 +140,18 @@ mat-toolbar{
 }
 @media (max-width: 890px){
   .graph{
-    grid-row: 4 / 5;
+    grid-row: 3 / 4;
   }
 }
 @media (max-width: 599px){
   .graph{
-    grid-column-start: 1;
-    grid-column-end: 1;
+    grid-column: 1 / 1;
+    grid-row: 4 / 5;
   }
 }
 
 .graph--big{
-  grid-column-start: 1;
-  grid-column-end: 4
+  grid-column: 1 / 4;
 }
 @media (max-width: 890px){
   .graph--big{
