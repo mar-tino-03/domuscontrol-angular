@@ -49,13 +49,14 @@
       <mat-menu #beforeMenu="matMenu" xPosition="before">
         <div class="info-menu">
 
-          <img *ngIf="user.photoURL!=null; else img2" class="rounded-circle" style="height: 62px;" src="{{user.photoURL}}" alt="{{user.displayName}}">
+          <span style="margin-bottom: 14px; color: var(--mat-expansion-header-description-color)">{{user.email}}</span>
+
+          <img *ngIf="user.photoURL!=null; else img2" class="rounded-circle" style="height: 74px;" src="{{user.photoURL}}" alt="{{user.displayName}}">
           <ng-template #img2>
             <mat-icon class="rounded-circle" style="font-size: 62px; color: var(--text-dark); height: 62px;width: 62px;">account_circle</mat-icon>
           </ng-template>
 
-          <p>{{user.displayName ? user.displayName : 'User'}}</p>
-          <p>{{user.email}}</p>
+          <span style="margin: 8px 0px; font-size: large;">Ciao {{user.displayName ? user.displayName.split(" ")[0] : 'User'}}</span>
           <!--<p >User ID: <strong>{{user.uid}}</strong></p>-->
         </div>
         <button mat-menu-item>
@@ -262,7 +263,7 @@
     <h4 style="margin: 0">Historical</h4>
     <app-column-chart
         code="historicalChart"
-        [dati]="historicalChart"
+        [dati]="historical | getHistoricalChart"
         labelX="x"
         [color]="colorDefault"></app-column-chart>
   </div>

@@ -45,6 +45,12 @@ mat-toolbar{
   text-align: left !important;
 }
 
+::ng-deep .mat-mdc-menu-panel{
+  background-color: var(--bg-card) !important;
+  box-shadow: 1px 4px 10px 3px rgb(0 0 0 / 10%) !important;
+  border-radius: 10px !important;
+}
+
 .container-fluid{
   padding-top: 80px;
   margin: 0px auto;

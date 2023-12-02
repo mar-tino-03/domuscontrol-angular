@@ -1,4 +1,4 @@
-import { Component, HostListener, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { Meta } from '@angular/platform-browser';
 import { AuthService } from '../../shared/services/auth.service';
 import { FirebaseService } from '../../shared/services/firebase.service';
@@ -6,12 +6,14 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angu
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-import { animate, animation, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { openMeteoService } from 'src/app/shared/services/open_meteo.service';
+declare var brain:any;
+//const brain = require('brain.js');
 
 const fadeInWidth = trigger('fadeInWidth',[
   transition(':enter', [
@@ -56,6 +58,12 @@ const fadeInOpacity = trigger('fadeInOpacity',[
 })
 export class DashboardComponent implements OnInit {
   colorDefault = [ "#4dc9f6", "#f67019", "#f53794", "#ffce56", "#9966ff", "#4bc0c0" ];
+
+  //termostato = {value: null, historical: null};
+  historical!: {};
+  datalog!: {};
+  settings: any;
+  brainlog: any;
 
   valueRange!: number;
   mod!: string;
@@ -108,19 +116,28 @@ export class DashboardComponent implements OnInit {
 
     this.firebaseService.onChange().subscribe({
       next: (termostato: any) => {
+
+        if(true)
+          this.historical = termostato.historical;
+        if(true)
+          this.datalog = termostato.value.datalog;
+        if(true)
+          this.settings = termostato.value.settings;
+        if(true)
+          this.brainlog = termostato.brainlog;
+
         this.disabled = false;
         this.disabledGuage = false;
         this._snackBar.dismiss();
-        var set = termostato.value.settings;
-        if(set!=null){
-          setTemp(this, set.temp, set.mod, termostato.value.datalog);
-          setMod(this, set.mod);
-          setProg(this, set.programmazione);
-          this.prev = calcPrev(this, set.previsione, termostato.value.datalog);
-          setSpinner(this, set.timestamp, termostato.value.datalog);
-          this.InChart = setDatalog(this,termostato.value.datalog);
-          this.InError = setError(termostato.value.datalog);
-          this.historicalChart = setHistorical(termostato.historical);
+        if(this.settings != null && this.datalog!=null){
+          setTemp(this, this.settings.temp, this.settings.mod, termostato.value.datalog);
+          setMod(this, this.settings.mod);
+          setProg(this, this.settings.programmazione);
+          this.prev = calcPrev(this.brainlog, this.datalog, this.openMeteo);
+          setSpinner(this, this.settings.timestamp, termostato.value.datalog);
+          this.InError = setError(this.datalog);
+          this.InChart = setDatalog(this.openMeteo, this.datalog);
+          //this.historicalChart = setHistorical(termostato.historical);
           this.outDoor = getOpenMeteo(this.openMeteo, new Date());
         }
       },
@@ -364,12 +381,12 @@ function setSpinner(t: any, time: number, data: any) {
   }
 }
 
-function setDatalog(t: any, data: any) {
+function setDatalog(meteo: any, data: any) {
 
   k = Object.keys(data);
   var tempOut;
   return k.map((elem: any)=>{
-    tempOut = getOpenMeteo(t.openMeteo, new Date(data[elem].timestamp));
+    tempOut = getOpenMeteo(meteo, new Date(data[elem].timestamp));
     return {
       x: data[elem].timestamp,
       rele: data[elem].rele ? "ON" : "OFF",
@@ -408,15 +425,16 @@ function setError(data: any) {
     return null;
   return array;
 }
-
+/*
 function setHistorical(data: any){
 
   var date = Object.keys(data);
+  var chart = data;
 
   for (let i = 0; i < date.length; i++) {
     var k = Object.keys(data[date[i]]);
     var h: Date;
-    data[date[i]] = k.map((elem: any)=>{
+    chart[date[i]] = k.map((elem: any)=>{
       h = new Date(Number(elem))
       return JSON.parse(`{
         "x": ${h.getMonth() > 6 ? h.setFullYear(1970) : h.setFullYear(1971)},
@@ -424,8 +442,8 @@ function setHistorical(data: any){
       }`)
     });
   }
-  return data;
-}
+  return chart;
+}*/
 
 function getOpenMeteo(data: any, time: Date) : any {
 
@@ -468,11 +486,20 @@ function getOpenMeteo(data: any, time: Date) : any {
   return dati;
 }
 
-function calcPrev(t: any, param: any, data:any): number{
-  var k = Object.keys(data);
-  if(data[k[k.length-1]].rele == 0)
+function calcPrev(brainlog: any, datalog: any, meteo:any): number{
+  var k = Object.keys(datalog);
+  var param = {
+    "Temp Inizio (°C)":   datalog[k[k.length-1]].tmp /brainlog.INPUTFACTOR ,
+    "Temp Fine (°C)":     datalog[k[k.length-1]].des/brainlog.INPUTFACTOR ,
+    "Temp Esterna (°C)":  getOpenMeteo(meteo, new Date())[0].value/brainlog.INPUTFACTOR ,
+    "Vento (km/h)":       getOpenMeteo(meteo, new Date())[3].value/brainlog.INPUTFACTOR
+  }
+  if(datalog[k[k.length-1]].rele == 0)
     return 0;
-  return Number((((data[k[k.length-1]].tmp-getOpenMeteo(t.openMeteo, new Date())[0].value)*param.m + param.q) * (data[k[k.length-1]].des - data[k[k.length-1]].tmp)).toFixed(0))
+
+  const net = new brain.NeuralNetwork();
+  net.fromJSON(JSON.parse(brainlog.json));
+  return Number((net.run(param)["Tempo Impiegato (min)"]*brainlog.OUTPUTFACTOR).toFixed(0));
 }
 
 
@@ -489,3 +516,21 @@ function tino_time(time: number): string{
   const min = String((time / 60) % 60).padStart(2, '0');
   return ora + ':' + min;
 }
+
+/*
+function cloneObject(target: any, s: any) {
+  var source = s
+  if (!source || !target || typeof source !== "object" || typeof target !== "object")
+      throw new TypeError("Invalid argument");
+
+  for (var p in source)
+      if (source.hasOwnProperty(p))
+          if (source[p] && typeof source[p] === "object")
+              if (target[p] && typeof target[p] === "object")
+                  cloneObject(target[p], source[p]);
+              else
+                  target[p] = source[p];
+          else
+              target[p] = source[p];
+}
+*/

@@ -51,6 +51,7 @@ import { CircularSliderComponent } from './components/dashboard/circular-slider/
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { ColumnChartComponent } from './components/dashboard/column-chart/column-chart.component';
+import { GetHistoricalChartPipe } from './pipe/get-historical-chart.pipe';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { ColumnChartComponent } from './components/dashboard/column-chart/column
     CircularSliderComponent,
     PageNotFoundComponent,
     ColumnChartComponent,
+    GetHistoricalChartPipe,
   ],
   imports: [
     BrowserModule,
