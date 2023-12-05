@@ -78,7 +78,7 @@
   <div class="card">
     <div class="box-slider">
 
-      <app-circular-slider [(valueRange)]="valueRange" (change)="changeTmp()" [disabled]="disabledGuage" [prev]="prev"></app-circular-slider>
+      <app-circular-slider [(valueRange)]="valueRange" (change)="changeTmp()" [disabled]="disabledGuage" [prev]="prev | getPrev"></app-circular-slider>
 
       <div class="continer-button">
         <button mat-icon-button (click)="valueRange = valueRange - 0.5; changeTmp()" [disabled]="disabledGuage" aria-label="up">
@@ -116,13 +116,8 @@
             {{InChart != undefined ? InChart[InChart.length - 1].tmp : ""}}°C
           </span>
         </p>
-        <!--<p *ngIf="prev != 0" style="margin: 0">
-          Time Prevision:
-          <span style="color: var(--mat-expansion-header-description-color)">
-            {{prev != undefined ? prev : ""}} min
-          </span>
-        </p>-->
       </div>
+
     </div>
   </div>
 
@@ -180,25 +175,20 @@
     <h4 style="margin: 0">Outdoor</h4>
     <mat-accordion>
       <div *ngIf="outDoor!=null; then NotErrorOut else ErrorOut"></div>
-      <ng-template #NotErrorOut>
-        <mat-expansion-panel *ngFor="let e of outDoor" class="" hideToggle>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              {{e.type}}
-            </mat-panel-title>
-            <mat-panel-description>
-              {{e.valuePath}}
-            </mat-panel-description>
-          </mat-expansion-panel-header>
 
-        </mat-expansion-panel>
+      <ng-template #NotErrorOut>
+        <div *ngFor="let e of outDoor">
+          <explaining-panel [dati]="{first: e.type, second: e.valuePath}"></explaining-panel>
+        </div>
       </ng-template>
+
       <button mat-stroked-button style="margin: auto 5%; width: 90%;" (click)="ngOnInit()">
         Last Date:
         <span style="color: var(--mat-expansion-header-description-color);">
           {{outDoor!=null ? outDoor[0].date : ""}}
         </span>
       </button>
+
       <ng-template #ErrorOut>
         <div *ngIf="spinner!=0" style="
           margin: auto;
@@ -207,6 +197,7 @@
           Meteo not works :)
         </div>
       </ng-template>
+
     </mat-accordion>
 
   </div>

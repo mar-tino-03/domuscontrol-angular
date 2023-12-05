@@ -12,8 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { openMeteoService } from 'src/app/shared/services/open_meteo.service';
-declare var brain:any;
-//const brain = require('brain.js');
+declare var brain: any;
 
 const fadeInWidth = trigger('fadeInWidth',[
   transition(':enter', [
@@ -368,7 +367,6 @@ function setProg(t: any, prog: any) {
   })
 }
 
-
 function setSpinner(t: any, time: number, data: any) {
   try {
     k = Object.keys(data);
@@ -490,10 +488,18 @@ function calcPrev(brainlog: any, datalog: any, meteo:any): number{
   var k = Object.keys(datalog);
   var param = {
     "Temp Inizio (°C)":   datalog[k[k.length-1]].tmp /brainlog.INPUTFACTOR ,
-    "Temp Fine (°C)":     datalog[k[k.length-1]].des/brainlog.INPUTFACTOR ,
-    "Temp Esterna (°C)":  getOpenMeteo(meteo, new Date())[0].value/brainlog.INPUTFACTOR ,
-    "Vento (km/h)":       getOpenMeteo(meteo, new Date())[3].value/brainlog.INPUTFACTOR
+    "Temp Fine (°C)":     (datalog[k[k.length-1]].des+0.5) /brainlog.INPUTFACTOR ,
+    "Temp Esterna (°C)":  getOpenMeteo(meteo, new Date())[0].value /brainlog.INPUTFACTOR ,
+    "Vento (km/h)":       getOpenMeteo(meteo, new Date())[3].value /brainlog.INPUTFACTOR
   }
+
+  /*var param = {
+    "Temp Inizio (°C)":   21 /brainlog.INPUTFACTOR ,
+    "Temp Fine (°C)":     22.5 /brainlog.INPUTFACTOR ,
+    "Temp Esterna (°C)":  getOpenMeteo(meteo, new Date())[0].value /brainlog.INPUTFACTOR ,
+    "Vento (km/h)":       getOpenMeteo(meteo, new Date())[3].value /brainlog.INPUTFACTOR
+  }*/
+
   if(datalog[k[k.length-1]].rele == 0)
     return 0;
 
@@ -516,21 +522,3 @@ function tino_time(time: number): string{
   const min = String((time / 60) % 60).padStart(2, '0');
   return ora + ':' + min;
 }
-
-/*
-function cloneObject(target: any, s: any) {
-  var source = s
-  if (!source || !target || typeof source !== "object" || typeof target !== "object")
-      throw new TypeError("Invalid argument");
-
-  for (var p in source)
-      if (source.hasOwnProperty(p))
-          if (source[p] && typeof source[p] === "object")
-              if (target[p] && typeof target[p] === "object")
-                  cloneObject(target[p], source[p]);
-              else
-                  target[p] = source[p];
-          else
-              target[p] = source[p];
-}
-*/

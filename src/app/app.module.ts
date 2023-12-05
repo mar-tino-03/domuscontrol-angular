@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { LineChartComponent } from './components/dashboard/line-chart/line-chart.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { SignInComponent } from './components/sign-in/sign-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
@@ -50,8 +49,11 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { CircularSliderComponent } from './components/dashboard/circular-slider/circular-slider.component';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { ExplainingPanelComponent } from './components/dashboard/explaining-panel/explaining-panel.component';
+import { LineChartComponent } from './components/dashboard/line-chart/line-chart.component';
 import { ColumnChartComponent } from './components/dashboard/column-chart/column-chart.component';
 import { GetHistoricalChartPipe } from './pipe/get-historical-chart.pipe';
+import { GetPrevPipe } from './pipe/get-prev.pipe';
 
 @NgModule({
   declarations: [
@@ -70,15 +72,18 @@ import { GetHistoricalChartPipe } from './pipe/get-historical-chart.pipe';
     DialogPwaComponent,*/
 
     DashboardComponent,
-    LineChartComponent,
     ForgotPasswordComponent,
     SignInComponent,
     SignUpComponent,
     VerifyEmailComponent,
     CircularSliderComponent,
     PageNotFoundComponent,
+    ExplainingPanelComponent,
+    LineChartComponent,
     ColumnChartComponent,
+
     GetHistoricalChartPipe,
+    GetPrevPipe
   ],
   imports: [
     BrowserModule,

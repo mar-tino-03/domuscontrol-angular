@@ -1,0 +1,26 @@
+.element{
+  padding: 0px 16px;
+  height: 52px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+span{
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.label{
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 0;
+  margin-right: 16px;
+  align-items: center;
+}
+
+.gray{
+  color: var(--mat-expansion-header-description-color);
+}

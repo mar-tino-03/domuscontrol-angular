@@ -14,7 +14,7 @@ var prev=0;
 export class CircularSliderComponent implements OnInit{
   @Input() valueRange!: number;
   @Input() disabled!: boolean;
-  @Input() prev!: number;
+  @Input() prev!: String;
   @Output() valueRangeChange = new EventEmitter();
   @Output() change = new EventEmitter();
 
@@ -60,9 +60,10 @@ export class CircularSliderComponent implements OnInit{
       tooltipFormat: function (e:any) {
         var val = e.value.toString();
         if (!(e.value * 10 % 10)) { val = val + ".0"; }
-        return `<p style="font-size: 1.55em; margin:0;">` + "heating" + "</p>" +
-               `<p style="font-size: 2.3em;  margin:0;">` + val + "°</p>" +
-               `<p style="font-size: 1.35em; margin:0;">` + prev + " min to" + "</p>";
+        //console.log(prev)
+        return `<div style="font-size: 1.55em; display: flex;justify-content: center;">` + "heating" + "</div>" +
+               `<div style="font-size: 2.3em;  display: flex;justify-content: center;">` + val + "°</div>" +
+               `<div style="font-size: 1.35em; display: flex;justify-content: center;">` + prev + " to" + "</div>";
       }
     });
   }
