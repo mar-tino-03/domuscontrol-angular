@@ -225,9 +225,15 @@
               {{e.data_short}}
             </mat-panel-description>
           </mat-expansion-panel-header>
-          {{e.data_long}}
-          <br><br>
-          {{e.msg}}
+          <Span>{{e.data_long}}</Span>
+          <p>{{e.msg}}</p>
+
+          <button mat-icon-button [disabled]="disabledGuage"
+            aria-label="delete"
+            style="position: absolute; top: 48px; right: 0;"
+            (click)="this.firebaseService.deleteError(e.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </mat-expansion-panel>
       </ng-template>
       <ng-template #Error>

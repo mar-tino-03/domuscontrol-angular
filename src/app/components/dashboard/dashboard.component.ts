@@ -91,7 +91,7 @@ export class DashboardComponent implements OnInit {
     private _snackBar: MatSnackBar,
   ) {}
 
-  ngOnInit(){
+  ngOnInit(): void{
     this.meta.removeTag('name=description');
     this.meta.removeTag('name=keywords');
     this.meta.addTags([
@@ -406,8 +406,22 @@ function setError(data: any) {
   var type;
   while(i >= 0){
     if(data[k[i]].msg != null){
-      type = data[k[i]].msg != "External System" ? "Error" : "Reset";
+      switch (data[k[i]].msg) {
+        case "External System":
+          type = "Reset";
+          break;
+        case "Software/System restart":
+          type = "Reset";
+          break;
+        case "Wifi Connect":
+          type = "Wifi";
+          break;
+        default:
+          type = "Error";
+          break;
+      }
       array.push({
+        id: data[k[i]].LocalTime,
         msg: data[k[i]].msg,
         type: type,
         data_long: new Date(data[k[i]].timestamp).toLocaleString(),
@@ -486,22 +500,24 @@ function getOpenMeteo(data: any, time: Date) : any {
 
 function calcPrev(brainlog: any, datalog: any, meteo:any): number{
   var k = Object.keys(datalog);
+  if(datalog[k[k.length-1]].rele == 0)
+    return 0;
+
+  var tempOut = getOpenMeteo(meteo, new Date())[0].value;
+  var windOut = getOpenMeteo(meteo, new Date())[3].value;
   var param = {
     "Temp Inizio (°C)":   datalog[k[k.length-1]].tmp /brainlog.INPUTFACTOR ,
     "Temp Fine (°C)":     (datalog[k[k.length-1]].des+0.5) /brainlog.INPUTFACTOR ,
-    "Temp Esterna (°C)":  getOpenMeteo(meteo, new Date())[0].value /brainlog.INPUTFACTOR ,
-    "Vento (km/h)":       getOpenMeteo(meteo, new Date())[3].value /brainlog.INPUTFACTOR
+    "Temp Esterna (°C)":  tempOut>0 ? tempOut : 0 /brainlog.INPUTFACTOR ,
+    "Vento (km/h)":       windOut>0 ? windOut : 0 /brainlog.INPUTFACTOR
   }
 
-  /*var param = {
+  /*param = {
     "Temp Inizio (°C)":   21 /brainlog.INPUTFACTOR ,
-    "Temp Fine (°C)":     22.5 /brainlog.INPUTFACTOR ,
+    "Temp Fine (°C)":     22 /brainlog.INPUTFACTOR ,
     "Temp Esterna (°C)":  getOpenMeteo(meteo, new Date())[0].value /brainlog.INPUTFACTOR ,
     "Vento (km/h)":       getOpenMeteo(meteo, new Date())[3].value /brainlog.INPUTFACTOR
   }*/
-
-  if(datalog[k[k.length-1]].rele == 0)
-    return 0;
 
   const net = new brain.NeuralNetwork();
   net.fromJSON(JSON.parse(brainlog.json));

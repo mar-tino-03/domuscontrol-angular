@@ -68,6 +68,11 @@ export class FirebaseService {
     this.set.update({"timestamp": {".sv" : "timestamp"}});
   }
 
+  deleteError(id: number){
+    //console.log(id);
+    this.db.object('termostato/value/datalog/'+id).set({"msg": null});
+  }
+
   onChange(): Observable<unknown>{
     return this.data.valueChanges().pipe(
       takeUntil(this.unsubscribe)

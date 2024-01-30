@@ -21,6 +21,7 @@ export class GetHistoricalChartPipe implements PipeTransform {
       var h: Date;
       this.chart[this.date[i]] = k.map((elem: any)=>{
         h = new Date(Number(elem))
+        h.setHours(0);
         return JSON.parse(`{
           "x": ${h.getMonth() > 6 ? h.setFullYear(1970) : h.setFullYear(1971)},
           "${this.date[i]}": ${this.chart[this.date[i]][elem][this.date[i]] / 864000}

@@ -44,13 +44,12 @@ export class ColumnChartComponent implements OnInit{
   createChart() {
     this.chart = new Chart(this.code, {
       type: 'bar',
-      options: {
+      options:{
         normalized: true,
         maintainAspectRatio: false,
         scales: {
           x: {
             type: 'time',
-            stacked: true,
             time: {
               unit: 'week',
               displayFormats: {
@@ -73,11 +72,12 @@ export class ColumnChartComponent implements OnInit{
                 return {}
               }
             }
+            //stacked: true,
           },
           y: {
-              type: 'linear',
-              position: 'left',
-              stacked: true,
+            type: 'linear',
+            position: 'left',
+            //stacked: true,
           }
         },
         parsing: false,
@@ -99,6 +99,7 @@ export class ColumnChartComponent implements OnInit{
             }
           },
         },
+        //responsive: true,
       },
 
       data: {
@@ -129,14 +130,14 @@ function addData(t: any) {
   i=0;
   date = Object.keys(t.dati);
 
-  //console.log(date);
-
   date.forEach((d: any) => {
     t.chart.data.datasets.push({
       label: d,
       data:  t.dati[String(date[i])],
       borderColor: t.color[i],
       backgroundColor: t.color[i],
+      //categoryPercentage: 1.0,
+      //barPercentage: 0.5,
 
       parsing: {
         xAxisKey: t.labelX,
