@@ -78,7 +78,12 @@
   <div class="card">
     <div class="box-slider">
 
-      <app-circular-slider [(valueRange)]="valueRange" (change)="changeTmp()" [disabled]="disabledGuage" [prev]="prev | getPrev"></app-circular-slider>
+      <app-circular-slider
+        [(valueRange)]="valueRange"
+        [target] = "InChart != undefined ? InChart[InChart.length - 1].tmp : null"
+        (change)="changeTmp()"
+        [disabled]="disabledGuage"
+        [prev]="prev | getPrev"></app-circular-slider>
 
       <div class="continer-button">
         <button mat-icon-button (click)="valueRange = valueRange - 0.5; changeTmp()" [disabled]="disabledGuage" aria-label="up">

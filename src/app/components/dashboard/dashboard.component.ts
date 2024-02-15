@@ -506,10 +506,10 @@ function calcPrev(brainlog: any, datalog: any, meteo:any): number{
   var tempOut = getOpenMeteo(meteo, new Date())[0].value;
   var windOut = getOpenMeteo(meteo, new Date())[3].value;
   var param = {
-    "Temp Inizio (°C)":   datalog[k[k.length-1]].tmp /brainlog.INPUTFACTOR ,
-    "Temp Fine (°C)":     (datalog[k[k.length-1]].des+0.5) /brainlog.INPUTFACTOR ,
-    "Temp Esterna (°C)":  tempOut>0 ? tempOut : 0 /brainlog.INPUTFACTOR ,
-    "Vento (km/h)":       windOut>0 ? windOut : 0 /brainlog.INPUTFACTOR
+    "Temp Inizio (°C)":   (datalog[k[k.length-1]].tmp) / brainlog.INPUTFACTOR,
+    "Temp Fine (°C)":     (datalog[k[k.length-1]].des+0.5) / brainlog.INPUTFACTOR,
+    "Temp Esterna (°C)":  (tempOut>0 ? tempOut : 0) / brainlog.INPUTFACTOR,
+    "Vento (km/h)":       (windOut>0 ? windOut : 0) / brainlog.INPUTFACTOR
   }
 
   /*param = {
@@ -518,10 +518,17 @@ function calcPrev(brainlog: any, datalog: any, meteo:any): number{
     "Temp Esterna (°C)":  getOpenMeteo(meteo, new Date())[0].value /brainlog.INPUTFACTOR ,
     "Vento (km/h)":       getOpenMeteo(meteo, new Date())[3].value /brainlog.INPUTFACTOR
   }*/
+  try {
 
-  const net = new brain.NeuralNetwork();
-  net.fromJSON(JSON.parse(brainlog.json));
-  return Number((net.run(param)["Tempo Impiegato (min)"]*brainlog.OUTPUTFACTOR).toFixed(0));
+    const net = new brain.NeuralNetwork();
+    net.fromJSON(JSON.parse(brainlog.json));
+    //console.log(param, net.run(param)["Tempo Impiegato (min)"])
+    return Number((net.run(param)["Tempo Impiegato (min)"]*brainlog.OUTPUTFACTOR).toFixed(0));
+  } catch (error) {
+    console.error("rete neurale non corretta!");
+    return 0;
+  }
+
 }
 
 

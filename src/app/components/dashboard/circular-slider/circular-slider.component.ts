@@ -13,6 +13,7 @@ var prev=0;
 })
 export class CircularSliderComponent implements OnInit{
   @Input() valueRange!: number;
+  @Input() target!: number;
   @Input() disabled!: boolean;
   @Input() prev!: String;
   @Output() valueRangeChange = new EventEmitter();
@@ -43,6 +44,12 @@ export class CircularSliderComponent implements OnInit{
       //sliderType: "min-range",
       lineCap: "round",
 
+      rangeColor: '#FF210D',
+      handleColor: '#FF210D',
+      borderColor: '#F2E3DF',
+      pathColor: '#F2E3DF',
+
+
       /*  event  */
       //beforeCreate: "traceEvent",
       // create: "traceEvent",
@@ -69,8 +76,13 @@ export class CircularSliderComponent implements OnInit{
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes['valueRange']!=undefined && changes['valueRange'].currentValue != undefined)
+    if(changes['valueRange']!=undefined && changes['valueRange'].currentValue != undefined){
       $("#slider").data("roundSlider").setValue(changes['valueRange'].currentValue);
+    }
+
+    if(changes['target']!=undefined && changes['target'].currentValue != undefined){
+      $("#slider").data("roundSlider").setTarget(changes['target'].currentValue);
+    }
 
     if(changes['disabled']!=undefined && changes['disabled'].currentValue != undefined){
       setTimeout( () => {

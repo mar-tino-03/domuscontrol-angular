@@ -30,9 +30,14 @@
             ],
             "styles": [
               "src/theme.scss",
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/roundsliderTino.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/jquery-3.4.1.min.js",
+              "src/assets/roundsliderTino.js",
+              "src/assets/brain.js"
+            ],
             "serviceWorker": true,
             "ngswConfigPath": "ngsw-config.json"
           },
