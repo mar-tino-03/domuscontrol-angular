@@ -1,13 +1,14 @@
 /*!
-* round-slider v{VERSION}
+* round-slider v2.0.0-alpha
 *
 * @website http://roundsliderui.com/
-* @copyright (c) 2015-{YEAR} Soundar
+* @copyright (c) 2015-2022 Soundar
 * @license MIT
 */
 
 .rs-ie, .rs-edge, .rs-handle {
-  touch-action: none;
+  -ms-touch-action: none;
+      touch-action: none;
 }
 .rs-control { position: relative; outline: 0 none; }
 .rs-container { position: relative; }
@@ -18,15 +19,21 @@
   transition: all 0.5s linear 0s;
 }
 .rs-bar {
-  transform-origin: 100% 50%;
+  -webkit-transform-origin: 100% 50%;
+      -ms-transform-origin: 100% 50%;
+          transform-origin: 100% 50%;
 }
 .rs-control .rs-split .rs-path,
 .rs-control .rs-overlay1,
 .rs-control .rs-overlay2 {
-  transform-origin: 50% 100%;
+  -webkit-transform-origin: 50% 100%;
+      -ms-transform-origin: 50% 100%;
+          transform-origin: 50% 100%;
 }
 .rs-control .rs-overlay {
-  transform-origin: 100% 100%;
+  -webkit-transform-origin: 100% 100%;
+      -ms-transform-origin: 100% 100%;
+          transform-origin: 100% 100%;
 }
 .rs-rounded .rs-seperator, .rs-split .rs-path {
   background-clip: padding-box;
@@ -154,14 +161,20 @@
 .rs-tooltip.rs-center { margin: 0px !important; }
 .rs-half.rs-top .rs-tooltip.rs-center,
 .rs-half.rs-bottom .rs-tooltip.rs-center {
-  transform: translate(-50%, 0px);
+  -webkit-transform: translate(-50%, 0px);
+      -ms-transform: translate(-50%, 0px);
+          transform: translate(-50%, 0px);
 }
 .rs-half.rs-left .rs-tooltip.rs-center,
 .rs-half.rs-right .rs-tooltip.rs-center {
-  transform: translate(0px, -50%);
+  -webkit-transform: translate(0px, -50%);
+      -ms-transform: translate(0px, -50%);
+          transform: translate(0px, -50%);
 }
 .rs-full .rs-tooltip.rs-center {
-  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 .rs-tooltip.rs-reset { margin: 0px !important; top: 0px !important; left: 0px !important; }
 
@@ -169,9 +182,12 @@
 .rs-handle {
   cursor: move;
   border-radius: 1000px; outline: 0 none; float: left;
+  display: -ms-flexbox;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
 }
 .rs-control.rs-dragging .rs-handle,
 .rs-container.rs-readonly .rs-handle { cursor: default; }
@@ -196,4 +212,13 @@
 /*** SVG mode - theming - colors ***/
 .rs-path-inherited .rs-path {
   opacity: 0.25;
+}
+
+.rs-target{
+  height: 0px;
+  width: 0px;
+  border: 7px solid transparent;
+  border-right: 11px solid #54BBE0;
+  margin: -7.5px 0px 0px 4.5px;
+  background-color: transparent;
 }

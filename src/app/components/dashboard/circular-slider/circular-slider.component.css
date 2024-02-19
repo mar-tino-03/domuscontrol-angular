@@ -5,16 +5,6 @@
   font-weight: 700;
   text-align: left;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  color: var(--text-dark);
 }
 
 .rs-control{height: 160px !important; z-index: 0;}
-
-.rs-target{
-  height: 0px;
-  width: 0px;
-  border: 7px solid transparent;
-  border-right: 11px solid var(--text-dark);
-  margin: -7.5px 0px 0px 4.5px;
-  background-color: transparent;
-}

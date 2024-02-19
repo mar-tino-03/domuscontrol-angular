@@ -37,7 +37,6 @@ export class CircularSliderComponent implements OnInit{
       max: "36",
       step: "0.5",
 
-      //handleShape: "dot",
       //mouseScrollAction: true,
       //value: "29",
       editableTooltip: false,
@@ -48,7 +47,8 @@ export class CircularSliderComponent implements OnInit{
       handleColor: '#FF210D',
       borderColor: '#F2E3DF',
       pathColor: '#F2E3DF',
-
+      targetColor: '#274C77',
+      tooltipColor: '#274C77',
 
       /*  event  */
       //beforeCreate: "traceEvent",

@@ -67,6 +67,7 @@
           sliderType: "min-range",
           circleShape: "full",
           handleShape: "round",
+          targetShape: "triangle",
           // the 'startValue' property decides at which point the slider should start.
           // otherwise, by default the slider starts with min value. this is mainly used
           // for min-range slider, where you can customize the min-range start position.
@@ -220,6 +221,7 @@
       _setProperties: function () {
           var options = this.options;
           this._setHandleShape();
+          this._setTargetShape();
           this._addAnimation();
           this._appendTooltip();
           if (!options.showTooltip) this._removeTooltip();
@@ -344,6 +346,18 @@
 
           this._setHandleColor();
       },
+      _setTargetShape: function (preShape) {
+          var o = this.options, shape = o.targetShape, prefix = "rs-target-", allTargets = this._targets();
+
+          allTargets
+              .removeClass(prefix + preShape)
+              .addClass(prefix + shape);
+
+          //if (shape == "dot") allTargets.append(this._createElement("div." + prefix + shape + "-inner"));
+          //else allTargets.empty();
+
+          this._setTargetColor();
+      },
       _setHandleColor: function () {
           var o = this.options, handleColor = o.handleColor || "", shape = o.handleShape, allHandles = this._handles();
           if (handleColor == "inherit") handleColor = o.rangeColor;
@@ -356,6 +370,18 @@
           else {
               allHandles
                   .css({ "border-color": "", "background": handleColor });
+          }
+      },
+      _setTargetColor: function () {
+          var o = this.options, targetColor = o.targetColor || "", shape = o.targetShape, allTargets = this._targets();
+          if (targetColor == "inherit") targetColor = o.rangeColor;
+          if (shape == "triangle") {
+              allTargets
+                  .css({ "border-right-color": targetColor, "background": "" });
+          }
+          else {
+              allTargets
+                  .css({ "border-color": "", "background": targetColor });
           }
       },
       _addAnimation: function () {
@@ -546,7 +572,7 @@
           return this.container.children("div.rs-bar");
       },
       _targetBars: function () {
-          return this.container.children("div.rs-tar");
+          return this.container.children("div.rs-bar");
       },
       _handles: function () {
           return this._handleBars().find(".rs-handle");
@@ -1132,6 +1158,7 @@
           }
 
           this._setHandleColor();
+          this._setTargetColor();
       },
       _moveSliderRange: function (isInit) {
           if (!this._showRange) return;
@@ -1190,7 +1217,7 @@
           return this._hasProperty(property, svgRelatedProps);
       },
       _isPropsRelatedToSVGStyles: function (property) {
-          var svgStylesRelatedProps = ["borderColor", "pathColor", "rangeColor", "handleColor"];
+          var svgStylesRelatedProps = ["borderColor", "pathColor", "rangeColor", "handleColor", "targetColor"];
           return this._hasProperty(property, svgStylesRelatedProps);
       },
       _hasProperty: function (property, list) {
