@@ -12,6 +12,7 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js'
+import { timeout } from 'rxjs';
 
 Chart.register(
   BarController,
@@ -24,7 +25,7 @@ Chart.register(
 );
 
 var mounthBold: any[] = [];
-var FIRST = true;
+var FIRST = false;
 var i: number, date: String[];
 
 @Component({
@@ -32,7 +33,7 @@ var i: number, date: String[];
   templateUrl: './column-chart.component.html',
   styleUrls: ['./column-chart.component.css']
 })
-export class ColumnChartComponent implements OnInit{
+export class ColumnChartComponent{
   @Input() dati: any;
   @Input() code!: string;
   @Input() labelX!: string;
@@ -101,27 +102,35 @@ export class ColumnChartComponent implements OnInit{
         },
         //responsive: true,
       },
-
       data: {
         datasets: [],
       },
     });
   }
 
-  ngOnInit(): void {
-    $(".chart-container").animate({scrollLeft: ( $(".container").width() - $(".chart-container").width() ) / 2}, 0);
+  load(): void {
+    this.createChart();
+    addData(this);
+    this.chart.update();
+    $(".button-container").css("height", "0px");
+    $(".button-container").css("width", "0px");
+    $(".container .chart-container").css("min-width", "800px");
+    $(".container").animate({scrollLeft: ( 800 - $(".container").width() ) / 2}, 0);
+
+    FIRST = true;
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['dati'] != undefined && changes['dati'].currentValue != undefined) {
-      if(FIRST){
+      /*if(FIRST){
         this.createChart();
         addData(this);
         FIRST=false;
-      }else{
+      }else{*/
+      if(FIRST){
         aggData(this);
+        this.chart.update();
       }
-      this.chart.update();
     }
   }
 }

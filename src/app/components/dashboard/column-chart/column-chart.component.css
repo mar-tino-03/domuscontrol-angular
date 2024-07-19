@@ -1,11 +1,17 @@
-.container{
+.button-container{
   position: relative;
   height: 35vh;
-  min-width: 800px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-
 .chart-container{
+  position: relative;
+  height: 35vh;
+}
+.container{
   position: relative;
   height: 35vh;
   overflow-x: auto;
@@ -13,16 +19,34 @@
 }
 
 @media (max-width: 890px){
+  .button-container,
   .chart-container,
   .container{
     height: 40vh;
   }
 }
 @media screen and (max-width: 599px) {
+  .button-container,
   .chart-container,
   .container{
     height: 350px;
   }
 }
 
+
+.message{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  min-width: 335px;
+  padding: 15px;
+
+  border-radius: 6px;
+  border-color: var(--mdc-outlined-button-outline-color, rgba(0, 0, 0, 0.12));
+  border-width: var(--mdc-outlined-button-outline-width, 1px);
+  border-style: solid;
+}
 

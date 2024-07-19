@@ -80,11 +80,6 @@ h1,h2,h3,h4,h5,h6 {
   margin: 0 auto 10px;
 }
 
-.mdc-text-field{
-  background-color: white !important;
-  border-radius: 3px !important;
-}
-
 .mat-mdc-form-field-infix {
   padding-top: 19px !important;
 }

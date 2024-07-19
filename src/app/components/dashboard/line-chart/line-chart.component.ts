@@ -177,7 +177,7 @@ export class LineChartComponent implements OnChanges {
   }
 
   ngOnInit(): void {
-    //this.createChart();
+    FIRST = true;
   }
 
   ngOnChanges(changes: SimpleChanges) {

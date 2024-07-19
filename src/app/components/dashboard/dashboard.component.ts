@@ -128,7 +128,7 @@ export class DashboardComponent implements OnInit {
         this.disabled = false;
         this.disabledGuage = false;
         this._snackBar.dismiss();
-        if(this.settings != null && this.datalog!=null){
+        if(this.settings != null && this.datalog != null){
           setTemp(this, this.settings.temp, this.settings.mod, termostato.value.datalog);
           setMod(this, this.settings.mod);
           setProg(this, this.settings.programmazione);
