@@ -1,7 +1,7 @@
 <div class="container">
   <div class="button-container">
     <div class="message">
-      <div>optimize performance</div>
+      <div style="margin: 10px 0;">optimize performance</div>
       <button mat-flat-button color="primary" [disabled]="disabled" class="button_chart" (click)="load()"
         matTooltip="load"
         matTooltipClass="tooltip"
@@ -13,6 +13,6 @@
       </div>
   </div>
   <div class="chart-container">
-    <canvas id="{{code}}">{{ chart }}</canvas>
+    <canvas id="{{code}}" style="width: 0;">{{ chart }}</canvas>
   </div>
 </div>

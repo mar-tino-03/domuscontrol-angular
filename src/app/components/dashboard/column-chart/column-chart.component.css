@@ -49,4 +49,10 @@
   border-width: var(--mdc-outlined-button-outline-width, 1px);
   border-style: solid;
 }
+@media screen and (max-width: 599px) {
+  .message{
+    flex-direction: column;
+    min-width: 0;
+  }
+}
 
