@@ -7,11 +7,23 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { NgIf, NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { openMeteoService } from 'src/app/shared/services/open_meteo.service';
+import { GetPrevPipe } from '../../pipe/get-prev.pipe';
+import { GetHistoricalChartPipe } from '../../pipe/get-historical-chart.pipe';
+import { ColumnChartComponent } from './column-chart/column-chart.component';
+import { LineChartComponent } from './line-chart/line-chart.component';
+import { ExplainingPanelComponent } from './explaining-panel/explaining-panel.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { CircularSliderComponent } from './circular-slider/circular-slider.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 declare var brain: any;
 
 const fadeInWidth = trigger('fadeInWidth',[
@@ -46,14 +58,34 @@ const fadeInOpacity = trigger('fadeInOpacity',[
 
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
-  animations: [
-    fadeInWidth,
-    //fadeInOpacity,
-    //fadeInOnEnterAnimation(),
-  ],
+    selector: 'app-dashboard',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.css'],
+    animations: [
+        fadeInWidth,
+        //fadeInOpacity,
+        //fadeInOnEnterAnimation(),
+    ],
+    standalone: true,
+    imports: [
+        MatToolbarModule,
+        NgIf,
+        MatProgressBarModule,
+        MatTooltipModule,
+        MatProgressSpinnerModule,
+        MatIconModule,
+        MatMenuModule,
+        MatButtonModule,
+        CircularSliderComponent,
+        FormsModule,
+        MatExpansionModule,
+        NgFor,
+        ExplainingPanelComponent,
+        LineChartComponent,
+        ColumnChartComponent,
+        GetHistoricalChartPipe,
+        GetPrevPipe,
+    ],
 })
 export class DashboardComponent implements OnInit {
   colorDefault = [ "#4dc9f6", "#f67019", "#f53794", "#ffce56", "#9966ff", "#4bc0c0" ];

@@ -1,9 +1,10 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
 
 @Component({
-  selector: 'explaining-panel',
-  templateUrl: './explaining-panel.component.html',
-  styleUrl: './explaining-panel.component.css'
+    selector: 'explaining-panel',
+    templateUrl: './explaining-panel.component.html',
+    styleUrl: './explaining-panel.component.css',
+    standalone: true
 })
 export class ExplainingPanelComponent {
   @Input() dati!: {};

@@ -1,8 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'getPrev',
-  pure: true,
+    name: 'getPrev',
+    pure: true,
+    standalone: true,
 })
 export class GetPrevPipe implements PipeTransform {
 

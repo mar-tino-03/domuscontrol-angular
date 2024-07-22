@@ -6,10 +6,11 @@ var onChange: { emit: (arg0: number) => void; };
 var prev=0;
 
 @Component({
-  selector: 'app-circular-slider',
-  template: '<div id="slider"></div>',
-  styleUrls: ['./circular-slider.component.css'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-circular-slider',
+    template: '<div id="slider"></div>',
+    styleUrls: ['./circular-slider.component.css'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: true
 })
 export class CircularSliderComponent implements OnInit{
   @Input() valueRange!: number;

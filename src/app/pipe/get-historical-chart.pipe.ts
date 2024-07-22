@@ -1,8 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'getHistoricalChart',
-  pure: true,
+    name: 'getHistoricalChart',
+    pure: true,
+    standalone: true,
 })
 export class GetHistoricalChartPipe implements PipeTransform {
   date: any;

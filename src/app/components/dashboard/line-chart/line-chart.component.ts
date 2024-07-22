@@ -11,6 +11,9 @@ import {
   Legend,
   Tooltip,
 } from 'chart.js'
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 Chart.register(
   LineController,
@@ -28,9 +31,15 @@ var i: number, j: number, date: String[];
 var yAxisID: string, hidden:boolean, stepped:boolean;
 
 @Component({
-  selector: 'app-line-chart',
-  templateUrl: './line-chart.component.html',
-  styleUrls: ['./line-chart.component.css'],
+    selector: 'app-line-chart',
+    templateUrl: './line-chart.component.html',
+    styleUrls: ['./line-chart.component.css'],
+    standalone: true,
+    imports: [
+        MatButtonModule,
+        MatTooltipModule,
+        MatIconModule,
+    ],
 })
 export class LineChartComponent implements OnChanges {
   @Input() dati: any;

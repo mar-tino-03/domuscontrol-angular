@@ -13,6 +13,9 @@ import {
   Tooltip,
 } from 'chart.js'
 import { timeout } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 Chart.register(
   BarController,
@@ -29,9 +32,11 @@ var FIRST = false;
 var i: number, date: String[];
 
 @Component({
-  selector: 'app-column-chart',
-  templateUrl: './column-chart.component.html',
-  styleUrls: ['./column-chart.component.css']
+    selector: 'app-column-chart',
+    templateUrl: './column-chart.component.html',
+    styleUrls: ['./column-chart.component.css'],
+    standalone: true,
+    imports: [MatButtonModule, MatTooltipModule, MatIconModule]
 })
 export class ColumnChartComponent{
   @Input() dati: any;

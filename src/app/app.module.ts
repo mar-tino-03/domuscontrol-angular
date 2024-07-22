@@ -55,33 +55,7 @@ import { ColumnChartComponent } from './components/dashboard/column-chart/column
 import { GetHistoricalChartPipe } from './pipe/get-historical-chart.pipe';
 import { GetPrevPipe } from './pipe/get-prev.pipe';
 
-@NgModule({ declarations: [
-        AppComponent,
-        //TabellaComponent,
-        //MagazzinoComponent,
-        //StatisticheComponent,
-        //HomeComponent,
-        //ContattoComponent,
-        //NotfoundComponent,
-        //LineChartComponent,
-        /*ValueComponent,
-        StockChartComponent,
-        ValueRefComponent,
-        FooterComponent,
-        DialogPwaComponent,*/
-        DashboardComponent,
-        ForgotPasswordComponent,
-        SignInComponent,
-        SignUpComponent,
-        VerifyEmailComponent,
-        CircularSliderComponent,
-        PageNotFoundComponent,
-        ExplainingPanelComponent,
-        LineChartComponent,
-        ColumnChartComponent,
-        GetHistoricalChartPipe,
-        GetPrevPipe
-    ],
+@NgModule({ declarations: [AppComponent],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
@@ -121,5 +95,29 @@ import { GetPrevPipe } from './pipe/get-prev.pipe';
             // Register the ServiceWorker as soon as the application is stable
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000',
-        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
+        }), 
+        //TabellaComponent,
+        //MagazzinoComponent,
+        //StatisticheComponent,
+        //HomeComponent,
+        //ContattoComponent,
+        //NotfoundComponent,
+        //LineChartComponent,
+        /*ValueComponent,
+        StockChartComponent,
+        ValueRefComponent,
+        FooterComponent,
+        DialogPwaComponent,*/
+        DashboardComponent,
+        ForgotPasswordComponent,
+        SignInComponent,
+        SignUpComponent,
+        VerifyEmailComponent,
+        CircularSliderComponent,
+        PageNotFoundComponent,
+        ExplainingPanelComponent,
+        LineChartComponent,
+        ColumnChartComponent,
+        GetHistoricalChartPipe,
+        GetPrevPipe], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
