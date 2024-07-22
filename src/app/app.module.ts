@@ -1,6 +1,6 @@
 import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -55,81 +55,71 @@ import { ColumnChartComponent } from './components/dashboard/column-chart/column
 import { GetHistoricalChartPipe } from './pipe/get-historical-chart.pipe';
 import { GetPrevPipe } from './pipe/get-prev.pipe';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    //TabellaComponent,
-    //MagazzinoComponent,
-    //StatisticheComponent,
-    //HomeComponent,
-    //ContattoComponent,
-    //NotfoundComponent,
-    //LineChartComponent,
-    /*ValueComponent,
-    StockChartComponent,
-    ValueRefComponent,
-    FooterComponent,
-    DialogPwaComponent,*/
-
-    DashboardComponent,
-    ForgotPasswordComponent,
-    SignInComponent,
-    SignUpComponent,
-    VerifyEmailComponent,
-    CircularSliderComponent,
-    PageNotFoundComponent,
-    ExplainingPanelComponent,
-    LineChartComponent,
-    ColumnChartComponent,
-
-    GetHistoricalChartPipe,
-    GetPrevPipe
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MatSlideToggleModule,
-    MatCardModule,
-    MatButtonModule,
-    //MatSidenavModule,
-    //MatGridListModule,
-    MatInputModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatDividerModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatListModule,
-    MatDialogModule,
-    MatMenuModule,
-    MatTableModule,
-    //MatChipsModule,
-    //MatSliderModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule,
-    MatTooltipModule,
-    MatButtonToggleModule,
-    MatTabsModule,
-    MatProgressBarModule,
-    MatExpansionModule,
-
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule,
-    AngularFirestoreModule,
-    AngularFireStorageModule,
-    ServiceWorkerModule.register('ngsw-worker.js', {
-      enabled: !isDevMode(),
-      // Register the ServiceWorker as soon as the application is stable
-      // or after 30 seconds (whichever comes first).
-      registrationStrategy: 'registerWhenStable:30000',
-    }),
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
-})
+@NgModule({ declarations: [
+        AppComponent,
+        //TabellaComponent,
+        //MagazzinoComponent,
+        //StatisticheComponent,
+        //HomeComponent,
+        //ContattoComponent,
+        //NotfoundComponent,
+        //LineChartComponent,
+        /*ValueComponent,
+        StockChartComponent,
+        ValueRefComponent,
+        FooterComponent,
+        DialogPwaComponent,*/
+        DashboardComponent,
+        ForgotPasswordComponent,
+        SignInComponent,
+        SignUpComponent,
+        VerifyEmailComponent,
+        CircularSliderComponent,
+        PageNotFoundComponent,
+        ExplainingPanelComponent,
+        LineChartComponent,
+        ColumnChartComponent,
+        GetHistoricalChartPipe,
+        GetPrevPipe
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatSlideToggleModule,
+        MatCardModule,
+        MatButtonModule,
+        //MatSidenavModule,
+        //MatGridListModule,
+        MatInputModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatDividerModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatListModule,
+        MatDialogModule,
+        MatMenuModule,
+        MatTableModule,
+        //MatChipsModule,
+        //MatSliderModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
+        MatTooltipModule,
+        MatButtonToggleModule,
+        MatTabsModule,
+        MatProgressBarModule,
+        MatExpansionModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireDatabaseModule,
+        AngularFireAuthModule,
+        AngularFirestoreModule,
+        AngularFireStorageModule,
+        ServiceWorkerModule.register('ngsw-worker.js', {
+            enabled: !isDevMode(),
+            // Register the ServiceWorker as soon as the application is stable
+            // or after 30 seconds (whichever comes first).
+            registrationStrategy: 'registerWhenStable:30000',
+        })], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule {}
