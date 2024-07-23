@@ -1,15 +1,25 @@
 <div class="container">
   <div class="button-container">
     <div class="message">
-      <div style="margin: 10px 0;">optimize performance</div>
-      <button mat-flat-button color="primary" [disabled]="disabled" class="button_chart" (click)="load()"
+      <div style="margin: 10px;">optimize performance</div>
+      <!--<button mat-flat-button color="primary" [disabled]="disabled" class="button_chart" (click)="load()"
         matTooltip="load"
         matTooltipClass="tooltip"
         matTooltipPosition="below"
         matTooltipShowDelay="0"
         matTooltipHideDelay="0">
         <mat-icon>downloading</mat-icon>
-        Historical Chart</button>
+        Historical Chart</button>-->
+
+      <button mat-fab extended (click)="load()" [disabled]="disabled" style="box-shadow: none"
+        matTooltip="load"
+        matTooltipClass="tooltip"
+        matTooltipPosition="below"
+        matTooltipShowDelay="0"
+        matTooltipHideDelay="0">
+        <mat-icon>downloading</mat-icon>
+        Historical Chart
+      </button>
       </div>
   </div>
   <div class="chart-container">

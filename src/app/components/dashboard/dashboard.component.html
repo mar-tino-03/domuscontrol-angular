@@ -96,7 +96,7 @@
     </div>
 
     <div class="box-radio">
-      <form>
+      <!--<form>
         <button class="button_chip" mat-flat-button
           (click)="changeChip('auto')"
           [color]="mod=='auto' ? 'primary' : ''"
@@ -112,7 +112,13 @@
           [color]="mod=='off' ? 'primary' : ''"
           [disabled]="disabled">
           <mat-icon *ngIf="mod=='off'" @fadeInWidth>checked</mat-icon>Off</button>
-      </form>
+      </form>-->
+
+      <mat-chip-listbox aria-label="Cutest dog breeds">
+        <mat-chip-option [disabled]="disabled" (click)="changeChip('auto')"   [selected]="mod=='auto'">auto</mat-chip-option>
+        <mat-chip-option [disabled]="disabled" (click)="changeChip('manual')" [selected]="mod=='manual'">manual</mat-chip-option>
+        <mat-chip-option [disabled]="disabled" (click)="changeChip('off')"    [selected]="mod=='off'">off</mat-chip-option>
+      </mat-chip-listbox>
 
       <div class="info-container">
         <p style="margin: 0">

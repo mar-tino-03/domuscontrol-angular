@@ -95,7 +95,7 @@ import { GetPrevPipe } from './pipe/get-prev.pipe';
             // Register the ServiceWorker as soon as the application is stable
             // or after 30 seconds (whichever comes first).
             registrationStrategy: 'registerWhenStable:30000',
-        }), 
+        }),
         //TabellaComponent,
         //MagazzinoComponent,
         //StatisticheComponent,

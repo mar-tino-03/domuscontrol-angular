@@ -4,6 +4,8 @@ import { AuthService } from '../../shared/services/auth.service';
 import { FirebaseService } from '../../shared/services/firebase.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import {MatChipsModule} from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+
 declare var brain: any;
 
 const fadeInWidth = trigger('fadeInWidth',[
@@ -76,6 +79,8 @@ const fadeInOpacity = trigger('fadeInOpacity',[
         MatIconModule,
         MatMenuModule,
         MatButtonModule,
+        MatButtonToggleModule,
+        MatChipsModule,
         CircularSliderComponent,
         FormsModule,
         MatExpansionModule,
