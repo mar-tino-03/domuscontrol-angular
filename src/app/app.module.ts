@@ -38,6 +38,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
@@ -55,7 +56,8 @@ import { ColumnChartComponent } from './components/dashboard/column-chart/column
 import { GetHistoricalChartPipe } from './pipe/get-historical-chart.pipe';
 import { GetPrevPipe } from './pipe/get-prev.pipe';
 
-@NgModule({ declarations: [AppComponent],
+@NgModule({
+    declarations: [AppComponent],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
@@ -85,6 +87,7 @@ import { GetPrevPipe } from './pipe/get-prev.pipe';
         MatTabsModule,
         MatProgressBarModule,
         MatExpansionModule,
+        MatBottomSheetModule,
         AngularFireModule.initializeApp(environment.firebase),
         AngularFireDatabaseModule,
         AngularFireAuthModule,
@@ -119,5 +122,6 @@ import { GetPrevPipe } from './pipe/get-prev.pipe';
         LineChartComponent,
         ColumnChartComponent,
         GetHistoricalChartPipe,
-        GetPrevPipe], providers: [provideHttpClient(withInterceptorsFromDi())] })
-export class AppModule {}
+        GetPrevPipe], providers: [provideHttpClient(withInterceptorsFromDi())]
+})
+export class AppModule { }

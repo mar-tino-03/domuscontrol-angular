@@ -24,8 +24,6 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class SignInComponent implements OnInit{
-  hide=true;
-
   constructor(
     private meta: Meta,
     public authService: AuthService
