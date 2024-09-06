@@ -10,16 +10,12 @@ mat-progress-bar{
   position: absolute;
 }
 
-mat-toolbar-row{
-  background: var(--bg-card);
-  /*padding: 0 8px;*/
-}
-
-mat-toolbar{
+.mat-toolbar{
   box-shadow: 0px 20px 40px -6px rgb(39 76 119 / 16%);
   position: fixed;
+  background: var(--bg-card);
   top: 0;
-  z-index: 100;
+  z-index: 60;
 }
 
 .spinner-container{
@@ -31,8 +27,6 @@ mat-toolbar{
 .spinner-container mat-spinner{
   margin-top: 1px;
   margin-left: 2px;
-  width: 21px !important;
-  height: 21px !important;
 }
 
 ::ng-deep .tooltip{
@@ -127,17 +121,25 @@ mat-toolbar{
   position: absolute;
   bottom: 15px;
   right: 15px;
-  border-radius: 18px !important;
-  transform: scale(0.75);
+  /*border-radius: 18px !important;*/
+  font-weight: 500;
+  transform: scale(0.80);
   box-shadow: none !important;
 }
 
-.button_reload{
-  /*background-color: white;*/
-  width: 100%;
-  margin: 6px 0px;
-  border-radius: 8px;
+.button_modify{
+  margin: 3px 6px;
+  border-radius: var(--mdc-chip-container-shape-radius);
 }
+
+.button_meteo{
+  margin: auto 5%; width: 90%;
+  box-shadow: none !important;
+  border-radius: var(--mdc-chip-container-shape-radius);
+}
+/*::ng-deep .button_meteo span{
+  font-weight: 500;
+}*/
 
 .graph{
   grid-column-start: 1;
@@ -201,6 +203,11 @@ mat-accordion mat-expansion-panel{
 mat-expansion-panel-header{
   padding: 0px 16px;
   height: 52px;
+}
+
+mat-panel-title,
+mat-panel-description{
+  font-weight: 400;
 }
 
 .mat-expansion-panel{

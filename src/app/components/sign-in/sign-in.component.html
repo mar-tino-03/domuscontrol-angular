@@ -11,10 +11,10 @@
 
     <mat-form-field appearance="outline" hideRequiredMarker=true>
       <mat-label>Password</mat-label>
-      <input name="password" matInput required #userPassword type='password'>
-      <!--<button mat-icon-button type='button' color="primary" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+      <input name="password" matInput required #userPassword [type]="hide ? 'password' : 'text'">
+      <button mat-icon-button type='button' color="primary" matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
         <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-      </button>-->
+      </button>
     </mat-form-field>
 
     <!-- Calling SignIn Api from AuthService -->

@@ -1,8 +1,10 @@
 <!-- Top navigation -->
 <mat-toolbar>
-  <mat-progress-bar *ngIf="spinner==0" mode="indeterminate"></mat-progress-bar>
+  <mat-progress-bar *ngIf="spinner==0" mode="indeterminate" color="color: var(--text-dark);"></mat-progress-bar>
 
+  <mat-toolbar class="mat-toolbar">
   <mat-toolbar-row>
+
     <div style="display: flex" class="rounded-circle">
       <img class="brand-logo" src="/favicon.ico" alt="favivon.io Logo"
         matTooltip="Tino's App"
@@ -11,12 +13,12 @@
     </div>
 
     <div class="spinner-container">
-      <mat-spinner *ngIf="spinner==1"  strokeWidth="9"
+      <mat-spinner *ngIf="spinner==1"  strokeWidth="2" diameter="21"
         matTooltip="Await"
         matTooltipClass="tooltip"
         matTooltipPosition="below"></mat-spinner>
 
-      <mat-icon *ngIf="spinner==2" color="primary"
+      <mat-icon *ngIf="spinner==2" style="color: var(--text-dark);"
         matTooltip="All data is update"
         matTooltipClass="tooltip"
         matTooltipPosition="below"
@@ -69,6 +71,7 @@
     </div>
 
   </mat-toolbar-row>
+  </mat-toolbar>
 </mat-toolbar>
 
 
@@ -155,13 +158,13 @@
         </mat-expansion-panel-header>
         <div style="display: flex; justify-content: space-evenly;">
 
-          <button mat-stroked-button [disabled]="disabled" aria-label="edit"
+          <button mat-stroked-button [disabled]="disabled" aria-label="edit" class="button_modify"
           (click)="openDialog({ora: time_tino(e.ora), temp: e.temp})"
           matTooltip="edit"
           matTooltipClass="tooltip"
           matTooltipPosition="below"><mat-icon>edit</mat-icon>Edit</button>
 
-          <button mat-stroked-button [disabled]="disabled" aria-label="delete" color="warn"
+          <button mat-stroked-button [disabled]="disabled" aria-label="delete" class="button_modify"
           (click)="this.firebaseService.setProg({ora: time_tino(e.ora), temp: null})"
           matTooltip="delete"
           matTooltipClass="tooltip"
@@ -191,21 +194,27 @@
         <div *ngFor="let e of outDoor">
           <explaining-panel [dati]="{first: e.type, second: e.valuePath}"></explaining-panel>
         </div>
+
+        <button mat-mini-fab extended class="button_meteo"(click)="ngOnInit()">
+          Last Date:
+          <span style="color: var(--mat-expansion-header-description-color);">
+            {{outDoor!=null ? outDoor[0].date : ""}}
+          </span>
+        </button>
       </ng-template>
 
-      <button mat-stroked-button style="margin: auto 5%; width: 90%;" (click)="ngOnInit()">
-        Last Date:
-        <span style="color: var(--mat-expansion-header-description-color);">
-          {{outDoor!=null ? outDoor[0].date : ""}}
-        </span>
-      </button>
-
       <ng-template #ErrorOut>
-        <div *ngIf="spinner!=0" style="
+        <!--<div *ngIf="spinner!=0" style="
           margin: auto;
           color: var(--mat-expansion-header-description-color);
           padding: 16px;">
           Meteo not works :)
+        </div>-->
+        <div style="display: flex; height: 90%; min-height: 230px;">
+          <button *ngIf="spinner!=0" mat-fab extended class="button_meteo"(click)="ngOnInit()">
+            <mat-icon>downloading</mat-icon>
+            Reload
+          </button>
         </div>
       </ng-template>
 

@@ -7,7 +7,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
-    "public": "dist/domuscontrol",
+    "public": "dist/domuscontrol/browser",
     "ignore": [
       "firebase.json",
       "**/.*",

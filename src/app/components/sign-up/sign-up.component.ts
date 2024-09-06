@@ -24,6 +24,8 @@ import { FormsModule } from '@angular/forms';
 })
 
 export class SignUpComponent {
+  hide=true;
+
   constructor(
     private meta: Meta,
     public authService: AuthService

@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 import { NgIf, NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar, MatSnackBarModule, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
-import { animate, style, transition, trigger } from '@angular/animations';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { openMeteoService } from 'src/app/shared/services/open_meteo.service';
 import { GetPrevPipe } from '../../pipe/get-prev.pipe';
 import { GetHistoricalChartPipe } from '../../pipe/get-historical-chart.pipe';
@@ -49,15 +49,11 @@ const fadeInWidth = trigger('fadeInWidth',[
 ]);
 /*
 const fadeInOpacity = trigger('fadeInOpacity',[
-  transition(':color', [
-    style({
-      opacity: 0
-    }),
-    animate( '0.6s linear',  style({
-      opacity: 1
-    }))
-  ])
+  state('visible', style({ opacity: 1 })),
+  state('hidden', style({ opacity: 0 })),
+  transition('visible <=> hidden', animate('1s ease-in-out'))
 ]);*/
+
 
 
 @Component({
@@ -67,7 +63,6 @@ const fadeInOpacity = trigger('fadeInOpacity',[
     animations: [
         fadeInWidth,
         //fadeInOpacity,
-        //fadeInOnEnterAnimation(),
     ],
     standalone: true,
     imports: [
@@ -152,29 +147,37 @@ export class DashboardComponent implements OnInit {
 
     this.firebaseService.onChange().subscribe({
       next: (termostato: any) => {
+        try {
+          //if(true)
+            this.historical = termostato.historical;
+          //if(true)
+            this.datalog = termostato.value.datalog;
+          //if(true)
+            this.settings = termostato.value.settings;
+          //if(true)
+            this.brainlog = termostato.brainlog;
 
-        if(true)
-          this.historical = termostato.historical;
-        if(true)
-          this.datalog = termostato.value.datalog;
-        if(true)
-          this.settings = termostato.value.settings;
-        if(true)
-          this.brainlog = termostato.brainlog;
-
-        this.disabled = false;
-        this.disabledGuage = false;
-        this._snackBar.dismiss();
-        if(this.settings != null && this.datalog != null){
-          setTemp(this, this.settings.temp, this.settings.mod, termostato.value.datalog);
-          setMod(this, this.settings.mod);
-          setProg(this, this.settings.programmazione);
-          this.prev = calcPrev(this.brainlog, this.datalog, this.openMeteo);
-          setSpinner(this, this.settings.timestamp, termostato.value.datalog);
-          this.InError = setError(this.datalog);
-          this.InChart = setDatalog(this.openMeteo, this.datalog);
-          //this.historicalChart = setHistorical(termostato.historical);
-          this.outDoor = getOpenMeteo(this.openMeteo, new Date());
+          this.disabled = false;
+          this.disabledGuage = false;
+          this._snackBar.dismiss();
+          if(this.settings != null && this.datalog != null){
+            setTemp(this, this.settings.temp, this.settings.mod, this.datalog);
+            setMod(this, this.settings.mod);
+            setProg(this, this.settings.programmazione);
+            this.prev = calcPrev(this.brainlog, this.datalog, this.openMeteo);
+            setSpinner(this, this.settings.timestamp, termostato.value.datalog);
+            this.InError = setError(this.datalog);
+            this.InChart = setDatalog(this.openMeteo, this.datalog);
+            //this.historicalChart = setHistorical(termostato.historical);
+            this.outDoor = getOpenMeteo(this.openMeteo, new Date());
+          }else{
+            throw new Error();
+          }
+        } catch (error) {
+          this.disabled = true;
+          this.disabledGuage = true;
+          setSpinner(this, 0, null);
+          this._snackBar.openFromComponent(snackErrore, {data: "Error in database!"});
         }
       },
       error: (e) => {
@@ -343,6 +346,24 @@ export class snackQueue {
         }
       );
     }, 2000)
+  }
+}
+
+/*  ERRORE  */
+
+@Component({
+  selector: 'snack-errore',
+  templateUrl: 'snack/snack-errore.html',
+  standalone: true,
+  styleUrls:  ['snack/snack.css'],
+  imports: [MatButtonModule, MatSnackBarModule],
+})
+export class snackErrore {
+  constructor(
+    @Inject(MAT_SNACK_BAR_DATA) public data: any,
+  ) {}
+  name(){
+    return this.data != undefined ? this.data : "Error";
   }
 }
 
