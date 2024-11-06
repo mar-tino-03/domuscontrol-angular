@@ -139,8 +139,12 @@ export class DashboardComponent implements OnInit {
       next: (data:any)=>{
         this.openMeteo = data;
       },
-      error: () => {
+      error: (e) => {
         console.log("Api-meteo not work");
+        console.log(e);
+        alert("Api-meteo not work\n"+
+              e.name
+        );
       }
     });
 
@@ -538,20 +542,30 @@ function getOpenMeteo(data: any, time: Date) : any {
     value: data.hourly.temperature_2m[i],
     date: new Date(data.hourly.time[i]).toLocaleString(),
   })
-  dati.push({
+  /*dati.push({
     type: "hum",
     valuePath: data.hourly.relativehumidity_2m[i] + data.hourly_units.relativehumidity_2m,
     value: data.hourly.relativehumidity_2m[i]
   })
-  dati.push({
+  /*dati.push({
     type: "pres",
     valuePath: data.hourly.surface_pressure[i] + data.hourly_units.surface_pressure,
     value: data.hourly.surface_pressure[i]
-  })
+  })*/
   dati.push({
     type: "wind",
     valuePath: data.hourly.windspeed_10m[i] + data.hourly_units.windspeed_10m,
     value: data.hourly.windspeed_10m[i],
+  })
+  dati.push({
+    type: "Wcod",
+    valuePath: data.hourly.weather_code[i],
+    value: data.hourly.weather_code[i],
+  })
+  dati.push({
+    type: "irra",
+    valuePath: data.hourly.direct_normal_irradiance_instant[i] + data.hourly_units.direct_normal_irradiance_instant,
+    value: data.hourly.direct_normal_irradiance_instant[i],
   })
   return dati;
 }
@@ -562,22 +576,29 @@ function calcPrev(brainlog: any, datalog: any, meteo:any): number{
     return 0;
 
   var tempOut = getOpenMeteo(meteo, new Date())[0].value;
-  var windOut = getOpenMeteo(meteo, new Date())[3].value;
+  var windOut = getOpenMeteo(meteo, new Date())[1].value;
+  var codeOut = getOpenMeteo(meteo, new Date())[2].value;
+  var irraOut = getOpenMeteo(meteo, new Date())[3].value;
   var param = {
-    "Temp Inizio (°C)":   (datalog[k[k.length-1]].tmp) / brainlog.INPUTFACTOR,
-    "Temp Fine (°C)":     (datalog[k[k.length-1]].des+0.5) / brainlog.INPUTFACTOR,
-    "Temp Esterna (°C)":  (tempOut>0 ? tempOut : 0) / brainlog.INPUTFACTOR,
-    "Vento (km/h)":       (windOut>0 ? windOut : 0) / brainlog.INPUTFACTOR
+    "Temp Inizio (°C)":   (datalog[k[k.length-1]].tmp) / brainlog.INPUTFACTORTMP,
+    "Temp Fine (°C)":     (datalog[k[k.length-1]].des+0.5) / brainlog.INPUTFACTORTMP,
+    "Temp Esterna (°C)":  (tempOut>0 ? tempOut : 0) / brainlog.INPUTFACTORTMP,
+    "Vento (km/h)":       (windOut>0 ? windOut : 0) / brainlog.INPUTFACTORW,
+    "code (n)":           (codeOut>0 ? codeOut : 0) / brainlog.INPUTFACTORW,
+    "irradiance (W/m^2)": (irraOut>0 ? irraOut : 0) / brainlog.INPUTFACTORIRR,
   }
 
   /*param = {
-    "Temp Inizio (°C)":   21 /brainlog.INPUTFACTOR ,
-    "Temp Fine (°C)":     22 /brainlog.INPUTFACTOR ,
-    "Temp Esterna (°C)":  getOpenMeteo(meteo, new Date())[0].value /brainlog.INPUTFACTOR ,
-    "Vento (km/h)":       getOpenMeteo(meteo, new Date())[3].value /brainlog.INPUTFACTOR
+    "Temp Inizio (°C)":   22 / brainlog.INPUTFACTORTMP,
+    "Temp Fine (°C)":     22.5 / brainlog.INPUTFACTORTMP,
+    "Temp Esterna (°C)":  7.1 / brainlog.INPUTFACTORTMP,
+    "Vento (km/h)":       4.3 / brainlog.INPUTFACTORW,
+    "code (n)":           (1+1) / brainlog.INPUTFACTORW,
+    "irradiance (W/m^2)": 769 / brainlog.INPUTFACTORIRR,
   }*/
-  try {
 
+  try {
+    //console.log(param);
     const net = new brain.NeuralNetwork();
     net.fromJSON(JSON.parse(brainlog.json));
     //console.log(param, net.run(param)["Tempo Impiegato (min)"])
@@ -586,7 +607,6 @@ function calcPrev(brainlog: any, datalog: any, meteo:any): number{
     console.error("rete neurale non corretta!");
     return 0;
   }
-
 }
 
 

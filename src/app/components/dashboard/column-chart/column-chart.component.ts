@@ -30,6 +30,7 @@ Chart.register(
 var mounthBold: any[] = [];
 var FIRST = false;
 var i: number, date: String[];
+var HiddenLastElem = 2;
 
 @Component({
     selector: 'app-column-chart',
@@ -143,6 +144,7 @@ export class ColumnChartComponent{
 function addData(t: any) {
   i=0;
   date = Object.keys(t.dati);
+  let numberDate = date.length;
 
   date.forEach((d: any) => {
     t.chart.data.datasets.push({
@@ -150,6 +152,7 @@ function addData(t: any) {
       data:  t.dati[String(date[i])],
       borderColor: t.color[i],
       backgroundColor: t.color[i],
+      hidden: (i >= numberDate - HiddenLastElem ? false : true),
       //categoryPercentage: 1.0,
       //barPercentage: 0.5,
 
@@ -159,6 +162,7 @@ function addData(t: any) {
       }
     })
     i++;
+    //HiddenLastElem--;
   });
 }
 

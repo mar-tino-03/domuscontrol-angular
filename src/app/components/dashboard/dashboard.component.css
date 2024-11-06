@@ -83,7 +83,15 @@ mat-progress-bar{
   }
 }
 
+mat-chip-option{
+  height: 34px;
+}
+
 .info-container{
+  margin: 10px 0 0;
+}
+
+/*.info-container{
   padding-top: 12px;
 }
 
@@ -98,7 +106,7 @@ mat-progress-bar{
   padding: 0px 13px;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.12);
-}
+}*/
 
 .programmazione{
   grid-column-start: 3;
